@@ -1,1 +1,1 @@
-web: gunicorn paytime.wsgi
+web: gunicorn paytime.wsgi --log-file - --log-level debug
