@@ -26,7 +26,7 @@ SECRET_KEY = 'f1odp(q9txl!$pbc+r!w&=yu_2virk8wp7hv%v71v-r)$jbt-g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://pay-time.herokuapp.com/', '127.0.0.1']
+ALLOWED_HOSTS = ['pay-time.herokuapp.com/', '127.0.0.1']
 
 
 # Application definition
