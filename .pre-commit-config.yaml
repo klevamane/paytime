@@ -1,0 +1,30 @@
+repos:
+-   repo: https://github.com/python/black
+    rev: "20.8b1"
+    hooks:
+    - id: "black"
+      language_version: python3.8
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks:
+    - id: flake8
+
+
+-   repo: https://github.com/python-modernize/python-modernize
+    rev: "0.7"
+    hooks:
+    - id: python-modernize
+      language_version: python3.8
+      args: [
+        # NOTE(cmiN): Dropping this enforce for the non-zero exit codes, because is
+        #  enough for a file to be changed in order to have the hook failing. Otherwise
+        #  we end up with identical files while the hook still fails. (false-positives)
+        #--enforce,
+        # We're already using print as a function.
+        --print-function,
+        # Modify the files so we know what it complained about.
+        --write,
+        # Don't use backups, we have git.
+        --nobackups,
+      ]
+
