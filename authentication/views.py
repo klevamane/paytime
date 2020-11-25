@@ -14,3 +14,7 @@ def signup(request):
 
 def login(request):
     return render(request, "authentication/login.html")
+
+
+def forgot_password(request):
+    return render(request, "authentication/forgot-pwd.html")
