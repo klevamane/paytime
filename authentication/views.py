@@ -8,4 +8,8 @@ def index(request):
 
 
 def signup(request):
-        return render(request, "authentication/signup.html")
+    return render(request, "authentication/signup.html")
+
+
+def login(request):
+    return render(request, "authentication/login.html")
