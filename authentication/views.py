@@ -18,3 +18,7 @@ def login(request):
 
 def forgot_password(request):
     return render(request, "authentication/forgot-pwd.html")
+
+
+def not_found(request):
+    return render(request, "404.html")
