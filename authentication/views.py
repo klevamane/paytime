@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -9,7 +10,9 @@ def index(request):
 
 
 def signup(request):
-    return render(request, "authentication/signup.html")
+    form = UserCreationForm()
+    context = {"form": form}
+    return render(request, "authentication/signup.html", context)
 
 
 def login(request):
