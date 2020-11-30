@@ -13,7 +13,8 @@ def addcss(field, css):
 @register.filter(name="lookup")
 def lookup(dictionary, key):
     """Get dictionary item via template"""
-    return dictionary.get(key)
+    # import pdb; pdb.set_trace()
+    return dictionary.get(key.name)
 
 
 # @register.filter(name="errorcss")

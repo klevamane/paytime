@@ -5,19 +5,9 @@ from __future__ import absolute_import
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm, UsernameField
-from django.utils.translation import gettext
+from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 
-# class UsernameField(forms.CharField):
-#     def to_python(self, value):
-#         return unicodedata.normalize('NFKC', super().to_python(value))
-#
-#     def widget_attrs(self, widget):
-#         return {
-#             **super().widget_attrs(widget),
-#             'autocapitalize': 'none',
-#             'autocomplete': 'username',
-#         }
 from authentication.models import User
 
 
@@ -30,6 +20,7 @@ class SignupForm(UserCreationForm):
             attrs={"autocomplete": "new-password", "placeholder": "Password"}
         ),
         help_text=password_validation.password_validators_help_text_html(),
+        required=True,
     )
     password2 = forms.CharField(
         label=_("Password confirmation"),
@@ -38,6 +29,7 @@ class SignupForm(UserCreationForm):
         ),
         strip=False,
         help_text=_("Enter the same password as before, for verification."),
+        required=True,
     )
 
     class Meta:
@@ -52,3 +44,16 @@ class SignupForm(UserCreationForm):
             "lastname": forms.TextInput(attrs={"placeholder": "Lastname"}),
             "email": forms.TextInput(attrs={"placeholder": "Email"}),
         }
+
+    def clean_first_name(self):
+        return strip_tags(self.cleaned_data["first_name"].strip())
+
+    def clean_last_name(self):
+        return strip_tags(self.cleaned_data["last_name"].strip())
+
+    def save(self):
+        instance = super(SignupForm, self).save(commit=False)
+        instance.firstname = self.clean_first_name()
+        instance.lastname = self.clean_last_name()
+        instance.save()
+        return instance

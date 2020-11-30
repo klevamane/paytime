@@ -1,9 +1,13 @@
 from __future__ import absolute_import
 
+import json
+
 from django.contrib.auth.forms import UserCreationForm
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from authentication.forms import SignupForm
+from authentication.models import User
 
 
 def index(request):
@@ -11,20 +15,23 @@ def index(request):
 
 
 def signup(request):
-    form = SignupForm(request.POST)
-    context = {"form": form}
     if request.method == "POST":
-        import pdb
-
-        pdb.set_trace()
+        form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect("login")
-        else:
-            return render(request, "authentication/signup.html", context)
+        return render(request, "authentication/signup.html", {"form": form})
     form = SignupForm()
     context = {"form": form}
     return render(request, "authentication/signup.html", context)
+
+
+def validate_user_email_view(request):
+    data = json.loads(request.body)
+    email = data["email"]
+    if User.objects.filter(email=email).exists():
+        return JsonResponse({"email_exists": "Email already exists"}, status=409)
+    return JsonResponse({"email_exists": True})
 
 
 # if read_only:
