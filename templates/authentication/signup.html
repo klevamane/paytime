@@ -1,4 +1,5 @@
 {% extends "authentication/../dashboard/base-auth.html" %}
+{% load custom_tags %}
 
 {% block title %}Login{%  endblock %}
 
@@ -9,36 +10,53 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-5 d-none d-lg-block"></div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <form class="user">
+                            <form class="user" method="post">
+                                {% csrf_token %}
+
                                 <div class="form-group row">
+
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-{#                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"#}
-{#                                            placeholder="First Name" value={{ form.firstname }}>#}
-                                        {{ form.firstname }}
+                                        {{ form.firstname|addcss:"form-control form-control-user" }}
+                                        {% if form.firstname.errors %}
+                                    <small id="emailHelp" class="form-text text-danger">{{ form.firstname.errors }}</small>
+                                    {%  endif %}
                                     </div>
+
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="exampleLastName"
-                                            placeholder="Last Name" value={{ form.lastname }}>
+                                       {{ form.lastname|addcss:"form-control form-control-user" }}
+
+                                        {% if form.lastname.errors %}
+                                    <small id="emailHelp" class="form-text text-danger">{{ form.lastname.errors }}</small>
+                                    {%  endif %}
                                     </div>
+
                                 </div>
+
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Email Address" value={{ form.email }}>
+                                   {{ form.email|addcss:"form-control form-control-user" }}
+                                    {% if form.email.errors %}
+                                    <small id="emailHelp" class="form-text text-danger">{{ form.email.errors }}</small>
+                                    {%  endif %}
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password" value={{ form.password1 }}>
+                                       {{ form.password1|addcss:"form-control form-control-user" }}
+                                        {% if form.password1.errors %}
+                                    <small id="emailHelp" class="form-text text-danger">{{ form.password1.errors }}</small>
+                                    {%  endif %}
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repeat Password" value={{ form.password2 }}>
+                                        {{ form.password2|addcss:"form-control form-control-user" }}
+                                        {% if form.password2.errors %}
+                                    <small id="emailHelp" class="form-text text-danger">{{ form.password2.errors }}</small>
+                                    {%  endif %}
+
                                     </div>
                                 </div>
                                 <button class="btn btn-primary btn-user btn-block" type="submit">
@@ -58,6 +76,7 @@
                             </div>
                             <div class="text-center">
                                 <a class="small" href="{% url 'login' %}">Already have an account? Login!</a>
+                                {{ form.non_field_errors }}
                             </div>
                         </div>
                     </div>

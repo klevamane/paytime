@@ -12,14 +12,17 @@ def index(request):
 
 def signup(request):
     form = SignupForm(request.POST)
+    context = {"form": form}
     if request.method == "POST":
+        import pdb
+
+        pdb.set_trace()
         if form.is_valid():
             form.save()
             return redirect("login")
+        else:
+            return render(request, "authentication/signup.html", context)
     form = SignupForm()
-    import pdb
-
-    pdb.set_trace()
     context = {"form": form}
     return render(request, "authentication/signup.html", context)
 

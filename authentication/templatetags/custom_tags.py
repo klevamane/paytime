@@ -8,3 +8,20 @@ register = template.Library()
 @register.filter(name="addcss")
 def addcss(field, css):
     return field.as_widget(attrs={"class": css})
+
+
+@register.filter(name="lookup")
+def lookup(dictionary, key):
+    """Get dictionary item via template"""
+    return dictionary.get(key)
+
+
+# @register.filter(name="errorcss")
+# def css_ok_error(dictionary, key, css):
+#     if dictionary.get(key):
+#         return field.as_widget(attrs={"class": css + "".format("is-invalid")})
+#     return field.as_widget(attrs={"class": css})
+#
+# @register.filter(name="errorcss")
+# def errorcss(field, css):
+#     return field.as_widget(attrs={"class": css})
