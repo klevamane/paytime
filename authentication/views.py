@@ -3,6 +3,8 @@ from __future__ import absolute_import
 import json
 
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator, validate_email
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
@@ -28,10 +30,16 @@ def signup(request):
 
 def validate_user_email_view(request):
     data = json.loads(request.body)
+    msg = JsonResponse({"valid_email": True}, status=200)
     email = data["email"]
+    try:
+        validate_email(email)
+    except ValidationError:
+        return JsonResponse({"email_error": "Enter a valid email"}, status=400)
+
     if User.objects.filter(email=email).exists():
-        return JsonResponse({"email_exists": "Email already exists"}, status=409)
-    return JsonResponse({"email_exists": True})
+        msg = JsonResponse({"email_error": "Email already exists"}, status=409)
+    return msg
 
 
 # if read_only:

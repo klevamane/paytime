@@ -46,10 +46,10 @@ class SignupForm(UserCreationForm):
         }
 
     def clean_first_name(self):
-        return strip_tags(self.cleaned_data["first_name"].strip())
+        return strip_tags(self.cleaned_data["firstname"].strip())
 
     def clean_last_name(self):
-        return strip_tags(self.cleaned_data["last_name"].strip())
+        return strip_tags(self.cleaned_data["lastname"].strip())
 
     def save(self):
         instance = super(SignupForm, self).save(commit=False)
