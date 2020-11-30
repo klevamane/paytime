@@ -1,10 +1,7 @@
 from __future__ import absolute_import
 
-import re
-
 from django.contrib.auth import password_validation
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractBaseUser, AbstractUser, BaseUserManager
 from django.db import models
 
 
@@ -40,12 +37,15 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     firstname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
-    date_of_birth = models.DateField()
     # note that the default character numbers must be less than or 100
     # add https: // res.cloudinary.com / dnrh79klc + /image/path
-    email = models.EmailField(max_length=50, unique=True)
+    email = models.EmailField(
+        max_length=50,
+        unique=True,
+        error_messages={"unique": "A user with this email already exists"},
+    )
     password = models.CharField(
-        max_length=100, validators=[password_validation.validate_password]
+        max_length=128, validators=[password_validation.validate_password]
     )
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -72,6 +72,17 @@ class User(AbstractBaseUser):
 
     def get_username(self):
         return self.email
+
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = "%s %s" % (self.firstname, self.lastname)
+        return full_name.strip()
+
+    def get_short_name(self):
+        """Return the short name for the user."""
+        return self.firstname
 
     # allows assignment property to the image value
     # from the view

@@ -1,8 +1,9 @@
 from __future__ import absolute_import
-from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm
 
-# Create your views here.
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect, render
+
+from authentication.forms import SignupForm
 
 
 def index(request):
@@ -10,9 +11,27 @@ def index(request):
 
 
 def signup(request):
-    form = UserCreationForm()
+    form = SignupForm(request.POST)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    form = SignupForm()
+    import pdb
+
+    pdb.set_trace()
     context = {"form": form}
     return render(request, "authentication/signup.html", context)
+
+
+# if read_only:
+#            return JsonResponse(
+#                {
+#                    "result": "failure",
+#                    "reason": "You don't have permission to edit this building",  # noqa
+#                },
+#                status=403,
+#            )
 
 
 def login(request):
