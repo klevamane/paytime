@@ -4,7 +4,11 @@ from __future__ import absolute_import
 
 from django import forms
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserCreationForm,
+    UsernameField,
+)
 from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 

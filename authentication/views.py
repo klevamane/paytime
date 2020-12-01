@@ -2,7 +2,9 @@ from __future__ import absolute_import
 
 import json
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as django_login
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, validate_email
 from django.http import JsonResponse
@@ -28,6 +30,21 @@ def signup(request):
     return render(request, "authentication/signup.html", context)
 
 
+def login(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=email, password=password)
+            if not user:
+                return redirect("login")
+            django_login(request, user)
+            return redirect("index")
+    context = {"form": AuthenticationForm()}
+    return render(request, "authentication/login.html", context)
+
+
 def validate_user_email_view(request):
     data = json.loads(request.body)
     msg = JsonResponse({"valid_email": True}, status=200)
@@ -42,6 +59,14 @@ def validate_user_email_view(request):
     return msg
 
 
+def forgot_password(request):
+    return render(request, "authentication/forgot-pwd.html")
+
+
+def not_found(request):
+    return render(request, "404.html")
+
+
 # if read_only:
 #            return JsonResponse(
 #                {
@@ -50,15 +75,3 @@ def validate_user_email_view(request):
 #                },
 #                status=403,
 #            )
-
-
-def login(request):
-    return render(request, "authentication/login.html")
-
-
-def forgot_password(request):
-    return render(request, "authentication/forgot-pwd.html")
-
-
-def not_found(request):
-    return render(request, "404.html")

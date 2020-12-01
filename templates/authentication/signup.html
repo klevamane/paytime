@@ -48,7 +48,9 @@
                                         {% else %}
                                         {{ form.email|addcss:"form-control form-control-user" }}
                                     {%  endif %}
+                                {% if not forms.errors %}
                                 <small id="invalid-feedback" style="display: none" class="form-text text-danger"></small>
+                                {% endif %}
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
