@@ -12,6 +12,7 @@ from django.shortcuts import redirect, render
 
 from authentication.forms import SignupForm
 from authentication.models import User
+from authentication.utils import clean_attr
 
 
 def index(request):
@@ -32,10 +33,13 @@ def signup(request):
 
 def login(request):
     if request.method == "POST":
-        form = AuthenticationForm(request.POST)
+        form = AuthenticationForm(request=request, data=request.POST)
+        import pdb
+
+        pdb.set_trace()
         if form.is_valid():
-            email = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
+            email = clean_attr(form.cleaned_data.get("username"))
+            password = clean_attr(form.cleaned_data.get("password"))
             user = authenticate(username=email, password=password)
             if not user:
                 return redirect("login")

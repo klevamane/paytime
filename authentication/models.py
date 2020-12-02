@@ -1,7 +1,12 @@
 from __future__ import absolute_import
 
 from django.contrib.auth import password_validation
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser, BaseUserManager
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    AbstractUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.db import models
 
 
@@ -27,8 +32,14 @@ class UserManager(BaseUserManager):
         user.save(using=self.db)
         return user
 
-    def create_superuser(self, email, password, lastname, firstname, date_of_birth):
-        user = self.create_user(email, password, lastname, firstname, date_of_birth)
+    def create_superuser(self, email, password, lastname, firstname, **extra_fields):
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        user = self.create_user(email, password, lastname, firstname, **extra_fields)
         user.is_admin = True
         user.save(using=self._db)
         return user

@@ -13,6 +13,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import gettext_lazy as _
 
 from authentication.models import User
+from authentication.utils import clean_attr
 
 
 class SignupForm(UserCreationForm):
@@ -49,15 +50,15 @@ class SignupForm(UserCreationForm):
             "email": forms.TextInput(attrs={"placeholder": "Email"}),
         }
 
-    def clean_first_name(self):
-        return strip_tags(self.cleaned_data["firstname"].strip())
-
-    def clean_last_name(self):
-        return strip_tags(self.cleaned_data["lastname"].strip())
+    # def clean_first_name(self):
+    #     return strip_tags(self.cleaned_data["firstname"].strip())
+    #
+    # def clean_last_name(self):
+    #     return strip_tags(self.cleaned_data["lastname"].strip())
 
     def save(self):
         instance = super(SignupForm, self).save(commit=False)
-        instance.firstname = self.clean_first_name()
-        instance.lastname = self.clean_last_name()
+        instance.firstname = clean_attr(self.cleaned_data["firstname"])
+        instance.lastname = clean_attr(self.cleaned_data["lastname"])
         instance.save()
         return instance
