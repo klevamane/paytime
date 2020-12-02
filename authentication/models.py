@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+from dirtyfields import DirtyFieldsMixin
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -33,19 +34,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password, lastname, firstname, **extra_fields):
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-
         user = self.create_user(email, password, lastname, firstname, **extra_fields)
         user.is_admin = True
         user.save(using=self._db)
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, DirtyFieldsMixin):
     firstname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
     # note that the default character numbers must be less than or 100
@@ -55,6 +50,7 @@ class User(AbstractBaseUser):
         unique=True,
         error_messages={"unique": "A user with this email already exists"},
     )
+    email_verified = models.BooleanField(default=False)
     password = models.CharField(
         max_length=128, validators=[password_validation.validate_password]
     )
