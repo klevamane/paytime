@@ -4,6 +4,7 @@ import json
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
+from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, validate_email
@@ -34,15 +35,22 @@ def signup(request):
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(request=request, data=request.POST)
-        import pdb
-
-        pdb.set_trace()
+        if request.user.is_authenticated:
+            pass
+            # todo return to dashboard
         if form.is_valid():
             email = clean_attr(form.cleaned_data.get("username"))
             password = clean_attr(form.cleaned_data.get("password"))
             user = authenticate(username=email, password=password)
             if not user:
                 return redirect("login")
+            if not user.email_verified:
+                pass
+            if not user.is_active:
+                pass
+
+            # TODO if user is an admin, we can redirect
+            # the user to another url
             django_login(request, user)
             return redirect("index")
     context = {"form": AuthenticationForm()}
@@ -50,6 +58,7 @@ def login(request):
 
 
 def validate_user_email_view(request):
+    """AJAX call"""
     data = json.loads(request.body)
     msg = JsonResponse({"valid_email": True}, status=200)
     email = data["email"]
@@ -69,6 +78,11 @@ def forgot_password(request):
 
 def not_found(request):
     return render(request, "404.html")
+
+
+def signout(request):
+    logout(request)
+    return redirect("/")
 
 
 # if read_only:

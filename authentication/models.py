@@ -34,13 +34,14 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password, lastname, firstname, **extra_fields):
+        extra_fields.setdefault("is_superuser", True)
         user = self.create_user(email, password, lastname, firstname, **extra_fields)
         user.is_admin = True
         user.save(using=self._db)
         return user
 
 
-class User(AbstractBaseUser, DirtyFieldsMixin):
+class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     firstname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
     # note that the default character numbers must be less than or 100
