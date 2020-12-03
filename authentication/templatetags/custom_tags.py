@@ -13,5 +13,4 @@ def addcss(field, css):
 @register.filter(name="lookup")
 def lookup(dictionary, key):
     """Get dictionary item via template"""
-    # import pdb; pdb.set_trace()
     return dictionary.get(key.name)

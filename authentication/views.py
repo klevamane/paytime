@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import json
 
+import roman
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout
@@ -43,16 +44,19 @@ def login(request):
             password = clean_attr(form.cleaned_data.get("password"))
             user = authenticate(username=email, password=password)
             if not user:
-                return redirect("login")
+                return render(request, "authentication/login.html", {"form": form})
             if not user.email_verified:
+                # Todo
                 pass
             if not user.is_active:
+                # Todo
                 pass
 
             # TODO if user is an admin, we can redirect
             # the user to another url
             django_login(request, user)
             return redirect("index")
+        return render(request, "authentication/login.html", {"form": form})
     context = {"form": AuthenticationForm()}
     return render(request, "authentication/login.html", context)
 
