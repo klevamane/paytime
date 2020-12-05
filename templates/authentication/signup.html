@@ -43,10 +43,20 @@
 
                                 <div class="form-group">
                                     {% if form.errors|lookup:form.email %}
+                                           <div class="input-group">
+                                           <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">@</span>
+                                            </div>
                                         {{ form.email|addcss:"form-control form-control-user is-invalid" }}
+                                            </div>
                                     <small class="form-text text-danger">{{ form.email.errors }}</small>
                                         {% else %}
+                                        <div class="input-group">
+                                           <div class="input-group-prepend">
+                                               <span class="input-group-text" id="basic-addon1"><strong>@</strong></span>
+                                            </div>
                                         {{ form.email|addcss:"form-control form-control-user" }}
+                                        </div>
                                     {%  endif %}
                                 {% if not forms.errors %}
                                 <small id="invalid-feedback" style="display: none" class="form-text text-danger"></small>
@@ -58,8 +68,14 @@
                                         {{ form.password1|addcss:"form-control form-control-user is-invalid" }}
                                     <small class="form-text text-danger">{{ form.password1.errors }}</small>
                                         {% else %}
+                                           <div class="input-group">
+                                           <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                        </div>
                                         {{ form.password1|addcss:"form-control form-control-user" }}
+                                           </div>
                                     {%  endif %}
+
                                     </div>
                                     <div class="col-sm-6">
                                         {% if form.errors|lookup:form.password2 %}
@@ -69,7 +85,9 @@
                                         {{ form.password2|addcss:"form-control form-control-user" }}
                                     {%  endif %}
                                     </div>
+
                                 </div>
+
                                 <button class="btn btn-primary btn-user btn-block" type="submit">
                                     Register Account
                                 </button>
