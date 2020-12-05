@@ -19,4 +19,5 @@ urlpatterns = [
         name="validate-user-email",
     ),
     path("404", views.not_found, name="404"),
+    path("accounts/profile/", views.not_found, name="404"),
 ]
