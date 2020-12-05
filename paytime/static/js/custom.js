@@ -1,5 +1,6 @@
 const emailField = document.querySelector("#id_email");
 const feedBackArea = document.querySelector("#invalid-feedback");
+const signupButton = document.getElementById("signupsubmit");
 
 // Validate email via ajax
 emailField.addEventListener("focusout", (e) =>{
@@ -17,11 +18,15 @@ emailField.addEventListener("focusout", (e) =>{
                     emailField.classList.add("is-invalid");
                     feedBackArea.innerHTML = data.email_error;
                     feedBackArea.style.display = "block";
+                    // disable submit button if email has error
+                    signupButton.disabled = true;
                 }
                 else {
                     feedBackArea.style.display = "none";
                     emailField.classList.remove("is-invalid");
+                    // remove disable on submit button if email has no error
+                    signupButton.removeAttribute("disabled");
                 }
-            })
+            });
     }
 });
