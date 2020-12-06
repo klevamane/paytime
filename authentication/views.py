@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import json
 
+from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout
@@ -15,7 +16,7 @@ from django.shortcuts import redirect, render
 from authentication.forms import SignupForm
 from authentication.models import User
 from authentication.utils import clean_attr
-from paytime.utils import send_email
+from paytime.utils import SUCCESS_MESSAGES, send_email
 
 
 def index(request):
@@ -28,13 +29,14 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, SUCCESS_MESSAGES["account_created"])
             send_email(
                 "Activate your account on Paytime",
                 "test body",
                 "noteply@paytime.come",
                 "onengiye.richard@gmail.com",
             )
-            return redirect("login")
+            return redirect("signup")
         return render(request, "authentication/signup.html", {"form": form})
     form = SignupForm()
     context = {"form": form}

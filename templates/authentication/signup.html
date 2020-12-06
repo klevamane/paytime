@@ -18,6 +18,7 @@
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
                             <form class="user" method="post" action="{% url "signup" %}">
+                            {% include "partials/messages.html" %}
                                 {% csrf_token %}
 
                                 <div class="form-group row">

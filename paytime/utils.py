@@ -23,3 +23,8 @@ def send_email(subject, body, from_email, to):
         # Todo we can use a form class to get
         # proper validation
         return HttpResponse("Ensure all fields are entered and are valid")
+
+
+SUCCESS_MESSAGES = {
+    "account_created": "Your account has been created, check your inbox for a verification email"
+}
