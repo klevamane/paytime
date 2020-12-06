@@ -2,30 +2,38 @@ from __future__ import absolute_import
 
 import json
 
-import roman
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, validate_email
+from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from authentication.forms import SignupForm
 from authentication.models import User
 from authentication.utils import clean_attr
+from paytime.utils import send_email
 
 
 def index(request):
     return render(request, "partials/base-dashboard.html")
 
 
+@transaction.atomic()
 def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
+            send_email(
+                "Activate your account on Paytime",
+                "test body",
+                "noteply@paytime.come",
+                "onengiye.richard@gmail.com",
+            )
             return redirect("login")
         return render(request, "authentication/signup.html", {"form": form})
     form = SignupForm()

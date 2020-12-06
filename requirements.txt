@@ -13,14 +13,17 @@ flake8==3.8.4
 gunicorn==20.0.4
 identify==1.5.10
 isort==5.6.4
+logging~=0.4.9.6
 mccabe==0.6.1
 nodeenv==1.5.0
 pre-commit==2.9.0
 psycopg2==2.8.6
 pycodestyle==2.6.0
 pyflakes==2.2.0
+python-dotenv==0.15.0
 pytz==2020.4
 PyYAML==5.3.1
+roman==3.3
 seed-isort-config==2.2.0
 six==1.15.0
 sqlparse==0.4.1

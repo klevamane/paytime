@@ -15,10 +15,12 @@ import os
 from pathlib import Path
 
 import django_heroku
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(os.path.join(BASE_DIR, "", ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -168,3 +170,10 @@ AUTH_USER_MODEL = "authentication.User"
 # check this sites for precommit setup
 # https://pre-commit.com/
 # https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
