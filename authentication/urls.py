@@ -20,4 +20,7 @@ urlpatterns = [
     ),
     path("404", views.not_found, name="404"),
     path("accounts/profile/", views.not_found, name="404"),
+    path(
+        "activate/<uidb64>/<token>", views.VerificationView.as_view(), name="activate"
+    ),
 ]
