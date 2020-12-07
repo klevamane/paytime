@@ -22,7 +22,12 @@ from django.views import View
 from authentication.forms import SignupForm
 from authentication.models import User
 from authentication.utils import clean_attr
-from paytime.utils import SUCCESS_MESSAGES, send_email, token_generator
+from paytime.utils import (
+    FAILURE_MESSAGES,
+    SUCCESS_MESSAGES,
+    send_email,
+    token_generator,
+)
 
 log = logging.getLogger("api")
 
@@ -135,19 +140,25 @@ class VerificationView(View):
 
             user_id = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=user_id)
+            if not user.is_active:
+                messages.info(request, FAILURE_MESSAGES["account_not_active"])
+                return redirect("login")
             # if it's false it means the user has already
             # made use of this token, it checks if any part of the user
             # was changed
-            # TODO: we can also add a timestampt to the
+
             if not token_generator.check_token(user, token):
                 # TODO we should also check if the token is expired, can we check for that?
-                messages.info(request, "Your email is already verified and activated")
+                # perhas we can add a timestamp?
+                messages.info(request, SUCCESS_MESSAGES["already_activated"])
                 return redirect("login")
 
-            if user.is_active:
+            if user.email_verified:
                 url = reverse("login")
-                return redirect(url + "?message=already activated")
-            user.is_active = True
+                return redirect(
+                    url + "?message={}".format(SUCCESS_MESSAGES["already_activated"])
+                )
+            user.email_verified = True
             user.save()
             messages.success(request, SUCCESS_MESSAGES["verified"])
             return redirect("login")
