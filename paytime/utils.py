@@ -30,6 +30,7 @@ def send_email(subject, body, from_email, to):
 SUCCESS_MESSAGES = {
     "account_created": "Your account has been created, check your inbox for a verification email",
     "verified": "Your email has been verified, proceed to login",
+    "kindly_verify": "Hi {} kindly use this link to verify your account\n {}",
 }
 
 

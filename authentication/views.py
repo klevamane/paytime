@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import json
+import logging
 
 from django.contrib import messages
 from django.contrib.auth import authenticate
@@ -14,7 +15,7 @@ from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.utils.encoding import DjangoUnicodeDecodeError, force_bytes, force_text
+from django.utils.encoding import DjangoUnicodeDecodeError, force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
 
@@ -23,29 +24,29 @@ from authentication.models import User
 from authentication.utils import clean_attr
 from paytime.utils import SUCCESS_MESSAGES, send_email, token_generator
 
+log = logging.getLogger("api")
+
 
 def index(request):
     return render(request, "partials/base-dashboard.html")
 
 
-@transaction.atomic()
-def signup(request):
-    if request.method == "POST":
+class SignUp(View):
+    def get(self, request):
+        context = {"form": SignupForm()}
+        return render(request, "authentication/signup.html", context)
+
+    @transaction.atomic()
+    def post(self, request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
             user = form.instance
-            domain = get_current_site(request).domain
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            url = reverse(
-                "activate",
-                kwargs={"uidb64": uidb64, "token": token_generator.make_token(user)},
-            )
-            activate_url = "http://" + domain + url
+            activate_url = self._get_activation_url(request, user)
             messages.success(request, SUCCESS_MESSAGES["account_created"])
             send_email(
                 "Activate your account on Paytime",
-                "Hi {} kindly use the link to verify your accoutn: {}".format(
+                SUCCESS_MESSAGES["kindly_verify"].format(
                     user.get_full_name(), activate_url
                 ),
                 "noteply@paytime.come",
@@ -53,9 +54,18 @@ def signup(request):
             )
             return redirect("signup")
         return render(request, "authentication/signup.html", {"form": form})
-    form = SignupForm()
-    context = {"form": form}
-    return render(request, "authentication/signup.html", context)
+
+    def _get_activation_url(self, request, user):
+        domain = get_current_site(request).domain
+        # TODO we can add token_generated_at to the user model
+        # so that in the validation we can determin the expiry of the token
+        # or perhaps we can attach an encode timestamo with an attached secret
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        url = reverse(
+            "activate",
+            kwargs={"uidb64": uidb64, "token": token_generator.make_token(user)},
+        )
+        return "http://" + domain + url
 
 
 def login(request):
@@ -82,6 +92,10 @@ def login(request):
             django_login(request, user)
             return redirect("index")
         return render(request, "authentication/login.html", {"form": form})
+    # chec if a message was passed to the view
+    message = request.GET.get("message")
+    if message:
+        messages.info(request, message)
     context = {"form": AuthenticationForm()}
     return render(request, "authentication/login.html", context)
 
@@ -114,8 +128,32 @@ def signout(request):
     return redirect("/")
 
 
+# classed based view
 class VerificationView(View):
     def get(self, request, uidb64, token):
+        try:
+
+            user_id = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=user_id)
+            # if it's false it means the user has already
+            # made use of this token, it checks if any part of the user
+            # was changed
+            # TODO: we can also add a timestampt to the
+            if not token_generator.check_token(user, token):
+                # TODO we should also check if the token is expired, can we check for that?
+                messages.info(request, "Your email is already verified and activated")
+                return redirect("login")
+
+            if user.is_active:
+                url = reverse("login")
+                return redirect(url + "?message=already activated")
+            user.is_active = True
+            user.save()
+            messages.success(request, SUCCESS_MESSAGES["verified"])
+            return redirect("login")
+        except Exception as e:
+            log.error("This error occured - {}".format(e))
+
         messages.success(request, SUCCESS_MESSAGES["verified"])
         return render(request, "authentication/login.html")
 
