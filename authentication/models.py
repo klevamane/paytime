@@ -37,6 +37,9 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
         user = self.create_user(email, password, lastname, firstname, **extra_fields)
         user.is_admin = True
+        # used by the PermissionsMixin to
+        # grant all permissions
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
@@ -56,10 +59,10 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
         max_length=128, validators=[password_validation.validate_password]
     )
     is_active = models.BooleanField(default=True)
+    # we need to replace with is_staff
     is_admin = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-
     # ensure this is objects and not object
     # else User.objects.all() won't work
     # it has to be Class.object.all()
