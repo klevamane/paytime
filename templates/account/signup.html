@@ -1,6 +1,7 @@
 {% extends "authentication/../dashboard/base-auth.html" %}
 {% load socialaccount %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block title %}Login{%  endblock %}
 
@@ -17,27 +18,27 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <form class="user" method="post" action="{% url "/signup" %}">
+                            <form class="user" method="post" action="{% url "account_signup" %}">
                             {% include "partials/messages.html" %}
                                 {% csrf_token %}
 
                                 <div class="form-group row">
 
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        {% if form.errors|lookup:form.firstname %}
-                                        {{ form.firstname|addcss:"form-control form-control-user is-invalid" }}
-                                    <small class="form-text text-danger">{{ form.firstname.errors }}</small>
+                                        {% if form.errors|lookup:form.first_name %}
+                                        {{ form.first_name|addcss:"form-control form-control-user is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.first_name.errors }}</small>
                                         {% else %}
-                                        {{ form.firstname|addcss:"form-control form-control-user" }}
+                                        {{ form.first_name|addcss:"form-control form-control-user" }}
                                     {%  endif %}
                                     </div>
 
                                     <div class="col-sm-6">
-                                       {% if form.errors|lookup:form.lastname %}
-                                        {{ form.lastname|addcss:"form-control form-control-user is-invalid" }}
-                                    <small class="form-text text-danger">{{ form.lastname.errors }}</small>
+                                       {% if form.errors|lookup:form.last_name %}
+                                        {{ form.last_name|addcss:"form-control form-control-user is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.last_name.errors }}</small>
                                         {% else %}
-                                        {{ form.lastname|addcss:"form-control form-control-user" }}
+                                        {{ form.last_name|addcss:"form-control form-control-user" }}
                                     {%  endif %}
                                     </div>
 
@@ -103,10 +104,10 @@
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="{% url 'forgotpwd' %}">Forgot Password?</a>
+                                <a class="small" href="{% url 'account_reset_password' %}">Forgot Password?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="{% url 'login' %}">Already have an account? Login!</a>
+                                <a class="small" href="{% url 'account_login' %}">Already have an account? Login!</a>
                                 {{ form.non_field_errors }}
                             </div>
                         </div>

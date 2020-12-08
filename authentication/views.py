@@ -36,73 +36,73 @@ def index(request):
     return render(request, "partials/base-dashboard.html")
 
 
-class SignUp(View):
-    def get(self, request):
-        context = {"form": SignupForm()}
-        return render(request, "authentication/signup.html", context)
-
-    @transaction.atomic()
-    def post(self, request):
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user = form.instance
-            activate_url = self._get_activation_url(request, user)
-            messages.success(request, SUCCESS_MESSAGES["account_created"])
-            send_email(
-                "Activate your account on Paytime",
-                SUCCESS_MESSAGES["kindly_verify"].format(
-                    user.get_full_name(), activate_url
-                ),
-                "noteply@paytime.come",
-                "onengiye.richard@gmail.com",
-            )
-            return redirect("signup")
-        return render(request, "authentication/signup.html", {"form": form})
-
-    def _get_activation_url(self, request, user):
-        domain = get_current_site(request).domain
-        # TODO we can add token_generated_at to the user model
-        # so that in the validation we can determin the expiry of the token
-        # or perhaps we can attach an encode timestamo with an attached secret
-        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-        url = reverse(
-            "activate",
-            kwargs={"uidb64": uidb64, "token": token_generator.make_token(user)},
-        )
-        return "http://" + domain + url
-
-
-def login(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request=request, data=request.POST)
-        if request.user.is_authenticated:
-            pass
-            # todo return to dashboard
-        if form.is_valid():
-            email = clean_attr(form.cleaned_data.get("username"))
-            password = clean_attr(form.cleaned_data.get("password"))
-            user = authenticate(username=email, password=password)
-            if not user:
-                return render(request, "authentication/login.html", {"form": form})
-            if not user.email_verified:
-                # Todo
-                pass
-            if not user.is_active:
-                # Todo
-                pass
-
-            # TODO if user is an admin, we can redirect
-            # the user to another url
-            django_login(request, user)
-            return redirect("index")
-        return render(request, "authentication/login.html", {"form": form})
-    # chec if a message was passed to the view
-    message = request.GET.get("message")
-    if message:
-        messages.info(request, message)
-    context = {"form": AuthenticationForm()}
-    return render(request, "authentication/login.html", context)
+# class SignUp(View):
+#     def get(self, request):
+#         context = {"form": SignupForm()}
+#         return render(request, "authentication/signup.html", context)
+#
+#     @transaction.atomic()
+#     def post(self, request):
+#         form = SignupForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             user = form.instance
+#             activate_url = self._get_activation_url(request, user)
+#             messages.success(request, SUCCESS_MESSAGES["account_created"])
+#             send_email(
+#                 "Activate your account on Paytime",
+#                 SUCCESS_MESSAGES["kindly_verify"].format(
+#                     user.get_full_name(), activate_url
+#                 ),
+#                 "noteply@paytime.come",
+#                 "onengiye.richard@gmail.com",
+#             )
+#             return redirect("signup")
+#         return render(request, "authentication/signup.html", {"form": form})
+#
+#     def _get_activation_url(self, request, user):
+#         domain = get_current_site(request).domain
+#         # TODO we can add token_generated_at to the user model
+#         # so that in the validation we can determin the expiry of the token
+#         # or perhaps we can attach an encode timestamo with an attached secret
+#         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+#         url = reverse(
+#             "activate",
+#             kwargs={"uidb64": uidb64, "token": token_generator.make_token(user)},
+#         )
+#         return "http://" + domain + url
+#
+#
+# def login(request):
+#     if request.method == "POST":
+#         form = AuthenticationForm(request=request, data=request.POST)
+#         if request.user.is_authenticated:
+#             pass
+#             # todo return to dashboard
+#         if form.is_valid():
+#             email = clean_attr(form.cleaned_data.get("username"))
+#             password = clean_attr(form.cleaned_data.get("password"))
+#             user = authenticate(username=email, password=password)
+#             if not user:
+#                 return render(request, "authentication/login.html", {"form": form})
+#             if not user.email_verified:
+#                 # Todo
+#                 pass
+#             if not user.is_active:
+#                 # Todo
+#                 pass
+#
+#             # TODO if user is an admin, we can redirect
+#             # the user to another url
+#             django_login(request, user)
+#             return redirect("index")
+#         return render(request, "authentication/login.html", {"form": form})
+#     # chec if a message was passed to the view
+#     message = request.GET.get("message")
+#     if message:
+#         messages.info(request, message)
+#     context = {"form": AuthenticationForm()}
+#     return render(request, "authentication/login.html", context)
 
 
 def validate_user_email_view(request):
@@ -118,19 +118,6 @@ def validate_user_email_view(request):
     if User.objects.filter(email=email).exists():
         msg = JsonResponse({"email_error": "Email already exists"}, status=409)
     return msg
-
-
-def forgot_password(request):
-    return render(request, "authentication/forgot-pwd.html")
-
-
-def not_found(request):
-    return render(request, "404.html")
-
-
-def signout(request):
-    logout(request)
-    return redirect("/")
 
 
 # classed based view
