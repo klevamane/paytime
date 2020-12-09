@@ -5,12 +5,7 @@ from __future__ import absolute_import
 from allauth.account.forms import SignupForm as AllAuthSignupForm
 from django import forms
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import (
-    AuthenticationForm,
-    UserCreationForm,
-    UsernameField,
-)
-from django.utils.html import strip_tags
+from django.contrib.auth.forms import UsernameField
 from django.utils.translation import gettext_lazy as _
 
 from authentication.models import User
@@ -38,29 +33,6 @@ class SignupForm(AllAuthSignupForm):
         ),
     )
 
-    #     max_length=20,
-    #     min_length=1,
-    # )
-    # email = (forms.EmailField(),)
-    # password1 = forms.CharField(
-    #     label=_("Password"),
-    #     strip=False,
-    #     widget=forms.PasswordInput(
-    #         attrs={"autocomplete": "new-password", "placeholder": "Password"}
-    #     ),
-    #     help_text=password_validation.password_validators_help_text_html(),
-    #     required=True,
-    # )
-    # password2 = forms.CharField(
-    #     label=_("Password confirmation"),
-    #     widget=forms.PasswordInput(
-    #         attrs={"autocomplete": "new-password", "placeholder": "Confirm password"}
-    #     ),
-    #     strip=False,
-    #     help_text=_("Enter the same password as before, for verification."),
-    #     required=True,
-    # )
-
     class Meta:
         model = User
         # layout where you want the fields to be
@@ -69,13 +41,15 @@ class SignupForm(AllAuthSignupForm):
         # fields = ["first_name", "last_name", "email"]
         field_classes = {"email": UsernameField}
 
-    # def clean_first_name(self):
-    #     return strip_tags(self.cleaned_data["firstname"].strip())
-    #
-    # def clean_last_name(self):
-    #     return strip_tags(self.cleaned_data["lastname"].strip())
-
     def custom_signup(self, request, user):
+        """
+        Since we are making use of a custom signup form
+        we need to account for the newly added fields
+
+        Args:
+            request: The request
+            user: The user about to be saved
+        """
         first_name = clean_attr(self.cleaned_data["first_name"])
         last_name = clean_attr(self.cleaned_data["last_name"])
         user.firstname = first_name
