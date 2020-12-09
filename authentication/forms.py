@@ -2,10 +2,12 @@
 
 from __future__ import absolute_import
 
+from allauth.account.forms import LoginForm as AllAuthLoginForm
 from allauth.account.forms import SignupForm as AllAuthSignupForm
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UsernameField
+from django.forms import CheckboxInput, TextInput
 from django.utils.translation import gettext_lazy as _
 
 from authentication.models import User

@@ -102,17 +102,25 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-# allauth requires this
+
+# Django Allauth configurations
 # https://django-allauth.readthedocs.io/en/latest/advanced.html#custom-user-models
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_FORMS = {"signup": "authentication.forms.SignupForm"}
+if not DEBUG:
+    # if set to "mandatory",
+    # ACCOUNT_EMAIL_REQUIRED must be set to True
+    ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+else:
+    pass
+    # ACCOUNT_EMAIL_VERIFICATION = "optional"
 
+    ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 WSGI_APPLICATION = "paytime.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
