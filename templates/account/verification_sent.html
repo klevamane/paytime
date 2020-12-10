@@ -1,0 +1,54 @@
+{% extends "authentication/../dashboard/base-auth.html" %}
+{% load socialaccount %}
+{% load custom_tags %}
+{% load i18n %}
+
+{% block title %}Verification{%  endblock %}
+    <!-- Outer Row -->
+
+
+ {% block content %}
+     <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row justify-content-md-center">
+{#                            <div class="col-lg-6 d-none d-lg-block bg-password-image"></div>#}
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-2">Verify your email address</h1>
+                                        <p class="mb-4">We have sent an e-mail to you for verification. Follow the link provided in the email to finalize the signup process. Please contact us if you do not receive it within a few minutes.</p>
+                                    </div>
+                                    {% if messages %}
+                                        <div>
+                                          <ul style="list-style: none">
+                                            {% for message in messages %}
+                                                <a href="#" class="btn btn-primary btn-user btn-block">
+                                                    {{message}}
+                                                </a>
+                                            {% endfor %}
+                                          </ul>
+                                        </div>
+                                        {% endif %}
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ signup_url }}">Create an Account!</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{% url 'account_login' %}">Already have an account? Login!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+ {% endblock  %}
+

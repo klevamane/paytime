@@ -1,8 +1,9 @@
 const emailField = document.querySelector("#id_email");
 const feedBackArea = document.querySelector("#invalid-feedback");
 const signupButton = document.getElementById("signupsubmit");
+// const verificationSentModal = document.getElementById("exampleModalCenter");
 
-// Validate email via ajax
+
 emailField.addEventListener("focusout", (e) =>{
     console.log("You left the email field");
     const emailValue = e.target.value;
