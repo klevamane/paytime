@@ -36,7 +36,7 @@
                                         {% endif %}
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="{{ signup_url }}">Create an Account!</a>
+                                        <a class="small" href="{% url 'account_signup' %}">Create an Account!</a>
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="{% url 'account_login' %}">Already have an account? Login!</a>

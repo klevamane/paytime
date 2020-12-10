@@ -148,3 +148,9 @@ dmypy.json
 .prof
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+
+.DS_Store
+paytime/.DS_Store
+paytime/static/.DS_Store
+paytime/static/img/.DS_Store
+
