@@ -3,6 +3,8 @@ from __future__ import absolute_import
 import json
 import logging
 
+from allauth.account.adapter import get_adapter
+from allauth.account.views import LogoutFunctionalityMixin
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
@@ -120,8 +122,11 @@ def validate_user_email_view(request):
     return msg
 
 
-# classed based view
+# Deprecated
+# we would be makng use of oauth Verification process
 class VerificationView(View):
+    log.warning("Deprecated; we would be makng use of oauth Verification process")
+
     def get(self, request, uidb64, token):
         try:
 
@@ -156,11 +161,8 @@ class VerificationView(View):
         return render(request, "authentication/login.html")
 
 
-# if read_only:
-#            return JsonResponse(
-#                {
-#                    "result": "failure",
-#                    "reason": "You don't have permission to edit this building",  # noqa
-#                },
-#                status=403,
-#            )
+class LogoutView(View):
+    def get(self, request):
+        adapter = get_adapter(request)
+        adapter.logout(request)
+        return redirect(reverse("account_login"))

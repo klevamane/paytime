@@ -1,4 +1,4 @@
-const emailField = document.querySelector("#id_email");
+const emailField = document.querySelector(".signup-email");
 const feedBackArea = document.querySelector("#invalid-feedback");
 const signupButton = document.getElementById("signupsubmit");
 // const verificationSentModal = document.getElementById("exampleModalCenter");

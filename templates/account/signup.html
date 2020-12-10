@@ -7,13 +7,12 @@
 
  {% block content %}
      <div class="row justify-content-center vh-100">
-     <div class="col-xl-10 col-lg-12 col-md-9 my-auto">
+     <div class="col-xl-4 col-lg-4 col-md-4 my-auto">
       <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
+            <div class="card-body p-0 py-5">
                 <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block"></div>
-                    <div class="col-lg-7">
+                <div class="row justify-content-md-center">
+                    <div class="col-lg-12">
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
@@ -22,9 +21,9 @@
                             {% include "partials/messages.html" %}
                                 {% csrf_token %}
 
-                                <div class="form-group row">
+                                <div class="form-group">
 
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="mb-3 mb-sm-0">
                                         {% if form.errors|lookup:form.first_name %}
                                         {{ form.first_name|addcss:"form-control form-control-user is-invalid" }}
                                     <small class="form-text text-danger">{{ form.first_name.errors }}</small>
@@ -32,17 +31,18 @@
                                         {{ form.first_name|addcss:"form-control form-control-user" }}
                                     {%  endif %}
                                     </div>
+                                </div>
 
-                                    <div class="col-sm-6">
+                            <div class="form-group">
+
                                        {% if form.errors|lookup:form.last_name %}
                                         {{ form.last_name|addcss:"form-control form-control-user is-invalid" }}
                                     <small class="form-text text-danger">{{ form.last_name.errors }}</small>
                                         {% else %}
                                         {{ form.last_name|addcss:"form-control form-control-user" }}
                                     {%  endif %}
-                                    </div>
 
-                                </div>
+                            </div>
 
                                 <div class="form-group">
                                     {% if form.errors|lookup:form.email %}
@@ -50,15 +50,15 @@
                                            <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">@</span>
                                             </div>
-                                        {{ form.email|addcss:"form-control form-control-user is-invalid" }}
+                                        {{ form.email|addcss:"form-control form-control-user is-invalid signup-email" }}
                                             </div>
-                                    <small class="form-text text-danger">{{ form.email.errors }}</small>
+                                    <small class="form-text text-danger">{{ form.email.errors|striptags }}</small>
                                         {% else %}
                                         <div class="input-group">
                                            <div class="input-group-prepend">
                                                <span class="input-group-text" id="basic-addon1"><strong>@</strong></span>
                                             </div>
-                                        {{ form.email|addcss:"form-control form-control-user" }}
+                                        {{ form.email|addcss:"form-control form-control-user signup-email" }}
                                         </div>
                                     {%  endif %}
                                 {% if not forms.errors %}
