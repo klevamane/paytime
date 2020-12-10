@@ -31,11 +31,12 @@
 
                                             {{ form.login|addcss:"form-control form-control-user" }}
                                         </div>
-
+                                        <div class="form-group">
                                         {{ form.password|addcss:"form-control form-control-user" }}
+                                        </div>
                                          {% if form.non_field_errors%}
-                                    <small class="form-text text-danger">{{ form.non_field_errors|striptags }}</small>
-                                    {%  endif %}
+                                        <small class="form-text text-danger">{{ form.non_field_errors|striptags }}</small>
+                                        {%  endif %}
 
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
