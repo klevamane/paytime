@@ -22,7 +22,6 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
 
 from authentication.forms import SignupForm
-from authentication.models import User
 from authentication.utils import clean_attr
 from paytime.utils import (
     FAILURE_MESSAGES,
@@ -30,6 +29,7 @@ from paytime.utils import (
     send_email,
     token_generator,
 )
+from user.models import User
 
 log = logging.getLogger("api")
 

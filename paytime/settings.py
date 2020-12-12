@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "authentication",
     "dashboard",
+    "user",
+    "finance",
 ]
 
 SITE_ID = 1
@@ -177,7 +179,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "paytime/static")]
 django_heroku.settings(locals())
-AUTH_USER_MODEL = "authentication.User"
+AUTH_USER_MODEL = "user.User"
 
 # check this sites for precommit setup
 # https://pre-commit.com/

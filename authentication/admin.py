@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.models import Group
 
-from authentication.models import User
+from user.models import User
 
 # Register your models here.
 

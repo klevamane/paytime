@@ -10,8 +10,8 @@ from django.contrib.auth.forms import UsernameField
 from django.forms import CheckboxInput, TextInput
 from django.utils.translation import gettext_lazy as _
 
-from authentication.models import User
 from authentication.utils import clean_attr
+from user.models import User
 
 
 class SignupForm(AllAuthSignupForm):
