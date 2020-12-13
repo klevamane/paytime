@@ -11,7 +11,6 @@ from django.contrib.auth.models import (
 from django.db import models
 
 from dashboard.models import TimeStampMixin
-from user.validators import validate_account_number
 
 
 class UserManager(BaseUserManager):
@@ -47,7 +46,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
+class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin, TimeStampMixin):
     firstname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
     # note that the default character numbers must be less than or 100
@@ -69,8 +68,6 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     # we need to replace with is_staff
     is_admin = models.BooleanField(default=False)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
     # ensure this is objects and not object
     # else User.objects.all() won't work
     # it has to be Class.object.all()
