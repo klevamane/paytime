@@ -24,9 +24,6 @@ class BankDetailsView(LoginRequiredMixin, View):
         form = BankForm(data=request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
-            import pdb
-
-            pdb.set_trace()
             instance.updated_by = instance.user = request.user
             instance.save()
             messages.success(request, SUCCESS_MESSAGES["bank_account_added"])
