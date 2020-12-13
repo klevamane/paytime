@@ -57,7 +57,6 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
         unique=True,
         error_messages={"unique": "A user with this email already exists"},
     )
-    email_verified = models.BooleanField(default=False)
     date_of_birth = models.DateField(null=True, blank=True)
     password = models.CharField(
         max_length=128, validators=[password_validation.validate_password]
