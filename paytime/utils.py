@@ -29,6 +29,7 @@ def send_email(subject, body, from_email, to):
 
 SUCCESS_MESSAGES = {
     "account_created": "Your account has been created, check your inbox for a verification email",
+    "bank_account_added": "Your bank account has been added",
     "already_activated": "Your email is already verified and activated",
     "kindly_verify": "Hi {} kindly use this link to verify your account\n {}",
     "verified": "Your email has been verified, proceed to login",

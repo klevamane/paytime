@@ -1,0 +1,84 @@
+{% extends "partials/base-dashboard.html" %}
+{% load custom_tags %}
+
+{% block content %}
+    <div class="container">
+
+    <div class="row justify-content-center vh-100">
+     <div class="col-xl-7 col-lg-10 col-md-9 my-auto">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Add your bank account!</h1>
+                            </div>
+                            <form class="user" method="post" action="{% url "add-bank-account" %}">
+                            {% include "partials/messages.html" %}
+                                {% csrf_token %}
+
+                                <div class="form-group">
+                                    {% if form.errors|lookup:form.bank %}
+                                           <div class="input-group">
+                                           <div class="input-group-prepend">
+                                            <label class="input-group-text" for="id_bank">b</label>
+                                            </div>
+                                        {{ form.bank|addcss:"form-control form-control-user is-invalid" }}
+                                            </div>
+                                    <small class="form-text text-danger">{{ form.bank.errors }}</small>
+                                        {% else %}
+                                            <div class="input-group">
+                                               <div class="input-group-prepend">
+                                                   <label class="input-group-text" for="id_bank">b</label>
+                                                </div>
+                                            {{ form.bank|addcss:"custom-select" }}
+                                            </div>
+                                    {%  endif %}
+
+                                    {% if not forms.errors %}
+                                    <small id="invalid-feedback" style="display: none" class="form-text text-danger"></small>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+
+                                       {% if form.errors|lookup:form.account_number %}
+                                           <div class="input-group">
+                                               <div class="input-group-prepend">
+                                                     <label class="input-group-text" for="id_bank">#</label>
+                                                </div>
+                                                {{ form.account_number|addcss:"form-control form-control-user is-invalid" }}
+                                           </div>
+
+                                    <small class="form-text text-danger">{{ form.account_number.errors }}</small>
+                                        {% else %}
+                                           <div class="input-group">
+                                               <div class="input-group-prepend">
+                                                    <label class="input-group-text" for="id_bank">#</label>
+                                                </div>
+                                                {{ form.account_number|addcss:"form-control form-control-user" }}
+                                           </div>
+                                    {%  endif %}
+
+                                    </div>
+
+                                <button class="btn btn-primary btn-user btn-block" type="submit" id="banksubmit">
+                                    Submit
+                                </button>
+                            </form>
+                            <div class="text-center">
+                                {{ form.non_field_errors }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+     </div>
+
+
+    </div>
+
+{% endblock  %}

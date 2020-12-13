@@ -4,5 +4,9 @@ from django.core.exceptions import ValidationError
 
 
 def validate_account_number(number):
-    if number and not (number.is_numeric and len(number) == 10):
+    try:
+        int(number)
+    except ValueError:
         raise ValidationError("Enter a valid account number")
+    if len(number) != 10:
+        raise ValidationError("10 digit account number is required")
