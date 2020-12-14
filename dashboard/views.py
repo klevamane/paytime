@@ -94,3 +94,22 @@ class ProfileView(View):
 class DocumentView(View):
     def get(self, request):
         return render(request=request, template_name="dashboard/profile/documents.html")
+
+
+class DepositView(View):
+    def get(self, request):
+        return render(
+            request=request, template_name="dashboard/transactions/deposit.html"
+        )
+
+
+class WithdrawalView(View):
+    def get(self, request):
+        return render(
+            request=request, template_name="dashboard/transactions/withrawal.html"
+        )
+
+
+class TransactionsAllView(View):
+    def get(self, request):
+        return render(request=request, template_name="dashboard/transactions/all.html")

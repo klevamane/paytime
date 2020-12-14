@@ -1,15 +1,7 @@
-{% extends "partials/base-dashboard.html" %}
+{% extends "partials/dashboard/profile/base-profile.html" %}
 {% load static %}
 
-{% block content %}
-    <div class="container mt-4">
-        <nav class="nav nav-borders">
-            <a class="nav-link active ml-0" href="account-profile.html">Profile</a>
-            <a class="nav-link ml-0" href="{% url "documents" %}">Documents</a>
-            <a class="nav-link ml-0" href="{% url "account_change_password" %}">Change password</a>
-            <a class="nav-link ml-0" href="account-profile.html">Profile</a>
-        </nav>
-        <hr class="mt-0 mb-4">
+{% block row_details %}
         <div class="row">
             <div class="col-xl-4">
                 <!-- Profile Picture Card-->
@@ -108,5 +100,4 @@
 
             </div>
         </div>
-    </div>
 {% endblock %}

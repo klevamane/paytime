@@ -1,0 +1,16 @@
+{% extends "partials/base-dashboard.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-4">
+        <nav class="nav nav-borders">
+            <a class="nav-link ml-0" href="{% url "transactions_all_url" %}">All</a>
+            <a class="nav-link ml-0" href="{% url "deposit_view_url" %}">Deposits</a>
+            <a class="nav-link ml-0" href="{% url "withdrawal_view_url" %}">Withrawals</a>
+        </nav>
+        <hr class="mt-0 mb-4">
+       {% block transaction_options %}
+           {% endblock %}
+    </div>
+{% endblock %}
+

@@ -15,4 +15,16 @@ urlpatterns = [
     path("profile", views.ProfileView.as_view(), name="profile"),
     path("documents", views.DocumentView.as_view(), name="documents"),
     path("users", views.users_list, name="users-list"),
+    # Transactions
+    path("transactions/deposit", views.DepositView.as_view(), name="deposit_view_url"),
+    path(
+        "transactions/withrawal",
+        views.WithdrawalView.as_view(),
+        name="withdrawal_view_url",
+    ),
+    path(
+        "transactions/all",
+        views.TransactionsAllView.as_view(),
+        name="transactions_all_url",
+    ),
 ]
