@@ -10,3 +10,4 @@ class BankForm(forms.ModelForm):
     class Meta:
         model = Bank
         fields = ["bank", "account_number"]
+        widgets = {"bank": forms.widgets.Select(attrs={"cursor": "pointer"})}

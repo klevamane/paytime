@@ -37,16 +37,17 @@ Banks = [
 class Bank(DirtyFieldsMixin, models.Model, TimeStampMixin):
     # When a user adds a bank account
     # automatically create a wallet for the user
-    bank = models.CharField(max_length=30, choices=Banks)
+    bank = models.CharField(max_length=30, choices=Banks, default="access_bank")
     account_number = models.CharField(
         max_length=10,
         validators=[validate_account_number],
         help_text="Enter your 10 digit account number",
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
     updated_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="bank_details"
     )
+    can_update = models.BooleanField(default=False)
 
     def __str__(self):
         return "Bank: {}, #: {}".format(self.bank, self.account_number)

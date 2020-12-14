@@ -30,6 +30,7 @@ def send_email(subject, body, from_email, to):
 SUCCESS_MESSAGES = {
     "account_created": "Your account has been created, check your inbox for a verification email",
     "bank_account_added": "Your bank account has been added",
+    "bank_account_updated": "Your bank account has been updated",
     "already_activated": "Your email is already verified and activated",
     "kindly_verify": "Hi {} kindly use this link to verify your account\n {}",
     "verified": "Your email has been verified, proceed to login",
@@ -37,6 +38,8 @@ SUCCESS_MESSAGES = {
 
 FAILURE_MESSAGES = {
     "account_not_active": "Your account is not active, please contact the adminstrator",
+    "cannot_add_multiple_bank": "You cannot add multiple bank accounts, try updating instead",
+    "cannot_update_bank": "You are not allowed to update this info. Contact us",
 }
 
 
