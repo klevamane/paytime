@@ -1,5 +1,6 @@
 {% extends "partials/dashboard/profile/base-profile.html" %}
 {% load static %}
+{% load custom_tags %}
 
 {% block row_details %}
         <div class="row">
@@ -18,26 +19,25 @@
                 </div>
             </div>
             <div class="col-xl-8">
-                <!-- Account details card-->
 
+                <!-- Account details card-->
                 <div class="card mb-4">
-                    <div class="card-header">Account Details</div>
+                    <div class="card-header">Profile Details</div>
                     <div class="card-body">
-                        <form>
+                        <form name="profile_form">
+                            {% csrf_token %}
 
                             <!-- Form Row-->
                             <div class="form-row">
                                 <!-- Form Group (first name)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputFirstName">First name</label>
-                                    <input class="form-control" id="inputFirstName" type="text"
-                                           placeholder="Enter your first name" value="Valerie">
+                                    {{ profile_form.firstname|addcss:"form-control" }}
                                 </div>
                                 <!-- Form Group (last name)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputLastName">Last name</label>
-                                    <input class="form-control" id="inputLastName" type="text"
-                                           placeholder="Enter your last name" value="Luna">
+                                    {{ profile_form.lastname|addcss:"form-control" }}
                                 </div>
                             </div>
                             <!-- Form Row        -->
@@ -45,14 +45,12 @@
                                 <!-- Form Group (organization name)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputOrgName">Address</label>
-                                    <input class="form-control" id="inputAddress" type="text"
-                                           placeholder="Enter your organization name" value="Start Bootstrap">
+                                    {{ profile_form.address1|addcss:"form-control" }}
                                 </div>
                                 <!-- Form Group (location)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputLocation">Area</label>
-                                    <input class="form-control" id="inputLocation" type="text"
-                                           placeholder="Enter your location" value="San Francisco, CA">
+                                    {{ profile_form.area|addcss:"form-control" }}
                                 </div>
                             </div>
 
@@ -60,39 +58,59 @@
                                 <!-- Form Group (organization name)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputOrgName">City</label>
-                                    <input class="form-control" id="inputAddress" type="text"
-                                           placeholder="City" value="Start Bootstrap">
+                                    {{ profile_form.city|addcss:"form-control" }}
                                 </div>
                                 <!-- Form Group (location)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputLocation">State</label>
-                                    <input class="form-control" id="inputLocation" type="text"
-                                           placeholder="Enter your location" value="San Francisco, CA">
+                                   {{ profile_form.state|addcss:"form-control" }}
                                 </div>
                             </div>
                             <!-- Form Group (email address)-->
                             <div class="form-group">
                                 <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                <input class="form-control" disabled id="inputEmailAddress" type="email"
-                                       placeholder="Enter your email address" value="name@example.com">
+                                {{ profile_form.email|addcss:"form-control" }}
                             </div>
                             <!-- Form Row-->
                             <div class="form-row">
                                 <!-- Form Group (phone number)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputPhone">Mobile number</label>
-                                    <input class="form-control" id="inputPhone" type="tel"
-                                           placeholder="Enter your phone number" value="555-123-4567">
+                                    {{ profile_form.mobile|addcss:"form-control" }}
                                 </div>
                                 <!-- Form Group (birthday)-->
                                 <div class="form-group col-md-6">
                                     <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                    <input class="form-control" id="inputBirthday" type="text" name="birthday"
-                                           placeholder="Enter your birthday DD/MM/YYYY" value="06/10/1988">
+                                    {{ profile_form.date_of_birth|addcss:"form-control" }}
                                 </div>
                             </div>
                             <!-- Save changes button-->
                             <button class="btn btn-primary" type="button">Save changes</button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="card mb-4">
+                    <div class="card-header">Bank Details</div>
+                    <div class="card-body">
+                        <form>
+                                <div class="form-row">
+
+                                <div class="form-group col-md-7">
+                                        <label for="exampleFormControlSelect1">Bank</label>
+                                        {{ bank_form.bank|addcss:"form-control" }}
+                                      </div>
+
+                                <!-- Form Group (Account number)-->
+                                <div class="form-group col-md-7">
+                                    <label class="small mb-1" for="inputLocation">Account number</label>
+                                    {{ bank_form.account_number|addcss:"form-control" }}
+                                </div>
+                                    </div>
+                            <button class="btn btn-primary" type="button">Save changes</button>
+                            <!-- Save changes button-->
+
                         </form>
                     </div>
                 </div>

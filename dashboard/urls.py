@@ -12,7 +12,7 @@ urlpatterns = [
         views.BankUpdateView.as_view(),
         name="update-bank-account",
     ),
-    path("profile", views.ProfileView.as_view(), name="profile"),
+    path("profile", views.ProfileAll.as_view(), name="profile"),
     path("documents", views.DocumentView.as_view(), name="documents"),
     path("users", views.users_list, name="users-list"),
     # Transactions
@@ -26,5 +26,11 @@ urlpatterns = [
         "transactions/all",
         views.TransactionsAllView.as_view(),
         name="transactions_all_url",
+    ),
+    # Wallet
+    path(
+        "wallet",
+        views.WalletView.as_view(),
+        name="wallet_url",
     ),
 ]

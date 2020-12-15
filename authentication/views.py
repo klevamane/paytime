@@ -35,7 +35,7 @@ log = logging.getLogger("api")
 
 
 def index(request):
-    return render(request, "partials/base-dashboard.html")
+    return render(request, "partials/dashboard/base-dashboard.html")
 
 
 # class SignUp(View):
