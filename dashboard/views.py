@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
+from django.forms.utils import ErrorList
 from django.shortcuts import redirect, render
 from django.views import View
 
@@ -86,11 +87,6 @@ class BankUpdateView(LoginRequiredMixin, View):
             template_name="dashboard/update-bank-details.html",
             context={"form": BankForm(), "view_path": request.path.rsplit("/")[2]},
         )
-
-
-# class ProfileView(View):
-#     def get(self, request):
-#         return render(request=request, template_name="dashboard/profile/profile.html")
 
 
 class DocumentView(View):
@@ -203,13 +199,16 @@ class HandleBankSubmit(ProfileView, View):
         data["can_update"] = False
 
         try:
+            # update
             bank = Bank.objects.get(user=request.user)
-            if not bank.can_update:
-                raise ValidationError(
-                    "Your cannot update your bank account. Kindly contact us to proceed"
-                )
             bank_form = BankForm(data, instance=bank)
+            if not bank.can_update:
+                bank_form.errors["account_number"] = FAILURE_MESSAGES[
+                    "cannot_update_bank"
+                ]
+                messages.error(request, FAILURE_MESSAGES["cannot_update_bank"])
         except Bank.DoesNotExist:
+            # create
             bank_form = BankForm(data)
         if bank_form.is_valid():
             bank_form.save()

@@ -41,7 +41,7 @@ SUCCESS_MESSAGES = {
 FAILURE_MESSAGES = {
     "account_not_active": "Your account is not active, please contact the adminstrator",
     "cannot_add_multiple_bank": "You cannot add multiple bank accounts, try updating instead",
-    "cannot_update_bank": "You are not allowed to update this info. Contact us",
+    "cannot_update_bank": "You cannot update your bank account. Kindly contact us to proceed",
 }
 
 
