@@ -11,6 +11,7 @@ from django.contrib.auth.models import (
 from django.db import models
 
 from dashboard.models import TimeStampMixin
+from paytime.utils import validate_ng_mobile_number
 
 
 class UserManager(BaseUserManager):
@@ -60,7 +61,9 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin, TimeStampMixin)
     password = models.CharField(
         max_length=128, validators=[password_validation.validate_password]
     )
-    mobile = models.CharField(max_length=20, blank=True, null=True)
+    mobile = models.CharField(
+        max_length=20, blank=True, null=True, validators=[validate_ng_mobile_number]
+    )
     address1 = models.CharField(max_length=30, blank=True, null=True)
     area = models.CharField(max_length=30, blank=True, null=True)
     city = models.CharField(max_length=30, blank=True, null=True)
@@ -80,6 +83,11 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin, TimeStampMixin)
 
     def __str__(self):
         return "{} {}".format(self.firstname, self.lastname)
+
+    def save(self, *args, **kwargs):
+        self.firstname = self.firstname.title().strip()
+        self.lastname = self.lastname.title().strip()
+        return super(User, self).save(*args, **kwargs)
 
     def has_perm(self, perm, obj=None):
         return True

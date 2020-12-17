@@ -4,8 +4,10 @@ import logging
 from smtplib import SMTPSenderRefused
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.exceptions import ValidationError
 from django.core.mail import BadHeaderError, EmailMessage, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.translation import gettext_lazy as _
 from six import text_type
 
 log = logging.getLogger("api")
@@ -44,6 +46,8 @@ FAILURE_MESSAGES = {
 
 
 class TokenGenerator(PasswordResetTokenGenerator):
+    logging.info("Deprecated: We are now making use of allauth token generator")
+
     # override this method in PasswordResetTokenGenerator
     def _make_hash_value(self, user, timestamp):
         # using text_type to ensure that the returned value
@@ -54,7 +58,6 @@ class TokenGenerator(PasswordResetTokenGenerator):
 
 
 token_generator = TokenGenerator()
-
 
 NG_MOBILE_PREFIXES = {
     "mtn": [
@@ -82,3 +85,20 @@ NG_MOBILE_PREFIXES = {
     "starcomms": ["07028", "07029", "0819"],
     "zoom": ["0707"],
 }
+
+
+def validate_ng_mobile_number(mobile_number):
+    try:
+        int(mobile_number)
+    except ValueError:
+        raise ValidationError(_("Enter a valid Nigerian mobile number"), code=400)
+    if len(mobile_number) != 11:
+        raise ValidationError("Enter 11 digit mobile number", code=400)
+    # check if it starts with any prefix [0807,0906 etc..]
+    if mobile_number[:1] != "0" and (
+        (
+            mobile_number[:5] in NG_MOBILE_PREFIXES
+            or mobile_number[:4] in NG_MOBILE_PREFIXES
+        )
+    ):
+        raise ValidationError(_("Enter a valid Nigerian mobile number"))

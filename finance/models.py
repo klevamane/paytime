@@ -44,9 +44,6 @@ class Bank(DirtyFieldsMixin, models.Model, TimeStampMixin):
         help_text="Enter your 10 digit account number",
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
-    updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="bank_details"
-    )
     can_update = models.BooleanField(default=False)
 
     def __str__(self):

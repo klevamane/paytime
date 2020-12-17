@@ -88,9 +88,9 @@ class BankUpdateView(LoginRequiredMixin, View):
         )
 
 
-class ProfileView(View):
-    def get(self, request):
-        return render(request=request, template_name="dashboard/profile/profile.html")
+# class ProfileView(View):
+#     def get(self, request):
+#         return render(request=request, template_name="dashboard/profile/profile.html")
 
 
 class DocumentView(View):
@@ -122,48 +122,26 @@ class WalletView(View):
         return render(request=request, template_name="dashboard/wallet/wallet.html")
 
 
-class BankDetails2View(LoginRequiredMixin, View):
-    # context = None
-    #
-    def get(self, request):
-        # try:
-        #     bank_details = Bank.objects.get(user=request.user)
-        #     context =
-        # except Bank.DoesNotExist:
-        #     context = {"bank_form": BankForm()}
-        # return render(
-        #     request=request,
-        #     template_name="dashboard/add-bank-details.html",
-        #     context={"bank_form": BankForm(), "view_path": request.path.rsplit("/")[2]},
-        # )
-        pass
-
-    def post(self, request):
-        form = BankForm(data=request.POST)
-        if Bank.objects.filter(user_id=request.user.id).exists():
-            messages.error(request, FAILURE_MESSAGES["cannot_add_multiple_bank"])
-            return render(
-                request,
-                template_name="dashboard/add-bank-details.html",
-                context={"form": form},
-            )
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.updated_by = instance.user = request.user
-            instance.save()
-            messages.success(request, SUCCESS_MESSAGES["bank_account_added"])
-            return redirect("dashboard-home")
-        return render(
-            request,
-            template_name="dashboard/add-bank-details.html",
-            context={"form": form},
-        )
-
-
-class ProfileAll(View):
+class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = User.objects.get(id=request.user.id)
-        profile_form = ProfileForm(
+        profile_form = self._set_profile_form(user)
+        try:
+            bank = Bank.objects.get(user=user)
+            bank_form = BankForm(
+                initial={"bank": bank.bank, "account_number": bank.account_number}
+            )
+        except Bank.DoesNotExist:
+            bank_form = BankForm()
+        context = {"profile_form": profile_form, "bank_form": bank_form}
+        return render(
+            request, template_name="dashboard/profile/profile.html", context=context
+        )
+
+    def _set_profile_form(self, user):
+        # returns the intial value/upon load, the value of the user's
+        # profile details
+        return ProfileForm(
             initial={
                 "firstname": user.firstname,
                 "lastname": user.lastname,
@@ -176,8 +154,29 @@ class ProfileAll(View):
                 "date_of_birth": user.date_of_birth,
             }
         )
+
+
+class HandleProfileSubmit(ProfileView, View):
+    def post(self, request):
+        user = User.objects.get(id=request.user.id)
+        profile_form = ProfileForm(request.POST, instance=user)
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, "Save successfull")
+            return redirect("profile")
+        # this ensures that whenever error(s) is displayed in the template
+        # the bank form still retains its form displayed
+        # else the form shows none because it can access a bank form from the context
+        # this issue occurs because we a rerendering the page,
+        # if we redirect to the page, then we don't need to bother about this issue,
+        # but then again, we would loose the form errors
+        # perhaps we can make use of messages, ie putting the errors in messages will
+        # help us avoid this
+        # but we currently want to show the errors withing the template input itself
         try:
             bank = Bank.objects.get(user=user)
+            # set the intial value/upon load, the value of the user's
+            # bank details
             bank_form = BankForm(
                 initial={"bank": bank.bank, "account_number": bank.account_number}
             )
@@ -186,4 +185,41 @@ class ProfileAll(View):
         context = {"profile_form": profile_form, "bank_form": bank_form}
         return render(
             request, template_name="dashboard/profile/profile.html", context=context
+        )
+
+
+class HandleBankSubmit(ProfileView, View):
+    def post(self, request):
+        data = request.POST.dict()
+        if "user" in data:
+            # we don't want a user to
+            # be able do update this
+            del data["user"]
+        if "can_update" in data:
+            del data["can_update"]
+        data["user"] = request.user
+        # set this so the user isn't able to update
+        # in future
+        data["can_update"] = False
+
+        try:
+            bank = Bank.objects.get(user=request.user)
+            if not bank.can_update:
+                raise ValidationError(
+                    "Your cannot update your bank account. Kindly contact us to proceed"
+                )
+            bank_form = BankForm(data, instance=bank)
+        except Bank.DoesNotExist:
+            bank_form = BankForm(data)
+        if bank_form.is_valid():
+            bank_form.save()
+            messages.success(request, "Save successfull")
+            return redirect("profile")
+
+        user = User.objects.get(id=request.user.id)
+        profile_form = self._set_profile_form(user)
+        return render(
+            request,
+            "dashboard/profile/profile.html",
+            {"bank_form": bank_form, "profile_form": profile_form},
         )
