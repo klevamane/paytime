@@ -50,6 +50,21 @@ class Bank(DirtyFieldsMixin, models.Model, TimeStampMixin):
         return "Bank: {}, #: {}".format(self.bank, self.account_number)
 
 
+class InvestmentPackage(DirtyFieldsMixin, models.Model, TimeStampMixin):
+    name = models.CharField(max_length=20)
+    Roi = models.IntegerField()
+    duration = models.PositiveIntegerField(verbose_name="Duration in days")
+    working_days_only = models.BooleanField(default=True)
+    payment_duration = models.PositiveIntegerField()
+    minimum_amount = models.DecimalField(decimal_places=2, max_digits=9)
+    maximum_amount = models.DecimalField(decimal_places=2, max_digits=9)
+    account_number = models.CharField(
+        max_length=10,
+        validators=[validate_account_number],
+        help_text="Enter your 10 digit account number",
+    )
+
+
 TRANSACTION_TYPE = [("deposit", "Deposit"), ("withdrawal", "Withdrawal")]
 TRANSACTION_STATUS = [
     ("pending", "Pending"),

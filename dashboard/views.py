@@ -118,6 +118,11 @@ class WalletView(View):
         return render(request=request, template_name="dashboard/wallet/wallet.html")
 
 
+class InvestView(View):
+    def get(self, request):
+        return render(request, "dashboard/invest/invest.html")
+
+
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = User.objects.get(id=request.user.id)

@@ -44,4 +44,9 @@ urlpatterns = [
         views.WalletView.as_view(),
         name="wallet_url",
     ),
+    path(
+        "invest",
+        views.InvestView.as_view(),
+        name="invest_view_url",
+    ),
 ]
