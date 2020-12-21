@@ -11352,7 +11352,101 @@ body.sidebar-toggled footer.sticky-footer {
     border-bottom-style: solid;
 }
 
+/*** RIBBON **/
+.ribbonn {
+  width: 150px;
+  height: 150px;
+  /*background: #eac;*/
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  overflow: hidden;
+}
 
+.ribbonn span {
+  width: 225px;
+  padding: 15px 0px;
+  background: red;
+  display: block;
+  position: absolute;
+  top: 30px;
+  left: -25px;
+  transform: rotate(45deg);
+  text-align: center;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.ribbonn:after, .ribbonn:before{
+  content: "";
+  border-top: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #738f12;
+  border-left: 5px solid #738f12;
+  position: absolute;
+}
+
+.ribbonn:before {
+  bottom: 0;
+  right: 0;
+}
+
+.ribbonn:after {
+  top: 0;
+  left: 0;
+}
+
+
+
+
+
+.ribbon-box {
+    position: relative;
+}
+
+.ribbon-box .ribbon-two {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  z-index: 1;
+  overflow: hidden;
+  width: 75px;
+  height: 75px;
+  text-align: right;
+}
+
+.ribbon-box .ribbon-two-success span {
+    background-color: #00BC8B;
+}
+
+.ribbon-box .ribbon-two-primary span {
+    background-color: #0F5EF7;
+}
+
+.ribbon-box .ribbon-two-dark span {
+    background: #475f7b;
+}
+
+.ribbon-two-dark span {
+    background: #475f7b;
+}
+
+.ribbon-box .ribbon-two-dark span:before {
+    border-left: 3px solid #2b3a4a;
+    border-top: 3px solid #2b3a4a;
+}
+
+.ribbon-box .ribbon-two span:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: -1;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    transform: rotate(45deg);
+    display: block;
+}
 /******************* MARGIN ********************/
 .mr-10 {
     margin-right: 10px !important;
