@@ -1,64 +1,89 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
+{% load static %}
 {% load custom_tags %}
+
 
 {% block content %}
     <div class="container">
-    <h3>Payment</h3>
-    <div class="row">
-        <div class="col-lg-10">
-            <ul class="nav nav-tabs" role="tablist">
-						<li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#debit-card" role="tab" aria-selected="true"><span class="hidden-sm-up"><i class="fa fa-cc"></i></span> <span class="hidden-xs-down">Debit Card</span></a> </li>
-						<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#paypal" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-paypal"></i></span> <span class="hidden-xs-down">Paypal</span></a> </li>
-					</ul>
+        <h3 class="mb-5">Payment</h3>
+        <div class="row">
+            <div class="col-lg-10">
+                <ul class="nav nav-tabs mb-5" role="tablist">
+                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#debit-card" role="tab" aria-selected="true"><span class="hidden-sm-up"><i class="fa fa-cc"></i></span> <span class="hidden-xs-down">Debit Card</span></a> </li>
+                    {#						<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#paypal" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-paypal"></i></span> <span class="hidden-xs-down">Paypal</span></a> </li>#}
+                </ul>
 
 
-            <div class="tab-content tabcontent-border">
-						<div class="tab-pane active" id="debit-card" role="tabpanel">
-							<div class="p-30">
-								<div class="row">
-									<div class="col-lg-7 col-md-6 col-12">
-										<form>
-											<div class="form-group">
-												<label for="exampleInputEmail1">Amount</label>
-												<div class="input-group">
-													<div class="input-group-text"><i class="fa fa-credit-card"></i></div>
-													<input type="text" class="form-control" id="exampleInputuname" placeholder="Amount"> </div>
-											</div>
+                <div class="tab-content tabcontent-border">
+                    <div class="tab-pane active" id="debit-card" role="tabpanel">
+                        <div class="p-30">
+                            <div class="row">
+                                <div class="col-lg-7 col-md-6 col-12">
+                                    <form class="mb-4">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Amount</label>
+                                            <div class="input-group">
 
-											<div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                              <label class="form-check-label" for="flexCheckDefault">
-                                                I have read the terms and conditions
-                                              </label>
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-money-bill"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control form-control-sm" id="exampleInputEmail1" placeholder="Amount">
                                             </div>
-											<button class="btn btn-success mt-4">Make Payment</button>
-										</form>
-									</div>
-									<div class="col-lg-5 col-md-6 col-12">
-										<h3 class="box-title mt-10">Investment Package</h3>
-										<h2><i class="fab fa-cc-mastercard text-danger"></i>
-											<i class="fab fa-cc-visa text-info"></i>
-                                            <span class="text-primary" style="font-size: 20px">interswitch</span>
-										</h2>
-										<p><strong>Duration</strong>75 working days</p>
-                                        <p><strong>ROI:</strong> 15%</p>
-                                        <p><strong>Minimum Investment amount</strong> N100,000</p>
-                                        <p><strong>Maximum Investment amount</strong> N50,000,000</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="tab-pane" id="paypal" role="tabpanel">
-							<div class="p-30">
-								You can pay your money through paypal, for more info <a href="">click here</a><br><br>
-								<button class="btn btn-info btn-outline"><i class="fa fa-cc-paypal"></i> Pay with Paypal</button>
-							</div>
-						</div>
-					</div>
+
+                                        </div>
+
+                                            <div class="form-group">
+                                                <label for="package">Package</label>
+                                                <select class="form-control form-control-sm" id="package">
+                                                    <option>Small select</option>
+                                                    <option>Ovviy short</option>
+                                                    <option>Ovviy medium</option>
+                                                    <option>Ovviy long</option>
+                                                </select>
+                                            </div>
 
 
+
+
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    I have read and accepted the <strong>terms and conditions</strong>
+                                                </label>
+                                            </div>
+                                            <button class="btn btn-success btn-block my-4">Make Payment</button>
+                                            <a href="{% url "invest_view_url" %}" class="mt-4 text-muted text-decoration-none">
+                                                <i class="fa fa-arrow-circle-left text-danger"></i>
+                                                back to investment packages
+                                            </a>
+                                    </form>
+                                </div>
+                                <div class="col-lg-5 col-md-6 col-12">
+                                    <h3 class="box-title mt-10">Investment Package</h3>
+                                    <h2><i class="fab fa-cc-mastercard text-danger"></i>
+                                        <i class="fab fa-cc-visa text-info"></i>
+                                        <img src="{% static "img/logo/verve.svg" %}" style="height: 40px; width: 40px; vertical-align: bottom" alt="">
+                                        <span class="text-primary" style="font-size: 20px">interswitch</span>
+                                    </h2>
+                                    <p><strong>Duration :</strong> 75 working days</p>
+                                    <p><strong>ROI :</strong> 15%</p>
+                                    <p><strong>Minimum Investment amount :</strong> N100,000</p>
+                                    <p><strong>Maximum Investment amount :</strong> N50,000,000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="paypal" role="tabpanel">
+                        <div class="p-30">
+                            You can pay your money through paypal, for more info <a href="">click here</a><br><br>
+                            <button class="btn btn-info btn-outline"><i class="fa fa-cc-paypal"></i> Pay with Paypal</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-lg-2"></div>
         </div>
-        <div class="col-lg-2"></div>
-    </div>
     </div>
 {% endblock %}
