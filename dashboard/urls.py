@@ -54,4 +54,14 @@ urlpatterns = [
         views.PaymentView.as_view(),
         name="payment_view_url",
     ),
+    path(
+        "investments",
+        views.InvestmentsView.as_view(),
+        name="investments_view_url",
+    ),
+    path(
+        "investments/detail",
+        views.InvestmentDetailView.as_view(),
+        name="investment_detail_view_url",
+    ),
 ]

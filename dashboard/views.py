@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
 from django.shortcuts import redirect, render
@@ -123,6 +124,16 @@ class InvestView(View):
         return render(request, "dashboard/invest/invest.html")
 
 
+class InvestmentsView(View):
+    def get(self, request):
+        return render(request, "dashboard/invest/investments.html")
+
+
+class InvestmentDetailView(View):
+    def get(self, request):
+        return render(request, "dashboard/invest/detail.html")
+
+
 class PaymentView(View):
     def get(self, request):
         return render(request, "dashboard/invest/payment.html")
@@ -170,7 +181,7 @@ class HandleProfileSubmit(ProfileView, View):
             profile_form.save()
             messages.success(request, "Save successfull")
             return redirect("profile")
-        # this ensures that whenever error(s) is displayed in the template
+        # this ensures that whenever error(s) are displayed in the template
         # the bank form still retains its form displayed
         # else the form shows none because it can access a bank form from the context
         # this issue occurs because we a rerendering the page,

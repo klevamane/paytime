@@ -1,0 +1,163 @@
+{% extends "partials/dashboard/base-dashboard.html" %}
+{% load custom_tags %}
+
+{% block content %}
+    <div class="container">
+        <p>Investments</p>
+        <div class="row">
+            <div class="col-lg-9">
+
+                <div class="row">
+
+
+                    <!-- ************* ACTIVE INVESTMENT ************-->
+
+                    <div class="col-12 col-lg-12">
+                        <div class="box box-body pull-up">
+                            <!--Use stretched-link to make the entire card clickable-->
+                            <a href="{% url "investment_detail_view_url" %}" class="stretched-link"></a>
+                            <div class="d-flex justify-content-between">
+                                <div class="p-0">
+
+                                    <div class="text-center">
+                                        <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
+                                    </div>
+                                    <div>
+                                        <h3 class="no-margin text-bold">Medium</h3>
+                                        <span>Ovviy</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="no-margin font-weight-600"><span class="text-warning">Capital</span> /
+                                            <strong>N500,000,000</strong></p>
+                                        <p class="no-margin">N500,000</p>
+                                    </div>
+                                    <div class="mt-10">
+                                        <p class="no-margin font-weight-600"><span
+                                                class="text-warning"><strong>15% ROI</strong></span></p>
+                                        <p class="no-margin"><strong>5d working days left</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <!-- Investments-->
+                <div class="box">
+                    <div class="box-header">
+                        <h4 class="box-title">
+                            Active Investment
+                        </h4>
+                    </div>
+                    <div class="box-body text-center">
+                        <p class="text-center">You currently do not have an active investment<br> <strong>Make an
+                            investment now</strong></p>
+                        <a class="btn btn-primary btn-sm" href="{% url "invest_view_url" %}">Start Investment</a>
+                    </div>
+
+                </div>
+                <div class="box">
+                    <div class="box-header">
+                        <h4 class="box-title">
+                            Investment History
+                        </h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless mb-0">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Created on</th>
+                                    <th>Package</th>
+                                    <th>Roi</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Detail</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>12/12/2020</td>
+                                    <td>dummy.com</td>
+                                    <td>BCC98F59</td>
+                                    <td>$845.69</td>
+                                    <td><span class="badge badge-dark">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-dark btn-sm">view</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>12/12/2020</td>
+                                    <td>stock.com</td>
+                                    <td>CITN456546</td>
+                                    <td>$854.65</td>
+                                    <td><span class="badge badge-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-dark btn-sm">view</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>12/12/2020</td>
+                                    <td>market.com</td>
+                                    <td>MGT584@F</td>
+                                    <td>$658.25</td>
+                                    <td><span class="badge badge-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-dark btn-sm">view</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>12/12/2020</td>
+                                    <td>profit.com</td>
+                                    <td>BCD94F769</td>
+                                    <td>$845.55</td>
+                                    <td><span class="badge badge-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-dark btn-sm">view</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>12/12/2020</td>
+                                    <td>dummy.com</td>
+                                    <td>BCC98F59</td>
+                                    <td>$845.69</td>
+                                    <td><span class="badge badge-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-dark btn-sm">view</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>12/12/2020</td>
+                                    <td>script.uk</td>
+                                    <td>MTB005TC</td>
+                                    <td>$875.38</td>
+                                    <td><span class="badge badge-danger">Cancelled</span></td>
+                                    <td>
+                                        <button class="btn btn-dark btn-sm">view</button>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-3"></div>
+
+        </div>
+    </div>
+{% endblock %}
