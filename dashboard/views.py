@@ -123,6 +123,11 @@ class InvestView(View):
         return render(request, "dashboard/invest/invest.html")
 
 
+class PaymentView(View):
+    def get(self, request):
+        return render(request, "dashboard/invest/payment.html")
+
+
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = User.objects.get(id=request.user.id)
