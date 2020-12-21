@@ -31,13 +31,12 @@
                 </div>
 
 
-
                 <div class="card card-header-actions mb-5">
-                <div class="card-header">
-                    Latest Transactions
-                </div>
-                <div class="card-body">
-{#                    <div class="container">#}
+                    <div class="card-header">
+                        Latest Transactions
+                    </div>
+                    <div class="card-body">
+                        {#                    <div class="container">#}
                         <div class="row">
                             <div class="col-md-2 col-sm-2">
                                 <i class="fas fa-fw fa-2x fa-arrow-circle-right text-success"></i>
@@ -49,7 +48,7 @@
                             <div class="col-md-3 col-sm-3">N200,000</div>
 
                         </div>
-                    <hr>
+                        <hr>
                         <div class="row">
                             <div class="col-md-2 col-sm-2">
                                 <i class="fas fa-fw fa-2x fa-arrow-circle-left text-danger"></i>
@@ -61,7 +60,7 @@
                             <div class="col-md-3 col-sm-3">N200,000</div>
                         </div>
 
-                    <hr>
+                        <hr>
                         <div class="row">
                             <div class="col-md-2 col-sm-2">
                                 <i class="fas fa-fw fa-2x fa-arrow-circle-right text-success"></i>
@@ -73,8 +72,8 @@
                             <div class="col-md-3 col-sm-3">N30,000</div>
 
                         </div>
-                    <hr>
-                     <div class="row">
+                        <hr>
+                        <div class="row">
                             <div class="col-md-2 col-sm-2">
                                 <i class="fas fa-fw fa-2x fa-arrow-circle-right text-success"></i>
                             </div>
@@ -85,8 +84,8 @@
                             <div class="col-md-3 col-sm-3">N55,000</div>
                         </div>
 
-                    <hr>
-                     <div class="row">
+                        <hr>
+                        <div class="row">
                             <div class="col-md-2 col-sm-2">
                                 <i class="fas fa-fw fa-2x fa-arrow-circle-left text-danger"></i>
                             </div>
@@ -96,21 +95,20 @@
                             </div>
                             <div class="col-md-3 col-sm-3">N55,000</div>
                         </div>
-                </div>
-                <a class="card-footer" href="{% url "transactions_all_url" %}">
-                    <div class="d-flex align-items-center justify-content-between small text-body">
-                        View all transactions
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-arrow-right">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
                     </div>
-                </a>
-            </div>
-
-
+                    <a class="card-footer" href="{% url "transactions_all_url" %}">
+                        <div class="d-flex align-items-center justify-content-between small text-body">
+                            View all transactions
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-arrow-right">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
 
 
             </div>
@@ -124,36 +122,1061 @@
 
     <!-- WALLET- -->
     <div class="container">
-    <div class="row">
-    <div class="col-12">
-    <div class="box" style="width: 100%; border-radius: 5px; flex-direction: column; box-shadow: rgba(71, 95, 123, 0.2)">
-							<div class="box-body" style="padding: 1.5rem 1.5rem; flex: 1 1 auto; border-radius: 5px">
-								<div class="d-md-flex justify-content-between align-items-center d-inline-block">
-									<h3 class="my-0">ETH/BTC</h3>
-									<div>
-										<p class="mb-5 text-fade">Last Price</p>
-										<h4 class="mb-0"><span class="text-success">0.00245</span> <span class="ml-5">$1.25</span></h4>
-									</div>
-									<div class="d-lg-block d-none">
-										<p class="mb-5 text-fade">24h Change</p>
-										<h4 class="mb-0"><span class="text-success">0.00045</span> <span class="ml-5 text-success">+0.25</span></h4>
-									</div>
-									<div class="d-lg-block d-none">
-										<p class="mb-5 text-fade">24h High</p>
-										<h4 class="mb-0"><span class="text-dark">0.02154</span></h4>
-									</div>
-									<div class="d-lg-block d-none">
-										<p class="mb-5 text-fade">24h Low</p>
-										<h4 class="mb-0"><span class="text-danger">0.01154</span></h4>
-									</div>
-									<div>
-										<p class="mb-5 text-fade">24h Total</p>
-										<h4 class="mb-0"><span class="text-dark">142.002154 BTC</span></h4>
-									</div>
-								</div>
+        <div class="row">
+            <div class="col-12">
+                <div class="box"
+                     style="width: 100%; border-radius: 5px; flex-direction: column; box-shadow: rgba(71, 95, 123, 0.2)">
+                    <div class="box-body" style="padding: 1.5rem 1.5rem; flex: 1 1 auto; border-radius: 5px">
+                        <div class="d-md-flex justify-content-between align-items-center d-inline-block">
+                            <h3 class="my-0">ETH/BTC</h3>
+                            <div>
+                                <p class="mb-5 text-fade">Last Price</p>
+                                <h4 class="mb-0"><span class="text-success">0.00245</span> <span
+                                        class="ml-5">$1.25</span></h4>
+                            </div>
+                            <div class="d-lg-block d-none">
+                                <p class="mb-5 text-fade">24h Change</p>
+                                <h4 class="mb-0"><span class="text-success">0.00045</span> <span
+                                        class="ml-5 text-success">+0.25</span></h4>
+                            </div>
+                            <div class="d-lg-block d-none">
+                                <p class="mb-5 text-fade">24h High</p>
+                                <h4 class="mb-0"><span class="text-dark">0.02154</span></h4>
+                            </div>
+                            <div class="d-lg-block d-none">
+                                <p class="mb-5 text-fade">24h Low</p>
+                                <h4 class="mb-0"><span class="text-danger">0.01154</span></h4>
+                            </div>
+                            <div>
+                                <p class="mb-5 text-fade">24h Total</p>
+                                <h4 class="mb-0"><span class="text-dark">142.002154 BTC</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-xl-4">
+
+                <div class="box">
+                    <div class="box-header">
+                        <h4 class="box-title">
+                            Your Portfolio
+                        </h4>
+                        <div class="box-controls">
+                            <ul class="nav nav-pills mb-20">
+                                <li class=" nav-item"><a href="#navpills-1" class="nav-link btn active"
+                                                         data-toggle="tab" aria-expanded="false">List</a></li>
+                                <li class="nav-item"><a href="#navpills-2" class="nav-link btn" data-toggle="tab"
+                                                        aria-expanded="false">Chart</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-body p-0">
+                        <div class="tab-content">
+                            <div id="navpills-1" class="tab-pane active">
+                                <div class="table-responsive">
+                                    <table class="table m-0 recent-table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="cc BTC"></i>
+                                                    <span>Bitcoin</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-primary" role="progressbar"
+                                                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 40%">
+                                                    </div>
+                                                </div>
+                                                <small class="font-weight-300 mb-5">40%</small>
+                                            </td>
+                                            <td class="text-right">
+                                                <h5 class="my-0">$0.001 BTC</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="cc BC"></i>
+                                                    <span>Bitcoin Cash</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-danger" role="progressbar"
+                                                         aria-valuenow="19" aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 19%">
+                                                    </div>
+                                                </div>
+                                                <small class="font-weight-300 mb-5">19%</small>
+                                            </td>
+                                            <td class="text-right">
+                                                <h5 class="my-0">$0.001 BCH</h5>
+                                                <small>$30.00</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="cc ETH"></i>
+                                                    <span>Ethereum</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-success" role="progressbar"
+                                                         aria-valuenow="13" aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 13%">
+                                                    </div>
+                                                </div>
+                                                <small class="font-weight-300 mb-5">13%</small>
+                                            </td>
+                                            <td class="text-right">
+                                                <h5 class="my-0">$0.001 ETH</h5>
+                                                <small>$30.00</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="cc LTC"></i>
+                                                    <span>Lite Coin</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-primary" role="progressbar"
+                                                         aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 16%">
+                                                    </div>
+                                                </div>
+                                                <small class="font-weight-300 mb-5">16%</small>
+                                            </td>
+                                            <td class="text-right">
+                                                <h5 class="my-0">$0.001 LTC</h5>
+                                                <small>$30.00</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="cc REP"></i>
+                                                    <span>Ripple</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-primary" role="progressbar"
+                                                         aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: 16%">
+                                                    </div>
+                                                </div>
+                                                <small class="font-weight-300 mb-5">16%</small>
+                                            </td>
+                                            <td class="text-right">
+                                                <h5 class="my-0">$0.001 XRP</h5>
+                                                <small>$30.00</small>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div id="navpills-2" class="tab-pane" style="position: relative;">
+                                <div class="chart" id="profile-chart" style="min-height: 362px;">
+                                    <div id="apexchartsbbuno597" class="apexcharts-canvas apexchartsbbuno597"
+                                         style="width: 357px; height: 357px;">
+                                        <svg id="SvgjsSvg1176" width="357" height="357"
+                                             xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink"
+                                             xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg"
+                                             xmlns:data="ApexChartsNS" transform="translate(0, 0)"
+                                             style="background: transparent;">
+                                            <foreignObject x="0" y="0" width="357" height="357">
+                                                <div class="apexcharts-legend center position-bottom"
+                                                     xmlns="http://www.w3.org/1999/xhtml"
+                                                     style="right: 0px; position: absolute; left: 0px; top: auto; bottom: 10px;">
+                                                    <div class="apexcharts-legend-series" rel="1" data:collapsed="false"
+                                                         style="margin: 0px 5px;"><span class="apexcharts-legend-marker"
+                                                                                        rel="1" data:collapsed="false"
+                                                                                        style="background: rgb(0, 143, 251); color: rgb(0, 143, 251); height: 12px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 12px;"></span><span
+                                                            class="apexcharts-legend-text" rel="1"
+                                                            data:collapsed="false"
+                                                            style="color: rgb(55, 61, 63); font-family: Helvetica, Arial, sans-serif;">Ripple</span>
+                                                    </div>
+                                                    <div class="apexcharts-legend-series" rel="2" data:collapsed="false"
+                                                         style="margin: 0px 5px;"><span class="apexcharts-legend-marker"
+                                                                                        rel="2" data:collapsed="false"
+                                                                                        style="background: rgb(0, 227, 150); color: rgb(0, 227, 150); height: 12px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 12px;"></span><span
+                                                            class="apexcharts-legend-text" rel="2"
+                                                            data:collapsed="false"
+                                                            style="color: rgb(55, 61, 63); font-family: Helvetica, Arial, sans-serif;">Bitcoin</span>
+                                                    </div>
+                                                    <div class="apexcharts-legend-series" rel="3" data:collapsed="false"
+                                                         style="margin: 0px 5px;"><span class="apexcharts-legend-marker"
+                                                                                        rel="3" data:collapsed="false"
+                                                                                        style="background: rgb(254, 176, 25); color: rgb(254, 176, 25); height: 12px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 12px;"></span><span
+                                                            class="apexcharts-legend-text" rel="3"
+                                                            data:collapsed="false"
+                                                            style="color: rgb(55, 61, 63); font-family: Helvetica, Arial, sans-serif;">Eth</span>
+                                                    </div>
+                                                    <div class="apexcharts-legend-series" rel="4" data:collapsed="false"
+                                                         style="margin: 0px 5px;"><span class="apexcharts-legend-marker"
+                                                                                        rel="4" data:collapsed="false"
+                                                                                        style="background: rgb(255, 69, 96); color: rgb(255, 69, 96); height: 12px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 12px;"></span><span
+                                                            class="apexcharts-legend-text" rel="4"
+                                                            data:collapsed="false"
+                                                            style="color: rgb(55, 61, 63); font-family: Helvetica, Arial, sans-serif;">Lit</span>
+                                                    </div>
+                                                    <div class="apexcharts-legend-series" rel="5" data:collapsed="false"
+                                                         style="margin: 0px 5px;"><span class="apexcharts-legend-marker"
+                                                                                        rel="5" data:collapsed="false"
+                                                                                        style="background: rgb(119, 93, 208); color: rgb(119, 93, 208); height: 12px; width: 12px; left: 0px; top: 0px; border-width: 0px; border-color: rgb(255, 255, 255); border-radius: 12px;"></span><span
+                                                            class="apexcharts-legend-text" rel="5"
+                                                            data:collapsed="false"
+                                                            style="color: rgb(55, 61, 63); font-family: Helvetica, Arial, sans-serif;">Bit</span>
+                                                    </div>
+                                                </div>
+                                                <style type="text/css">
+
+                                                    .apexcharts-legend {
+                                                        display: flex;
+                                                        overflow: auto;
+                                                        padding: 0 10px;
+                                                    }
+
+                                                    .apexcharts-legend.position-bottom, .apexcharts-legend.position-top {
+                                                        flex-wrap: wrap
+                                                    }
+
+                                                    .apexcharts-legend.position-right, .apexcharts-legend.position-left {
+                                                        flex-direction: column;
+                                                        bottom: 0;
+                                                    }
+
+                                                    .apexcharts-legend.position-bottom.left, .apexcharts-legend.position-top.left, .apexcharts-legend.position-right, .apexcharts-legend.position-left {
+                                                        justify-content: flex-start;
+                                                    }
+
+                                                    .apexcharts-legend.position-bottom.center, .apexcharts-legend.position-top.center {
+                                                        justify-content: center;
+                                                    }
+
+                                                    .apexcharts-legend.position-bottom.right, .apexcharts-legend.position-top.right {
+                                                        justify-content: flex-end;
+                                                    }
+
+                                                    .apexcharts-legend-series {
+                                                        cursor: pointer;
+                                                    }
+
+                                                    .apexcharts-legend.position-bottom .apexcharts-legend-series, .apexcharts-legend.position-top .apexcharts-legend-series {
+                                                        display: flex;
+                                                        align-items: center;
+                                                    }
+
+                                                    .apexcharts-legend-text {
+                                                        position: relative;
+                                                        font-size: 14px;
+                                                    }
+
+                                                    .apexcharts-legend-marker {
+                                                        position: relative;
+                                                        display: inline-block;
+                                                        cursor: pointer;
+                                                        margin-right: 3px;
+                                                    }
+
+                                                    .apexcharts-legend.right .apexcharts-legend-series, .apexcharts-legend.left .apexcharts-legend-series {
+                                                        display: inline-block;
+                                                    }
+
+                                                    .apexcharts-legend-series.no-click {
+                                                        cursor: auto;
+                                                    }
+
+                                                    .apexcharts-legend .apexcharts-hidden-zero-series {
+                                                        display: none !important;
+                                                    }
+
+                                                    .inactive-legend {
+                                                        opacity: 0.45;
+                                                    }</style>
+                                            </foreignObject>
+                                            <g id="SvgjsG1178" class="apexcharts-inner apexcharts-graphical"
+                                               transform="translate(38, 20)">
+                                                <defs id="SvgjsDefs1177">
+                                                    <clipPath id="gridRectMaskbbuno597">
+                                                        <rect id="SvgjsRect1179" width="283" height="273" x="-1" y="-1"
+                                                              rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0"
+                                                              stroke="none" stroke-dasharray="0"></rect>
+                                                    </clipPath>
+                                                    <clipPath id="gridRectMarkerMaskbbuno597">
+                                                        <rect id="SvgjsRect1180" width="289" height="279" x="-4" y="-4"
+                                                              rx="0" ry="0" fill="#ffffff" opacity="1" stroke-width="0"
+                                                              stroke="none" stroke-dasharray="0"></rect>
+                                                    </clipPath>
+                                                    <filter id="SvgjsFilter1190" filterUnits="userSpaceOnUse">
+                                                        <feFlood id="SvgjsFeFlood1191" flood-color="black"
+                                                                 flood-opacity="0.45" result="SvgjsFeFlood1191Out"
+                                                                 in="SourceGraphic"></feFlood>
+                                                        <feComposite id="SvgjsFeComposite1192" in="SvgjsFeFlood1191Out"
+                                                                     in2="SourceAlpha" operator="in"
+                                                                     result="SvgjsFeComposite1192Out"></feComposite>
+                                                        <feOffset id="SvgjsFeOffset1193" dx="1" dy="1"
+                                                                  result="SvgjsFeOffset1193Out"
+                                                                  in="SvgjsFeComposite1192Out"></feOffset>
+                                                        <feGaussianBlur id="SvgjsFeGaussianBlur1194" stdDeviation="1 "
+                                                                        result="SvgjsFeGaussianBlur1194Out"
+                                                                        in="SvgjsFeOffset1193Out"></feGaussianBlur>
+                                                        <feMerge id="SvgjsFeMerge1195" result="SvgjsFeMerge1195Out"
+                                                                 in="SourceGraphic">
+                                                            <feMergeNode id="SvgjsFeMergeNode1196"
+                                                                         in="SvgjsFeGaussianBlur1194Out"></feMergeNode>
+                                                            <feMergeNode id="SvgjsFeMergeNode1197"
+                                                                         in="[object Arguments]"></feMergeNode>
+                                                        </feMerge>
+                                                        <feBlend id="SvgjsFeBlend1198" in="SourceGraphic"
+                                                                 in2="SvgjsFeMerge1195Out" mode="normal"
+                                                                 result="SvgjsFeBlend1198Out"></feBlend>
+                                                    </filter>
+                                                    <filter id="SvgjsFilter1203" filterUnits="userSpaceOnUse">
+                                                        <feFlood id="SvgjsFeFlood1204" flood-color="black"
+                                                                 flood-opacity="0.45" result="SvgjsFeFlood1204Out"
+                                                                 in="SourceGraphic"></feFlood>
+                                                        <feComposite id="SvgjsFeComposite1205" in="SvgjsFeFlood1204Out"
+                                                                     in2="SourceAlpha" operator="in"
+                                                                     result="SvgjsFeComposite1205Out"></feComposite>
+                                                        <feOffset id="SvgjsFeOffset1206" dx="1" dy="1"
+                                                                  result="SvgjsFeOffset1206Out"
+                                                                  in="SvgjsFeComposite1205Out"></feOffset>
+                                                        <feGaussianBlur id="SvgjsFeGaussianBlur1207" stdDeviation="1 "
+                                                                        result="SvgjsFeGaussianBlur1207Out"
+                                                                        in="SvgjsFeOffset1206Out"></feGaussianBlur>
+                                                        <feMerge id="SvgjsFeMerge1208" result="SvgjsFeMerge1208Out"
+                                                                 in="SourceGraphic">
+                                                            <feMergeNode id="SvgjsFeMergeNode1209"
+                                                                         in="SvgjsFeGaussianBlur1207Out"></feMergeNode>
+                                                            <feMergeNode id="SvgjsFeMergeNode1210"
+                                                                         in="[object Arguments]"></feMergeNode>
+                                                        </feMerge>
+                                                        <feBlend id="SvgjsFeBlend1211" in="SourceGraphic"
+                                                                 in2="SvgjsFeMerge1208Out" mode="normal"
+                                                                 result="SvgjsFeBlend1211Out"></feBlend>
+                                                    </filter>
+                                                    <filter id="SvgjsFilter1216" filterUnits="userSpaceOnUse">
+                                                        <feFlood id="SvgjsFeFlood1217" flood-color="black"
+                                                                 flood-opacity="0.45" result="SvgjsFeFlood1217Out"
+                                                                 in="SourceGraphic"></feFlood>
+                                                        <feComposite id="SvgjsFeComposite1218" in="SvgjsFeFlood1217Out"
+                                                                     in2="SourceAlpha" operator="in"
+                                                                     result="SvgjsFeComposite1218Out"></feComposite>
+                                                        <feOffset id="SvgjsFeOffset1219" dx="1" dy="1"
+                                                                  result="SvgjsFeOffset1219Out"
+                                                                  in="SvgjsFeComposite1218Out"></feOffset>
+                                                        <feGaussianBlur id="SvgjsFeGaussianBlur1220" stdDeviation="1 "
+                                                                        result="SvgjsFeGaussianBlur1220Out"
+                                                                        in="SvgjsFeOffset1219Out"></feGaussianBlur>
+                                                        <feMerge id="SvgjsFeMerge1221" result="SvgjsFeMerge1221Out"
+                                                                 in="SourceGraphic">
+                                                            <feMergeNode id="SvgjsFeMergeNode1222"
+                                                                         in="SvgjsFeGaussianBlur1220Out"></feMergeNode>
+                                                            <feMergeNode id="SvgjsFeMergeNode1223"
+                                                                         in="[object Arguments]"></feMergeNode>
+                                                        </feMerge>
+                                                        <feBlend id="SvgjsFeBlend1224" in="SourceGraphic"
+                                                                 in2="SvgjsFeMerge1221Out" mode="normal"
+                                                                 result="SvgjsFeBlend1224Out"></feBlend>
+                                                    </filter>
+                                                    <filter id="SvgjsFilter1229" filterUnits="userSpaceOnUse">
+                                                        <feFlood id="SvgjsFeFlood1230" flood-color="black"
+                                                                 flood-opacity="0.45" result="SvgjsFeFlood1230Out"
+                                                                 in="SourceGraphic"></feFlood>
+                                                        <feComposite id="SvgjsFeComposite1231" in="SvgjsFeFlood1230Out"
+                                                                     in2="SourceAlpha" operator="in"
+                                                                     result="SvgjsFeComposite1231Out"></feComposite>
+                                                        <feOffset id="SvgjsFeOffset1232" dx="1" dy="1"
+                                                                  result="SvgjsFeOffset1232Out"
+                                                                  in="SvgjsFeComposite1231Out"></feOffset>
+                                                        <feGaussianBlur id="SvgjsFeGaussianBlur1233" stdDeviation="1 "
+                                                                        result="SvgjsFeGaussianBlur1233Out"
+                                                                        in="SvgjsFeOffset1232Out"></feGaussianBlur>
+                                                        <feMerge id="SvgjsFeMerge1234" result="SvgjsFeMerge1234Out"
+                                                                 in="SourceGraphic">
+                                                            <feMergeNode id="SvgjsFeMergeNode1235"
+                                                                         in="SvgjsFeGaussianBlur1233Out"></feMergeNode>
+                                                            <feMergeNode id="SvgjsFeMergeNode1236"
+                                                                         in="[object Arguments]"></feMergeNode>
+                                                        </feMerge>
+                                                        <feBlend id="SvgjsFeBlend1237" in="SourceGraphic"
+                                                                 in2="SvgjsFeMerge1234Out" mode="normal"
+                                                                 result="SvgjsFeBlend1237Out"></feBlend>
+                                                    </filter>
+                                                    <filter id="SvgjsFilter1242" filterUnits="userSpaceOnUse">
+                                                        <feFlood id="SvgjsFeFlood1243" flood-color="black"
+                                                                 flood-opacity="0.45" result="SvgjsFeFlood1243Out"
+                                                                 in="SourceGraphic"></feFlood>
+                                                        <feComposite id="SvgjsFeComposite1244" in="SvgjsFeFlood1243Out"
+                                                                     in2="SourceAlpha" operator="in"
+                                                                     result="SvgjsFeComposite1244Out"></feComposite>
+                                                        <feOffset id="SvgjsFeOffset1245" dx="1" dy="1"
+                                                                  result="SvgjsFeOffset1245Out"
+                                                                  in="SvgjsFeComposite1244Out"></feOffset>
+                                                        <feGaussianBlur id="SvgjsFeGaussianBlur1246" stdDeviation="1 "
+                                                                        result="SvgjsFeGaussianBlur1246Out"
+                                                                        in="SvgjsFeOffset1245Out"></feGaussianBlur>
+                                                        <feMerge id="SvgjsFeMerge1247" result="SvgjsFeMerge1247Out"
+                                                                 in="SourceGraphic">
+                                                            <feMergeNode id="SvgjsFeMergeNode1248"
+                                                                         in="SvgjsFeGaussianBlur1246Out"></feMergeNode>
+                                                            <feMergeNode id="SvgjsFeMergeNode1249"
+                                                                         in="[object Arguments]"></feMergeNode>
+                                                        </feMerge>
+                                                        <feBlend id="SvgjsFeBlend1250" in="SourceGraphic"
+                                                                 in2="SvgjsFeMerge1247Out" mode="normal"
+                                                                 result="SvgjsFeBlend1250Out"></feBlend>
+                                                    </filter>
+                                                </defs>
+                                                <g id="SvgjsG1182" class="apexcharts-pie" data:innerTranslateX="0"
+                                                   data:innerTranslateY="-25">
+                                                    <g id="SvgjsG1183" transform="translate(0, -5) scale(1)">
+                                                        <circle id="SvgjsCircle1184" r="85.19756097560978" cx="140.5"
+                                                                cy="140.5" fill="transparent"></circle>
+                                                        <g id="SvgjsG1185">
+                                                            <g id="apexcharts-series-0"
+                                                               class="apexcharts-series apexcharts-pie-series Ripple"
+                                                               rel="1">
+                                                                <path id="apexcharts-pieSlice-0"
+                                                                      d="M 140.5 9.426829268292664 A 131.07317073170734 131.07317073170734 0 0 1 271.4857250522358 145.28705736370387 L 225.64072128395327 143.6115872864075 A 85.19756097560978 85.19756097560978 0 0 0 140.5 55.302439024390225 L 140.5 9.426829268292664 z"
+                                                                      fill="rgba(0,143,251,1)" fill-opacity="1"
+                                                                      stroke="#ffffff" stroke-opacity="1"
+                                                                      stroke-linecap="butt" stroke-width="2"
+                                                                      stroke-dasharray="0" class="apexcharts-pie-area"
+                                                                      index="0" j="0" data:angle="92.09302325581395"
+                                                                      data:startAngle="0" data:strokeWidth="2"
+                                                                      data:value="44"
+                                                                      data:pathOrig="M 140.5 9.426829268292664 A 131.07317073170734 131.07317073170734 0 0 1 271.4857250522358 145.28705736370387 L 225.64072128395327 143.6115872864075 A 85.19756097560978 85.19756097560978 0 0 0 140.5 55.302439024390225 L 140.5 9.426829268292664 z"></path>
+                                                            </g>
+                                                            <g id="apexcharts-series-1"
+                                                               class="apexcharts-series apexcharts-pie-series Bitcoin"
+                                                               rel="2">
+                                                                <path id="apexcharts-pieSlice-1"
+                                                                      d="M 271.4857250522358 145.28705736370387 A 131.07317073170734 131.07317073170734 0 0 1 80.56779889172859 257.0688953193819 L 101.54406927962359 216.26978195759824 A 85.19756097560978 85.19756097560978 0 0 0 225.64072128395327 143.6115872864075 L 271.4857250522358 145.28705736370387 z"
+                                                                      fill="rgba(0,227,150,1)" fill-opacity="1"
+                                                                      stroke="#ffffff" stroke-opacity="1"
+                                                                      stroke-linecap="butt" stroke-width="2"
+                                                                      stroke-dasharray="0" class="apexcharts-pie-area"
+                                                                      index="0" j="1" data:angle="115.11627906976746"
+                                                                      data:startAngle="92.09302325581395"
+                                                                      data:strokeWidth="2" data:value="55"
+                                                                      data:pathOrig="M 271.4857250522358 145.28705736370387 A 131.07317073170734 131.07317073170734 0 0 1 80.56779889172859 257.0688953193819 L 101.54406927962359 216.26978195759824 A 85.19756097560978 85.19756097560978 0 0 0 225.64072128395327 143.6115872864075 L 271.4857250522358 145.28705736370387 z"></path>
+                                                            </g>
+                                                            <g id="apexcharts-series-2"
+                                                               class="apexcharts-series apexcharts-pie-series Eth"
+                                                               rel="3">
+                                                                <path id="apexcharts-pieSlice-2"
+                                                                      d="M 80.56779889172859 257.0688953193819 A 131.07317073170734 131.07317073170734 0 0 1 19.867307548764302 89.2366641972171 L 62.08874990669679 107.17883172819111 A 85.19756097560978 85.19756097560978 0 0 0 101.54406927962359 216.26978195759824 L 80.56779889172859 257.0688953193819 z"
+                                                                      fill="rgba(254,176,25,1)" fill-opacity="1"
+                                                                      stroke="#ffffff" stroke-opacity="1"
+                                                                      stroke-linecap="butt" stroke-width="2"
+                                                                      stroke-dasharray="0" class="apexcharts-pie-area"
+                                                                      index="0" j="2" data:angle="85.81395348837208"
+                                                                      data:startAngle="207.2093023255814"
+                                                                      data:strokeWidth="2" data:value="41"
+                                                                      data:pathOrig="M 80.56779889172859 257.0688953193819 A 131.07317073170734 131.07317073170734 0 0 1 19.867307548764302 89.2366641972171 L 62.08874990669679 107.17883172819111 A 85.19756097560978 85.19756097560978 0 0 0 101.54406927962359 216.26978195759824 L 80.56779889172859 257.0688953193819 z"></path>
+                                                            </g>
+                                                            <g id="apexcharts-series-3"
+                                                               class="apexcharts-series apexcharts-pie-series Lit"
+                                                               rel="4">
+                                                                <path id="apexcharts-pieSlice-3"
+                                                                      d="M 19.867307548764302 89.2366641972171 A 131.07317073170734 131.07317073170734 0 0 1 72.2186978101917 28.616847305202455 L 96.11715357662459 67.77595074838159 A 85.19756097560978 85.19756097560978 0 0 0 62.08874990669679 107.17883172819111 L 19.867307548764302 89.2366641972171 z"
+                                                                      fill="rgba(255,69,96,1)" fill-opacity="1"
+                                                                      stroke="#ffffff" stroke-opacity="1"
+                                                                      stroke-linecap="butt" stroke-width="2"
+                                                                      stroke-dasharray="0" class="apexcharts-pie-area"
+                                                                      index="0" j="3" data:angle="35.58139534883719"
+                                                                      data:startAngle="293.0232558139535"
+                                                                      data:strokeWidth="2" data:value="17"
+                                                                      data:pathOrig="M 19.867307548764302 89.2366641972171 A 131.07317073170734 131.07317073170734 0 0 1 72.2186978101917 28.616847305202455 L 96.11715357662459 67.77595074838159 A 85.19756097560978 85.19756097560978 0 0 0 62.08874990669679 107.17883172819111 L 19.867307548764302 89.2366641972171 z"></path>
+                                                            </g>
+                                                            <g id="apexcharts-series-4"
+                                                               class="apexcharts-series apexcharts-pie-series Bit"
+                                                               rel="5">
+                                                                <path id="apexcharts-pieSlice-4"
+                                                                      d="M 72.2186978101917 28.616847305202455 A 131.07317073170734 131.07317073170734 0 0 1 140.49999999999997 9.426829268292664 L 140.49999999999997 55.302439024390225 A 85.19756097560978 85.19756097560978 0 0 0 96.11715357662459 67.77595074838159 L 72.2186978101917 28.616847305202455 z"
+                                                                      fill="rgba(119,93,208,1)" fill-opacity="1"
+                                                                      stroke="#ffffff" stroke-opacity="1"
+                                                                      stroke-linecap="butt" stroke-width="2"
+                                                                      stroke-dasharray="0" class="apexcharts-pie-area"
+                                                                      index="0" j="4" data:angle="31.395348837209326"
+                                                                      data:startAngle="328.6046511627907"
+                                                                      data:strokeWidth="2" data:value="15"
+                                                                      data:pathOrig="M 72.2186978101917 28.616847305202455 A 131.07317073170734 131.07317073170734 0 0 1 140.49999999999997 9.426829268292664 L 140.49999999999997 55.302439024390225 A 85.19756097560978 85.19756097560978 0 0 0 96.11715357662459 67.77595074838159 L 72.2186978101917 28.616847305202455 z"></path>
+                                                            </g>
+                                                            <text id="SvgjsText1188"
+                                                                  font-family="Helvetica, Arial, sans-serif"
+                                                                  x="218.34702551414057" y="65.44603297023313"
+                                                                  text-anchor="middle" dominate-baseline="central"
+                                                                  font-size="12px" fill="#ffffff"
+                                                                  filter="url(#SvgjsFilter1190)"
+                                                                  class="apexcharts-pie-label"
+                                                                  style="font-family: Helvetica, Arial, sans-serif;">
+                                                                25.6%
+                                                            </text>
+                                                            <text id="SvgjsText1201"
+                                                                  font-family="Helvetica, Arial, sans-serif"
+                                                                  x="195.13683969171439" y="233.817056837464"
+                                                                  text-anchor="middle" dominate-baseline="central"
+                                                                  font-size="12px" fill="#ffffff"
+                                                                  filter="url(#SvgjsFilter1203)"
+                                                                  class="apexcharts-pie-label"
+                                                                  style="font-family: Helvetica, Arial, sans-serif;">
+                                                                32.0%
+                                                            </text>
+                                                            <text id="SvgjsText1214"
+                                                                  font-family="Helvetica, Arial, sans-serif"
+                                                                  x="38.811145734222166" y="177.27817649663973"
+                                                                  text-anchor="middle" dominate-baseline="central"
+                                                                  font-size="12px" fill="#ffffff"
+                                                                  filter="url(#SvgjsFilter1216)"
+                                                                  class="apexcharts-pie-label"
+                                                                  style="font-family: Helvetica, Arial, sans-serif;">
+                                                                23.8%
+                                                            </text>
+                                                            <text id="SvgjsText1227"
+                                                                  font-family="Helvetica, Arial, sans-serif"
+                                                                  x="58.6592727523647" y="69.82219081010824"
+                                                                  text-anchor="middle" dominate-baseline="central"
+                                                                  font-size="12px" fill="#ffffff"
+                                                                  filter="url(#SvgjsFilter1229)"
+                                                                  class="apexcharts-pie-label"
+                                                                  style="font-family: Helvetica, Arial, sans-serif;">
+                                                                9.9%
+                                                            </text>
+                                                            <text id="SvgjsText1240"
+                                                                  font-family="Helvetica, Arial, sans-serif"
+                                                                  x="111.24274716026274" y="36.39778818595509"
+                                                                  text-anchor="middle" dominate-baseline="central"
+                                                                  font-size="12px" fill="#ffffff"
+                                                                  filter="url(#SvgjsFilter1242)"
+                                                                  class="apexcharts-pie-label"
+                                                                  style="font-family: Helvetica, Arial, sans-serif;">
+                                                                8.7%
+                                                            </text>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                                <line id="SvgjsLine1251" x1="0" y1="0" x2="281" y2="0" stroke="#b6b6b6"
+                                                      stroke-dasharray="0" stroke-width="1"
+                                                      class="apexcharts-ycrosshairs"></line>
+                                                <line id="SvgjsLine1252" x1="0" y1="0" x2="281" y2="0"
+                                                      stroke-dasharray="0" stroke-width="0"
+                                                      class="apexcharts-ycrosshairs-hidden"></line>
+                                            </g>
+                                        </svg>
+                                        <div class="apexcharts-tooltip dark">
+                                            <div class="apexcharts-tooltip-series-group"><span
+                                                    class="apexcharts-tooltip-marker"
+                                                    style="background-color: rgb(0, 143, 251);"></span>
+                                                <div class="apexcharts-tooltip-text">
+                                                    <div class="apexcharts-tooltip-y-group"><span
+                                                            class="apexcharts-tooltip-text-label"></span><span
+                                                            class="apexcharts-tooltip-text-value"></span></div>
+                                                    <div class="apexcharts-tooltip-z-group"><span
+                                                            class="apexcharts-tooltip-text-z-label"></span><span
+                                                            class="apexcharts-tooltip-text-z-value"></span></div>
+                                                </div>
+                                            </div>
+                                            <div class="apexcharts-tooltip-series-group"><span
+                                                    class="apexcharts-tooltip-marker"
+                                                    style="background-color: rgb(0, 227, 150);"></span>
+                                                <div class="apexcharts-tooltip-text">
+                                                    <div class="apexcharts-tooltip-y-group"><span
+                                                            class="apexcharts-tooltip-text-label"></span><span
+                                                            class="apexcharts-tooltip-text-value"></span></div>
+                                                    <div class="apexcharts-tooltip-z-group"><span
+                                                            class="apexcharts-tooltip-text-z-label"></span><span
+                                                            class="apexcharts-tooltip-text-z-value"></span></div>
+                                                </div>
+                                            </div>
+                                            <div class="apexcharts-tooltip-series-group"><span
+                                                    class="apexcharts-tooltip-marker"
+                                                    style="background-color: rgb(254, 176, 25);"></span>
+                                                <div class="apexcharts-tooltip-text">
+                                                    <div class="apexcharts-tooltip-y-group"><span
+                                                            class="apexcharts-tooltip-text-label"></span><span
+                                                            class="apexcharts-tooltip-text-value"></span></div>
+                                                    <div class="apexcharts-tooltip-z-group"><span
+                                                            class="apexcharts-tooltip-text-z-label"></span><span
+                                                            class="apexcharts-tooltip-text-z-value"></span></div>
+                                                </div>
+                                            </div>
+                                            <div class="apexcharts-tooltip-series-group"><span
+                                                    class="apexcharts-tooltip-marker"
+                                                    style="background-color: rgb(255, 69, 96);"></span>
+                                                <div class="apexcharts-tooltip-text">
+                                                    <div class="apexcharts-tooltip-y-group"><span
+                                                            class="apexcharts-tooltip-text-label"></span><span
+                                                            class="apexcharts-tooltip-text-value"></span></div>
+                                                    <div class="apexcharts-tooltip-z-group"><span
+                                                            class="apexcharts-tooltip-text-z-label"></span><span
+                                                            class="apexcharts-tooltip-text-z-value"></span></div>
+                                                </div>
+                                            </div>
+                                            <div class="apexcharts-tooltip-series-group"><span
+                                                    class="apexcharts-tooltip-marker"
+                                                    style="background-color: rgb(119, 93, 208);"></span>
+                                                <div class="apexcharts-tooltip-text">
+                                                    <div class="apexcharts-tooltip-y-group"><span
+                                                            class="apexcharts-tooltip-text-label"></span><span
+                                                            class="apexcharts-tooltip-text-value"></span></div>
+                                                    <div class="apexcharts-tooltip-z-group"><span
+                                                            class="apexcharts-tooltip-text-z-label"></span><span
+                                                            class="apexcharts-tooltip-text-z-value"></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="resize-triggers">
+                                    <div class="expand-trigger">
+                                        <div style="width: 358px; height: 363px;"></div>
+                                    </div>
+                                    <div class="contract-trigger"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Wallet Balance</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="d-flex justify-content-between bb-1 pb-5">
+                            <h5 class="text-fade">Asset</h5>
+                            <h5 class="text-fade">Amount</h5>
+                        </div>
+                        <div class="d-flex justify-content-between pb-5 pt-10">
+                            <h4>USDC</h4>
+                            <h4>0.00</h4>
+                        </div>
+                        <div class="d-flex justify-content-between pb-10">
+                            <h4>BTC</h4>
+                            <h4>0.0000000</h4>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-danger"><i class="fa fa-arrow-circle-down"></i> DEPOSIT
+                            </button>
+                            <button type="button" class="btn btn-success mt-0"><i class="fa fa-arrow-circle-up"></i>
+                                WITHDRAW
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xxxl-4 col-xl-5 col-12">
+
+
+                <div class="box">
+                    <div class="box-header">
+                        <h4 class="box-title">
+                            Recent Activity
+                        </h4>
+                    </div>
+                    <div class="box-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-borderless mb-30">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <p class="mb-0">MAY</p>
+                                        <p class="mb-0 text-fade"><small>29</small></p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-lg mr-10">
+                                                <img class="img-account-profile rounded-circle mb-2"
+                                                     src="{% static "img/profile-1.png" %}" alt="">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">Received Bitcoin</h6>
+                                                <p class="mb-0 text-fade">From John Smith</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <p class="mb-0">+ 0.009120 BTC</p>
+                                        <p class="mb-0 text-fade"><small>+ $787.898</small></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="mb-0">MAY</p>
+                                        <p class="mb-0 text-fade"><small>29</small></p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-lg mr-10">
+                                                <img class="img-account-profile rounded-circle mb-2"
+                                                     src="{% static "img/profile-1.png" %}" alt="">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">Received Bitcoin</h6>
+                                                <p class="mb-0 text-fade">From John Smith</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <p class="mb-0">+ 0.009120 BTC</p>
+                                        <p class="mb-0 text-fade"><small>+ $787.898</small></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="mb-0">MAY</p>
+                                        <p class="mb-0 text-fade"><small>29</small></p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-lg mr-10">
+                                                <img class="img-account-profile rounded-circle mb-2"
+                                                     src="{% static "img/profile-1.png" %}" alt="">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">Received Bitcoin</h6>
+                                                <p class="mb-0 text-fade">From John Smith</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <p class="mb-0">+ 0.009120 BTC</p>
+                                        <p class="mb-0 text-fade"><small>+ $787.898</small></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="mb-0">MAY</p>
+                                        <p class="mb-0 text-fade"><small>29</small></p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-lg mr-10">
+                                                <img class="img-account-profile rounded-circle mb-2"
+                                                     src="{% static "img/profile-1.png" %}" alt="">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">Received Bitcoin</h6>
+                                                <p class="mb-0 text-fade">From John Smith</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <p class="mb-0">+ 0.009120 BTC</p>
+                                        <p class="mb-0 text-fade"><small>+ $787.898</small></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="mb-0">MAY</p>
+                                        <p class="mb-0 text-fade"><small>29</small></p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-lg mr-10">
+                                                <img class="img-account-profile rounded-circle mb-2"
+                                                     src="{% static "img/profile-1.png" %}" alt="">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">Received Bitcoin</h6>
+                                                <p class="mb-0 text-fade">From John Smith</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <p class="mb-0">+ 0.009120 BTC</p>
+                                        <p class="mb-0 text-fade"><small>+ $787.898</small></p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-xxxl-4 col-xl-3 col-12">
+
+
+                <div class="box">
+                    <div class="box-body">
+                        <div class="text-center">
+                            <p class="mb-0">You Are Buying</p>
+                            <h2 class="text-primary">1.8979 BTC</h2>
+                            <p>@ $980.99 per BTC</p>
+                        </div>
+                        <div class="bt-1">
+                            <p class="mb-0 mt-15">Payment Method</p>
+                            <h4 class="text-primary mb-15">USD Wallet</h4>
+                        </div>
+                        <div class="bt-1">
+                            <p class="mb-0 mt-15">Deposit To</p>
+                            <h4 class="text-primary mb-15">BTC Wallet</h4>
+                        </div>
+                        <div class="bt-1">
+                            <p class="mb-0 mt-15">Wait Time</p>
+                            <h4 class="text-primary mb-15">Instant</h4>
+                        </div>
+                        <div class="bt-1 pt-15">
+                            <table class="table no-border min-pad-table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Fee</th>
+                                    <td class="text-right">$99.00</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Subtotal</th>
+                                    <td class="text-right">$239.00</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><b>Total</b></th>
+                                    <th class="text-right"><b>$338.00</b></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <!-- &&&&&&&&&&&& Ripple ROW &&&&&&&&&&&&& -->
+        <div class="row">
+            <div class="col-xl-4 col-12">
+
+
+            </div>
+
+                <!----- USERS CARD --->
+
+
+
+
+
+
+
+
+
+            <div class="col-xl-8 col-12">
+                <div class="row">
+
+                    <!-- ************* Ripple ************-->
+                    <div class="col-12 col-lg-4">
+                        <div class="box box-body pull-up">
+                            <div class="d-flex justify-content-between">
+                                <div class="p-0">
+                                    <div class="text-center">
+                                        <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
+                                    </div>
+                                    <div>
+                                        <h3 class="no-margin text-bold">Ripple</h3>
+                                        <span>Real Estate</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="no-margin font-weight-600"><span class="text-warning">$5.0</span> /
+                                            $1.0</p>
+                                        <p class="no-margin">Sponsored</p>
+                                    </div>
+                                    <div class="mt-10">
+                                        <p class="no-margin font-weight-600"><span class="text-warning">74%</span></p>
+                                        <p class="no-margin">5d left</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- ************* EOS EXCHANGE ************-->
+                    <div class="col-12 col-lg-4">
+                        <div class="box box-body pull-up">
+                            <div class="d-flex justify-content-between">
+                                <div class="p-0">
+                                    <div class="text-center">
+                                        <a href="#"><i class="cc EOS mr-5" title="EOS"></i></a>
+                                    </div>
+                                    <div>
+                                        <h3 class="no-margin text-bold">EOS</h3>
+                                        <span>Exchange</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="no-margin font-weight-600"><span class="text-warning">$2.7</span> / $9.7
+                                        </p>
+                                        <p class="no-margin">Sponsored</p>
+                                    </div>
+                                    <div class="mt-10">
+                                        <p class="no-margin font-weight-600"><span class="text-warning">87%</span></p>
+                                        <p class="no-margin">5d left</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- ************* LISK ************-->
+                    <div class="col-12 col-lg-4">
+                        <div class="box box-body pull-up">
+                            <div class="d-flex justify-content-between">
+                                <div class="p-0">
+                                    <div class="text-center">
+                                        <a href="#"><i class="cc LSK mr-5" title="LSK"></i></a>
+                                    </div>
+                                    <div>
+                                        <h3 class="no-margin text-bold">Lisk</h3>
+                                        <span>Trading</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="no-margin font-weight-600"><span class="text-warning">$7.9</span> / $7.0</p>
+                                        <p class="no-margin">Sponsored</p>
+                                    </div>
+                                    <div class="mt-10">
+                                        <p class="no-margin font-weight-600"><span class="text-warning">74%</span></p>
+                                        <p class="no-margin">5d left</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <!---- EARNINGS BOX --->
+                <div class="box">
+						<div class="box-header">
+							<h4 class="box-title">
+								Earning
+							</h4>
+						</div>
+						<div class="box-body">
+						    <div class="table-responsive">
+								<table class="table table-borderless mb-0">
+									<thead>
+										<tr>
+											<th>No</th>
+											<th>Currency</th>
+											<th>Plateform</th>
+											<th>Email</th>
+											<th>ID</th>
+											<th>Amount</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>1</td>
+											<td><i class="cc BTC font-size-18"></i></td>
+											<td>dummy.com</td>
+											<td>johendoe@gmail.com</td>
+											<td>BCC98F59</td>
+											<td>$845.69</td>
+											<td><span class="badge badge-danger">Pending</span></td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td><i class="cc ETH font-size-18"></i></td>
+											<td>stock.com</td>
+											<td>mical@gmail.com</td>
+											<td>CITN456546</td>
+											<td>$854.65</td>
+											<td><span class="badge badge-success">Success</span></td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td><i class="cc RDD font-size-18"></i></td>
+											<td>market.com</td>
+											<td>viloc@gmail.com</td>
+											<td>MGT584@F</td>
+											<td>$658.25</td>
+											<td><span class="badge badge-danger">Pending</span></td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td><i class="cc BCH font-size-18"></i></td>
+											<td>profit.com</td>
+											<td>ronald@gmail.com</td>
+											<td>BCD94F769</td>
+											<td>$845.55</td>
+											<td><span class="badge badge-success">Success</span></td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td><i class="cc BTC font-size-18"></i></td>
+											<td>dummy.com</td>
+											<td>johen@gmail.com</td>
+											<td>BCC98F59</td>
+											<td>$845.69</td>
+											<td><span class="badge badge-danger">Pending</span></td>
+										</tr>
+										<tr>
+											<td>6</td>
+											<td><i class="cc ETC font-size-18"></i></td>
+											<td>script.uk</td>
+											<td>milik@gmail.com</td>
+											<td>MTB005TC</td>
+											<td>$875.38</td>
+											<td><span class="badge badge-success">Success</span></td>
+										</tr>
+										<tr>
+											<td>7</td>
+											<td><i class="cc LTC font-size-18"></i></td>
+											<td>johen.com</td>
+											<td>nothte@gmail.com</td>
+											<td>BCC98F59</td>
+											<td>$845.69</td>
+											<td><span class="badge badge-danger">Pending</span></td>
+										</tr>
+										<tr>
+											<td>8</td>
+											<td><i class="cc ADA font-size-18"></i></td>
+											<td>dummy.com</td>
+											<td>johendoe@gmail.com</td>
+											<td>BCC98F59</td>
+											<td>$158.69</td>
+											<td><span class="badge badge-success">Success</span></td>
+										</tr>
+
+									</tbody>
+								</table>
 							</div>
 						</div>
-                    </div>
+					</div>
             </div>
+        </div>
     </div>
 {% endblock %}

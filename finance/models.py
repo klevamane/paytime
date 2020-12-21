@@ -34,7 +34,7 @@ Banks = [
 ]
 
 
-class Bank(DirtyFieldsMixin, models.Model, TimeStampMixin):
+class Bank(DirtyFieldsMixin, TimeStampMixin):
     # When a user adds a bank account
     # automatically create a wallet for the user
     bank = models.CharField(max_length=30, choices=Banks, default="access_bank")
@@ -50,7 +50,7 @@ class Bank(DirtyFieldsMixin, models.Model, TimeStampMixin):
         return "Bank: {}, #: {}".format(self.bank, self.account_number)
 
 
-class InvestmentPackage(DirtyFieldsMixin, models.Model, TimeStampMixin):
+class InvestmentPackage(DirtyFieldsMixin, TimeStampMixin):
     name = models.CharField(max_length=20)
     roi = models.IntegerField()
     duration = models.PositiveIntegerField(verbose_name="Duration in days")
@@ -70,7 +70,7 @@ TRANSACTION_STATUS = [
 ]
 
 
-class Transactions(DirtyFieldsMixin, models.Model, TimeStampMixin):
+class Transactions(DirtyFieldsMixin, TimeStampMixin):
     transaction_type = models.CharField(choices=TRANSACTION_TYPE, max_length=20)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="transactions"
@@ -82,7 +82,7 @@ class Transactions(DirtyFieldsMixin, models.Model, TimeStampMixin):
         return "{} by {}".format(self.transaction_type, self.user.get_full_name())
 
 
-class Wallet(DirtyFieldsMixin, models.Model, TimeStampMixin):
+class Wallet(DirtyFieldsMixin, TimeStampMixin):
     # The balance will be updated upon
     # deposit and withrawal
     # The balance will first be checked before each of these actions
