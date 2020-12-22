@@ -107,3 +107,11 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
         # the user will request for withrawal
         # we add that to the transactions table as pending
         pass
+
+
+class Package(DirtyFieldsMixin, TimeStampMixin):
+    name = models.CharField(max_length=30)
+    minimum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+    maximum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+    return_on_investmentent = models.PositiveIntegerField()
+    days = models.IntegerField()
