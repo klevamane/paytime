@@ -38,19 +38,13 @@
 
                                         <div class="form-group">
                                             <label for="package">Package</label>
-                                            <select class="form-control" id="package">
-                                                <option>Small select</option>
-                                                <option>Ovviy short</option>
-                                                <option>Ovviy medium</option>
-                                                <option>Ovviy long</option>
-                                            </select>
+                                            {{ payment_form.package|addcss:"form-control" }}
                                         </div>
 
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="flexCheckDefault">
-                                            <label class="form-check-label" for="flexCheckDefault">
+                                            {{ payment_form.terms_condition|addcss:"form-check-input" }}
+                                            <label class="form-check-label" for="id_terms_condition">
                                                 I have read and accepted the
                                             </label>
                                             <span><strong><a href="#exampleModalLong" data-toggle="modal"

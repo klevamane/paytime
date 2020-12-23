@@ -110,8 +110,19 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
 
 
 class Package(DirtyFieldsMixin, TimeStampMixin):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     minimum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
     maximum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
     return_on_investmentent = models.PositiveIntegerField()
+    codename = models.CharField(max_length=30, unique=True)
     days = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class Payment(DirtyFieldsMixin, TimeStampMixin):
+    amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+    package = models.ForeignKey(Package, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(max_length=30, default="open")

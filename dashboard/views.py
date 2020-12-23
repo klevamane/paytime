@@ -9,8 +9,9 @@ from django.forms.utils import ErrorList
 from django.shortcuts import redirect, render
 from django.views import View
 
+from dashboard.forms import PaymentForm
 from finance.forms import BankForm
-from finance.models import Bank
+from finance.models import Bank, Package
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
 from user.forms import ProfileForm
 from user.models import User
@@ -136,7 +137,19 @@ class InvestmentDetailView(View):
 
 class PaymentView(View):
     def get(self, request):
-        return render(request, "dashboard/invest/payment.html")
+        try:
+            package = Package.objects.get(codename=request.GET.get("codename"))
+        except Package.DoesNotExist:
+            package = None
+        if package:
+            payment_form = PaymentForm(initial={"package": package})
+        else:
+            payment_form = PaymentForm()
+        return render(
+            request,
+            "dashboard/invest/payment.html",
+            context={"payment_form": payment_form},
+        )
 
 
 class ProfileView(LoginRequiredMixin, View):
