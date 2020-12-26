@@ -21,19 +21,25 @@
                         <div class="p-30">
                             <div class="row">
                                 <div class="col-lg-7 col-md-6 col-12">
-                                    <form class="mb-4">
+                                    <form class="mb-4" action="{% url "payment_view_url" %}" method="POST">
+                                        {% csrf_token %}
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Amount</label>
+                                            <label for="id_amount">Amount</label>
                                             <div class="input-group">
 
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i
                                                             class="fa fa-money-bill"></i></span>
                                                 </div>
-                                                <input type="text" class="form-control"
-                                                       id="exampleInputEmail1" placeholder="Amount">
+                                                 {% if payment_form.errors|lookup:payment_form.amount %}
+                                                    {{ payment_form.amount|addcss:"form-control is-invalid" }}
+                                                {% else %}
+                                                    {{ payment_form.amount|addcss:"form-control" }}
+                                                {% endif %}
                                             </div>
-
+                                        {% if payment_form.errors|lookup:payment_form.amount %}
+                                            <small class="form-text text-danger">{{ payment_form.amount.errors }}</small>
+                                        {% endif %}
                                         </div>
 
                                         <div class="form-group">
@@ -50,7 +56,8 @@
                                             <span><strong><a href="#exampleModalLong" data-toggle="modal"
                                                              data-target="#exampleModalLong">terms and conditions</a></strong></span>
                                         </div>
-                                        <button class="btn btn-success btn-block my-4">Make Payment</button>
+                                        <button class="btn btn-success btn-block my-4" type="submit">Make Payment
+                                        </button>
                                         <a href="{% url "invest_view_url" %}"
                                            class="mt-4 text-muted text-decoration-none">
                                             <i class="fa fa-arrow-circle-left text-danger"></i>

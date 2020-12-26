@@ -42,6 +42,9 @@ FAILURE_MESSAGES = {
     "account_not_active": "Your account is not active, please contact the adminstrator",
     "cannot_add_multiple_bank": "You cannot add multiple bank accounts, try updating instead",
     "cannot_update_bank": "You cannot update your bank account. Kindly contact us to proceed",
+    "enter_valid_amount": "Enter a valid amount",
+    "select_pkg_for_amt": "Select a valid package for this amount",
+    "amount_specific_range": "The amount must be in the range of {} to {}",
 }
 
 

@@ -151,6 +151,20 @@ class PaymentView(View):
             context={"payment_form": payment_form},
         )
 
+    def post(self, request):
+        payment_form = PaymentForm(data=request.POST)
+        if payment_form.is_valid():
+            return render(
+                request,
+                template_name="dashboard/invest/payment.html",
+                context={"payment_form": payment_form},
+            )
+        return render(
+            request,
+            template_name="dashboard/invest/payment.html",
+            context={"payment_form": payment_form},
+        )
+
 
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
