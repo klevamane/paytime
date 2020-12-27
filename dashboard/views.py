@@ -6,12 +6,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views import View
+from pypaystack import Transaction
 
 from dashboard.forms import PaymentForm
 from finance.forms import BankForm
 from finance.models import Bank, Package
+from paytime import settings
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
 from user.forms import ProfileForm
 from user.models import User
@@ -135,6 +138,23 @@ class InvestmentDetailView(View):
         return render(request, "dashboard/invest/detail.html")
 
 
+class Payment2View(View):
+    def get(self, request):
+        context = {"paystatck_pub_key": settings.PAYSTACK_PUBLIC_KEY}
+        return render(request, "dashboard/invest/payment2.html", context=context)
+
+
+class PaymentVerificationView(View):
+    def get(self, request, _id):
+        transaction = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
+        response = transaction.verify(_id)
+        # if response[0] == 200:
+        #     amount = response[3]["amount"]
+        #     pass
+        # import pdb; pdb.set_trace()
+        return JsonResponse(response, safe=False)
+
+
 class PaymentView(View):
     def get(self, request):
         try:
@@ -154,11 +174,7 @@ class PaymentView(View):
     def post(self, request):
         payment_form = PaymentForm(data=request.POST)
         if payment_form.is_valid():
-            return render(
-                request,
-                template_name="dashboard/invest/payment.html",
-                context={"payment_form": payment_form},
-            )
+            return redirect("https://paystack.com/pay/ovviy")
         return render(
             request,
             template_name="dashboard/invest/payment.html",

@@ -64,4 +64,14 @@ urlpatterns = [
         views.InvestmentDetailView.as_view(),
         name="investment_detail_view_url",
     ),
+    path(
+        "investments/payment2",
+        views.Payment2View.as_view(),
+        name="payment2",
+    ),
+    path(
+        "investments/payment/verification/<int:_id>",
+        views.PaymentVerificationView.as_view(),
+        name="verify_payment_url",
+    ),
 ]

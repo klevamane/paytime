@@ -229,3 +229,6 @@ MESSAGE_TAGS = {
 # django-ratelimit returns a 403 by default. We define our own view to instead
 # return a {status_code}}.
 # RATELIMIT_VIEW = "{application_name}.views.{method/function_name}"
+
+PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
+PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
