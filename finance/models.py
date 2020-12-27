@@ -126,3 +126,20 @@ class Payment(DirtyFieldsMixin, TimeStampMixin):
     package = models.ForeignKey(Package, on_delete=models.DO_NOTHING, max_length=20)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=30, default="open")
+
+
+INVESTMENT_STATUS = [
+    ("cancelled", "Cancelled"),
+    ("completed", "Completed"),
+    ("pending", "Pending"),
+    ("processing", "Processing"),
+    ("running", "Running"),
+    ("success", "Success"),
+]
+
+
+class Investment(DirtyFieldsMixin, TimeStampMixin):
+    amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+    package = models.ForeignKey(Package, on_delete=models.DO_NOTHING)
+    status = models.CharField(choices=INVESTMENT_STATUS, max_length=20)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
