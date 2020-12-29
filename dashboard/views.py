@@ -1,19 +1,24 @@
 from __future__ import absolute_import
 
+import json
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from django.urls import resolve, reverse
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from pypaystack import Transaction
 
 from dashboard.forms import PaymentForm
 from finance.forms import BankForm
-from finance.models import Bank, Package
+from finance.models import Bank, Investment, Package, Wallet
 from paytime import settings
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
 from user.forms import ProfileForm
@@ -145,14 +150,49 @@ class Payment2View(View):
 
 
 class PaymentVerificationView(View):
-    def get(self, request, _id):
+    def post(self, request):
+        try:
+            amount, pkg, reference_id = list((json.loads(request.body)).values())
+        except ValueError:
+            # not enough values to unpack
+            # return an invalid response
+            return
+            pass
+        import pdb
+
+        pdb.set_trace()
         transaction = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
-        response = transaction.verify(_id)
-        # if response[0] == 200:
-        #     amount = response[3]["amount"]
-        #     pass
-        # import pdb; pdb.set_trace()
-        return JsonResponse(response, safe=False)
+        response = transaction.verify(reference_id)
+        if response[0] == 200:
+            verify_amount = response[3]["amount"] / 100
+            # check that the amount paid to paystack
+            # was the amount that was
+            if verify_amount == int(amount):
+                # create an investment plan for the user
+                # redirect to the investment page
+                package = Investment(
+                    amount=amount,
+                    package=Package.objects.get(codename=pkg),
+                    user=request.user,
+                )
+                package.save()
+                resolved_url = reverse("investments_view_url")
+                return JsonResponse({"resolved_url": resolved_url}, safe=False)
+            # return error to the user indicating that there has been
+            # an amount mismatch therefore the amount has been added to the users
+            # get or create a user wallet
+            user_wallet, _ = Wallet.objects.get_or_create(user=request.user)
+            user_wallet.do_depost(amount, request.user)
+            messages.info(
+                request,
+                "We experienced an amount mismatch, we have instead updated your wallet",
+            )
+            resolved_url = reverse("wallet_url")
+            return JsonResponse({"resolved_url": resolved_url}, safe=False)
+        return JsonResponse(
+            {"message": "Transaction not completed unable to verify transaction"},
+            safe=False,
+        )
 
 
 class PaymentView(View):
@@ -168,18 +208,30 @@ class PaymentView(View):
         return render(
             request,
             "dashboard/invest/payment.html",
-            context={"payment_form": payment_form},
+            context={
+                "payment_form": payment_form,
+                "email": request.user.email,
+                "firstname": request.user.firstname,
+                "lastname": request.user.lastname,
+                "paystatck_pub_key": settings.PAYSTACK_PUBLIC_KEY,
+            },
         )
 
+
+def validate_package_amount(request):
+    data = json.loads(request.body)
+    payment_form = PaymentForm(data=data)
+    if payment_form.errors:
+        return JsonResponse({**payment_form.errors}, status=400)
+    return JsonResponse({}, status=200)
+
+
+class PaystackView(View):
+    def get(self, request):
+        pass
+
     def post(self, request):
-        payment_form = PaymentForm(data=request.POST)
-        if payment_form.is_valid():
-            return redirect("https://paystack.com/pay/ovviy")
-        return render(
-            request,
-            template_name="dashboard/invest/payment.html",
-            context={"payment_form": payment_form},
-        )
+        pass
 
 
 class ProfileView(LoginRequiredMixin, View):

@@ -64,7 +64,7 @@ TRANSACTION_TYPE = [("deposit", "Deposit"), ("withdrawal", "Withdrawal")]
 TRANSACTION_STATUS = [
     ("pending", "Pending"),
     ("expired", "Expired"),
-    ("done", "Done"),
+    ("completed", "completed"),
     ("closed", "Closed"),
     ("none", "None"),
 ]
@@ -95,12 +95,16 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
     def __str__(self):
         return "Balance {}".format(self.balance)
 
-    def do_depost(self):
-        # whatever transaction done here should be updated to the transactions Table
-        # send the user to paystack AP
-        # payment complete?
-        # the user is returned and wallet balance is updated
-        pass
+    def do_depost(self, amount, user):
+        self.balance += int(amount)
+        self.save()
+        transaction = Transactions(
+            transaction_type="deposit",
+            user=user,
+            amount=int(amount),
+            status="completed",
+        )
+        transaction.save()
 
     def do_withdrawal(self):
         # whatever transaction done here should be updated to the transactions Table
@@ -141,5 +145,7 @@ INVESTMENT_STATUS = [
 class Investment(DirtyFieldsMixin, TimeStampMixin):
     amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
     package = models.ForeignKey(Package, on_delete=models.DO_NOTHING)
-    status = models.CharField(choices=INVESTMENT_STATUS, max_length=20)
+    status = models.CharField(
+        choices=INVESTMENT_STATUS, max_length=20, default="pending"
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE)

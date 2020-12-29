@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
 
 from dashboard import views
 
@@ -70,8 +71,18 @@ urlpatterns = [
         name="payment2",
     ),
     path(
-        "investments/payment/verification/<int:_id>",
-        views.PaymentVerificationView.as_view(),
+        "payment/verification",
+        csrf_exempt(views.PaymentVerificationView.as_view()),
         name="verify_payment_url",
+    ),
+    path(
+        "investments/paystack",
+        views.PaystackView.as_view(),
+        name="paystack_view_url",
+    ),
+    path(
+        "investments/validate-payment-package-amount",
+        csrf_exempt(views.validate_package_amount),
+        name="payment_package_amount_url",
     ),
 ]

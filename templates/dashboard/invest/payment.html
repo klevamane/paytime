@@ -6,13 +6,13 @@
 {% block content %}
     <div class="container">
         <h3 class="mb-5">Payment</h3>
+        {% include "partials/messages.html" %}
         <div class="row">
             <div class="col-lg-10">
                 <ul class="nav nav-tabs mb-5" role="tablist">
                     <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#debit-card" role="tab"
                                             aria-selected="true"><span class="hidden-sm-up"><i
                             class="fa fa-cc"></i></span> <span class="hidden-xs-down">Debit Card</span></a></li>
-                    {#						<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#paypal" role="tab" aria-selected="false"><span class="hidden-sm-up"><i class="fa fa-paypal"></i></span> <span class="hidden-xs-down">Paypal</span></a> </li>#}
                 </ul>
 
 
@@ -21,7 +21,7 @@
                         <div class="p-30">
                             <div class="row">
                                 <div class="col-lg-7 col-md-6 col-12">
-                                    <form class="mb-4" action="{% url "payment_view_url" %}" method="POST">
+                                    <form class="mb-4" id="paymentForm">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <label for="id_amount">Amount</label>
@@ -31,21 +31,16 @@
                                                     <span class="input-group-text"><i
                                                             class="fa fa-money-bill"></i></span>
                                                 </div>
-                                                 {% if payment_form.errors|lookup:payment_form.amount %}
-                                                    {{ payment_form.amount|addcss:"form-control is-invalid" }}
-                                                {% else %}
-                                                    {{ payment_form.amount|addcss:"form-control" }}
-                                                {% endif %}
+                                                {{ payment_form.amount|addcss:"form-control" }}
                                             </div>
-                                        {% if payment_form.errors|lookup:payment_form.amount %}
-                                            <small class="form-text text-danger">{{ payment_form.amount.errors }}</small>
-                                        {% endif %}
                                         </div>
+                                        <small class="form-text text-danger mb-2" id="amount_error"></small>
 
                                         <div class="form-group">
                                             <label for="package">Package</label>
                                             {{ payment_form.package|addcss:"form-control" }}
                                         </div>
+                                        <small class="form-text text-danger mb-2" id="package_error"></small>
 
 
                                         <div class="form-check">
@@ -143,4 +138,107 @@
             <div class="col-lg-2"></div>
         </div>
     </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="https://js.paystack.co/v2/popup.js"></script>
+    <script>
+        function updateValue(e) {
+            var am = Math.round(((parseInt(e.srcElement.value) + 100) / (1 - 0.039)), 2);
+            document.getElementById("amount").value = am ? am : '';
+            document.getElementById("total").innerHTML = am ? am : '';
+        }
+
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
+        var paymentForm = document.getElementById('paymentForm');
+        paymentForm.addEventListener("submit", payWithPaystack, false);
+
+        function payWithPaystack(e) {
+            let checker = 0;
+            const amount = document.getElementById('id_amount');
+            let amount_error = document.getElementById('amount_error');
+            let package_error = document.getElementById('package_error');
+            const pkg = document.getElementById('id_package');
+            const terms_condition = document.getElementById('id_terms_condition').value;
+            e.preventDefault();
+            // Validate via the django form
+            fetch("investments/validate-payment-package-amount",{
+                body: JSON.stringify({ "amount": amount.value, "package": pkg.value, "terms_condition": terms_condition}),
+                method: "POST"
+            }).then(res => res.json())
+                .then(validation_error => {
+                    if (Object.keys(validation_error).length > 0) {
+                        if (validation_error.hasOwnProperty("amount")){
+                            amount.classList.add("is-invalid")
+                            amount_error.innerHTML = validation_error.amount
+                            amount_error.style.display = "block"
+                        }
+                        if (validation_error.hasOwnProperty("package")){
+                            amount.classList.add("is-invalid")
+                            package_error.innerHTML = validation_error.package
+                            package_error.style.display = "block"
+                        }
+
+                    } else {
+                            amount.classList.remove("is-invalid")
+                            amount_error.style.display = "none"
+                            pkg.classList.remove("is-invalid")
+                            package_error.style.display = "none"
+
+
+                            const email = "{{ email }}"
+                const firstname = "{{ firstname }}"
+                const lastname = "{{ lastname }}"
+                if (email) {
+                    var handler = PaystackPop.setup({
+                        key: "{{ paystatck_pub_key }}", // Replace with your public key
+                        email: email,
+                        amount: amount.value * 100,
+                        firstname: firstname,
+                        lastname: lastname,
+                        ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+// label: "Optional string that replaces customer email"
+
+                        // onClose method is called if the user closes the modal without completing payment.
+                        onClose: function () {
+                            alert('Window closed. Transaction was not complete');
+                        },
+                        {#The callback method is fired when the transaction is successful#}
+                        callback: function (response) {
+                            console.log("THE RESPONSE", response)
+                            if (response.status === "success") {
+                                // verify the payment
+                                fetch("payment/verification",{
+                                    body: JSON.stringify({ "amount": amount.value, "package": pkg.value, "reference": response.reference}),
+                                    method: "POST"
+                                    }).then(res => res.json())
+                                        .then(data => {
+                                                // Redirect to investments page
+                                                window.location.href = data.resolved_url
+                                        })
+
+
+                            }
+                            var message = 'Payment complete! Reference: ' + response.reference;
+                            {#alert(message);#}
+                        }
+                    });
+                    handler.openIframe();
+                } else {
+                    alert('all fields are required')
+                }
+                        }
+
+                })
+        }
+    </script>
+
 {% endblock %}

@@ -216,12 +216,12 @@
                         },
                         {#The callback method is fired when the transaction is successful#}
                         callback: function (response) {
-                            console.log("VERIFICATION PROCESS STARTED - - - > ")
-                            fetch(`payment/verification/${response.reference}`,{
-                                method: "GET"
-                            }).then(data => {
-                                console.log("VERIFICATION PROCESS DONE - - - > ", data)
-                            })
+                           // console.log("VERIFICATION PROCESS STARTED - - - > ")
+                           // fetch(`payment/verification/${response.reference}`,{
+                             //   method: "GET"
+                            //}).then(data => {
+                             //   console.log("VERIFICATION PROCESS DONE - - - > ", data)
+                            //})
                             var message = 'Payment complete! Reference: ' + response.reference;
                             {#alert(message);#}
                         }
