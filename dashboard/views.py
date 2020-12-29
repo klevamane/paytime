@@ -143,12 +143,6 @@ class InvestmentDetailView(View):
         return render(request, "dashboard/invest/detail.html")
 
 
-class Payment2View(View):
-    def get(self, request):
-        context = {"paystatck_pub_key": settings.PAYSTACK_PUBLIC_KEY}
-        return render(request, "dashboard/invest/payment2.html", context=context)
-
-
 class PaymentVerificationView(View):
     def post(self, request):
         try:
