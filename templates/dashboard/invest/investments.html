@@ -1,12 +1,13 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
 {% load custom_tags %}
+{% load humanize %}
 
 {% block content %}
     <div class="container">
         <p>Investments</p>
         <div class="row">
             <div class="col-lg-9">
-
+                {% if last_investment %}
                 <div class="row">
 
 
@@ -15,7 +16,8 @@
                     <div class="col-12 col-lg-12">
                         <div class="box box-body pull-up">
                             <!--Use stretched-link to make the entire card clickable-->
-                            <a href="{% url "investment_detail_view_url" %}" class="stretched-link"></a>
+                            <a href="{% url "investment_detail_view_url" id=last_investment.id %}"
+                               class="stretched-link"></a>
                             <div class="d-flex justify-content-between">
                                 <div class="p-0">
 
@@ -23,107 +25,90 @@
                                         <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
                                     </div>
                                     <div>
-                                        <h3 class="no-margin text-bold">Medium {{ last_investment.name}}</h3>
+                                        <h3 class="no-margin text-bold">Medium {{ last_investment.name }}</h3>
                                         <span>Ovviy</span>
                                     </div>
                                 </div>
                                 <div>
                                     <div>
                                         <p class="no-margin font-weight-600"><span class="text-warning">Capital</span> /
-                                            <strong>N{{ last_investment.amount }}</strong></p>
-                                        <p class="no-margin font-weight-600"><span class="text-warning">Interest Paid</span> /
+                                            <strong>N{{ last_investment.amount|floatformat|intcomma }}</strong></p>
+                                        <p class="no-margin font-weight-600"><span
+                                                class="text-warning">Interest Paid</span> /
                                             <strong>N500,000</strong></p>
-                                        <p class="no-margin font-weight-600"><span class="text-warning">Possible Interest Left</span> /
+                                        <p class="no-margin font-weight-600"><span class="text-warning">Possible Interest Left</span>
+                                            /
                                             <strong>N300,000,000</strong></p>
                                     </div>
                                     <div class="mt-10">
                                         <p class="no-margin font-weight-600"><span
-                                                class="text-warning"><strong>{{ last_investment.package.return_on_investmentent }}% ROI</strong></span></p>
+                                                class="text-warning"><strong>{{ last_investment.package.return_on_investmentent }}% ROI</strong></span>
+                                        </p>
                                         <p class="no-margin"><strong>5d working days left</strong></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
+                {% endif %}
 
 
                 <!-- Investments-->
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">
-                            Active Investment
-                        </h4>
-                    </div>
-                    <div class="box-body text-center">
-                        <p class="text-center">You currently do not have an active investment<br> <strong>Make an
-                            investment now</strong></p>
-                        <a class="btn btn-primary btn-sm" href="{% url "invest_view_url" %}">Start Investment</a>
-                    </div>
-
-                </div>
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">
-                            Investment History
-                        </h4>
-                    </div>
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table class="table table-borderless mb-0">
-                                <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Created on</th>
-                                    <th>Package</th>
-                                    <th>Roi</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Detail</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for investment in user_investments %}
-                                    <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ investment.created_at }}</td>
-                                    <td>{{ investment.package.name }}</td>
-                                    <td>{{ investment.package.return_on_investmentent }}%</td>
-                                    <td>N{{ investment.amount }}</td>
-                                    <td><span class="badge badge-dark">{{ investment.status}}</span></td>
-                                    <td>
-                                        <a href="#" class="btn btn-dark btn-sm">view</a>
-                                    </td>
-                                {% endfor %}
-                                <tr>
-                                    <td>2</td>
-                                    <td>12/12/2020</td>
-                                    <td>stock.com</td>
-                                    <td>CITN456546</td>
-                                    <td>$854.65</td>
-                                    <td><span class="badge badge-success">Success</span></td>
-                                    <td>
-                                        <button class="btn btn-dark btn-sm">view</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>12/12/2020</td>
-                                    <td>market.com</td>
-                                    <td>MGT584@F</td>
-                                    <td>$658.25</td>
-                                    <td><span class="badge badge-success">Success</span></td>
-                                    <td>
-                                        <button class="btn btn-dark btn-sm">view</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                {% if not last_investment %}
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                Active Investment
+                            </h4>
+                        </div>
+                        <div class="box-body text-center">
+                            <p class="text-center">You currently do not have an active investment<br> <strong>Make an
+                                investment now</strong></p>
+                            <a class="btn btn-primary btn-sm" href="{% url "invest_view_url" %}">Start Investment</a>
                         </div>
                     </div>
-                </div>
+                {% endif %}
+                {% if last_investment %}
+                    <div class="box">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                Investment History
+                            </h4>
+                        </div>
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Created on</th>
+                                        <th>Package</th>
+                                        <th>Roi</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for investment in user_investments %}
+                                        <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ investment.created_at }}</td>
+                                        <td>{{ investment.package.name }}</td>
+                                        <td>{{ investment.package.return_on_investmentent }}%</td>
+                                        <td>N{{ investment.amount|floatformat|intcomma }}</td>
+                                        <td><span class="badge badge-dark">{{ investment.status }}</span></td>
+                                        <td>
+                                            <a href="{% url "investment_detail_view_url" id=last_investment.id %}" class="btn btn-dark btn-sm">view</a>
+                                        </td>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
 
             </div>
             <div class="col-lg-3"></div>

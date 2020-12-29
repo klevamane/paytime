@@ -148,7 +148,7 @@ class InvestmentsView(View):
 
 
 class InvestmentDetailView(View):
-    def get(self, request):
+    def get(self, request, id):
         return render(request, "dashboard/invest/detail.html")
 
 
@@ -161,9 +161,6 @@ class PaymentVerificationView(View):
             # return an invalid response
             return
             pass
-        import pdb
-
-        pdb.set_trace()
         transaction = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
         response = transaction.verify(reference_id)
         if response[0] == 200:

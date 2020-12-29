@@ -61,7 +61,7 @@ urlpatterns = [
         name="investments_view_url",
     ),
     path(
-        "investments/detail",
+        "investments/detail/<int:id>",
         views.InvestmentDetailView.as_view(),
         name="investment_detail_view_url",
     ),
