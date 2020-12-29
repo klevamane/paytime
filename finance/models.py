@@ -149,3 +149,22 @@ class Investment(DirtyFieldsMixin, TimeStampMixin):
         choices=INVESTMENT_STATUS, max_length=20, default="pending"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+ROI_ACTIONS = [
+    ("request", "Request"),
+    ("no_action", "No Action"),
+    ("payment_completed", "Payment completed"),
+]
+
+
+class RoiSchedule(DirtyFieldsMixin, TimeStampMixin):
+    maturity_date = models.DateField(db_index=True)
+    investment = models.ForeignKey(Investment, on_delete=models.CASCADE)
+    status = models.CharField(
+        choices=INVESTMENT_STATUS, max_length=20, default="pending"
+    )
+    action = models.CharField(
+        choices=INVESTMENT_STATUS, max_length=20, default="pending"
+    )
+    roi_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
