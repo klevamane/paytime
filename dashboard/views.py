@@ -135,7 +135,16 @@ class InvestView(View):
 
 class InvestmentsView(View):
     def get(self, request):
-        return render(request, "dashboard/invest/investments.html")
+        # get user investments
+        last_investment = None
+        user_investments = Investment.objects.filter(user=request.user)
+        if user_investments:
+            last_investment = user_investments.last()
+        context = {
+            "user_investments": user_investments,
+            "last_investment": last_investment,
+        }
+        return render(request, "dashboard/invest/investments.html", context=context)
 
 
 class InvestmentDetailView(View):

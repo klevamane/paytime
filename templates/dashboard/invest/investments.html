@@ -23,14 +23,14 @@
                                         <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
                                     </div>
                                     <div>
-                                        <h3 class="no-margin text-bold">Medium</h3>
+                                        <h3 class="no-margin text-bold">Medium {{ last_investment.name}}</h3>
                                         <span>Ovviy</span>
                                     </div>
                                 </div>
                                 <div>
                                     <div>
                                         <p class="no-margin font-weight-600"><span class="text-warning">Capital</span> /
-                                            <strong>N500,000,000</strong></p>
+                                            <strong>N{{ last_investment.amount }}</strong></p>
                                         <p class="no-margin font-weight-600"><span class="text-warning">Interest Paid</span> /
                                             <strong>N500,000</strong></p>
                                         <p class="no-margin font-weight-600"><span class="text-warning">Possible Interest Left</span> /
@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="mt-10">
                                         <p class="no-margin font-weight-600"><span
-                                                class="text-warning"><strong>15% ROI</strong></span></p>
+                                                class="text-warning"><strong>{{ last_investment.package.return_on_investmentent }}% ROI</strong></span></p>
                                         <p class="no-margin"><strong>5d working days left</strong></p>
                                     </div>
                                 </div>
@@ -85,17 +85,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>12/12/2020</td>
-                                    <td>dummy.com</td>
-                                    <td>BCC98F59</td>
-                                    <td>$845.69</td>
-                                    <td><span class="badge badge-dark">Pending</span></td>
+                                {% for investment in user_investments %}
+                                    <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ investment.created_at }}</td>
+                                    <td>{{ investment.package.name }}</td>
+                                    <td>{{ investment.package.return_on_investmentent }}%</td>
+                                    <td>N{{ investment.amount }}</td>
+                                    <td><span class="badge badge-dark">{{ investment.status}}</span></td>
                                     <td>
-                                        <button class="btn btn-dark btn-sm">view</button>
+                                        <a href="#" class="btn btn-dark btn-sm">view</a>
                                     </td>
-                                </tr>
+                                {% endfor %}
                                 <tr>
                                     <td>2</td>
                                     <td>12/12/2020</td>
@@ -118,40 +119,6 @@
                                         <button class="btn btn-dark btn-sm">view</button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>12/12/2020</td>
-                                    <td>profit.com</td>
-                                    <td>BCD94F769</td>
-                                    <td>$845.55</td>
-                                    <td><span class="badge badge-success">Success</span></td>
-                                    <td>
-                                        <button class="btn btn-dark btn-sm">view</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>12/12/2020</td>
-                                    <td>dummy.com</td>
-                                    <td>BCC98F59</td>
-                                    <td>$845.69</td>
-                                    <td><span class="badge badge-success">Success</span></td>
-                                    <td>
-                                        <button class="btn btn-dark btn-sm">view</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>12/12/2020</td>
-                                    <td>script.uk</td>
-                                    <td>MTB005TC</td>
-                                    <td>$875.38</td>
-                                    <td><span class="badge badge-danger">Cancelled</span></td>
-                                    <td>
-                                        <button class="btn btn-dark btn-sm">view</button>
-                                    </td>
-                                </tr>
-
                                 </tbody>
                             </table>
                         </div>
