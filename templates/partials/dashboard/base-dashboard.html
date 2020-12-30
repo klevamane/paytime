@@ -10,7 +10,6 @@
     <meta name="author" content="">
     <link rel="icon" type="image/jpg" href="{% static "img/logo/ovviy.jpeg" %}">
 
-    {#    <title>{% block title %} {% endblock %} Dashboard</title>#}
     <title>Dashboard</title>
 
     <!-- Custom fonts for this template-->
@@ -48,7 +47,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="../../index.html">
+            <a class="nav-link" href="{% url "profile_url" %}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -132,7 +131,7 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Profile Screens:</h6>
-                    <a class="collapse-item" href="{% url "profile" %}">Profile</a>
+                    <a class="collapse-item" href="{% url "profile_url" %}">Profile</a>
                     <a class="collapse-item active" href="{% url "documents" %}">Documents</a>
                     <a class="collapse-item" href="{% url "account_change_password" %}">Change password</a>
                     <div class="collapse-divider"></div>
@@ -365,14 +364,14 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{% block username %}Welcome{% endblock %}</span>
                             <img class="img-profile rounded-circle"
                                  src="{% static "img/undraw_profile.svg" %}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{% url "profile_url" %}">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a>
@@ -380,12 +379,12 @@
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Settings
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{% url "investments_view_url" %}">
                                 <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Activity Log
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="{% url "custom-logout" %}" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
                             </a>

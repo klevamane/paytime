@@ -14,7 +14,7 @@ urlpatterns = [
         name="update-bank-account",
     ),
     # profile
-    path("profile", views.ProfileView.as_view(), name="profile"),
+    path("profile", views.ProfileView.as_view(), name="profile_url"),
     path(
         "profile-details-submit",
         views.HandleProfileSubmit.as_view(),

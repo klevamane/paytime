@@ -1,6 +1,8 @@
 {% extends "partials/transactions/base-transaction-page.html" %}
 {% load static %}
 
+{% block username %}{{ fullname }} {% endblock %}
+
 {% block transaction_options %}
     <p class="text-center">Deposits</p>
 

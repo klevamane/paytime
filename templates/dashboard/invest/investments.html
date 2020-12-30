@@ -1,6 +1,7 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
 {% load custom_tags %}
 {% load humanize %}
+{% block username %}{{ fullname }} {% endblock %}
 
 {% block content %}
     <div class="container">

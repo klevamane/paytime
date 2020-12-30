@@ -108,30 +108,48 @@ class DocumentView(View):
 class DepositView(View):
     def get(self, request):
         return render(
-            request=request, template_name="dashboard/transactions/deposit.html"
+            request=request,
+            template_name="dashboard/transactions/deposit.html",
+            context={
+                "fullname": request.user.get_full_name(),
+            },
         )
 
 
 class WithdrawalView(View):
     def get(self, request):
         return render(
-            request=request, template_name="dashboard/transactions/withrawal.html"
+            request=request,
+            template_name="dashboard/transactions/withrawal.html",
+            context={"fullname": request.user.get_full_name()},
         )
 
 
 class TransactionsAllView(View):
     def get(self, request):
-        return render(request=request, template_name="dashboard/transactions/all.html")
+        return render(
+            request=request,
+            template_name="dashboard/transactions/all.html",
+            context={"fullname": request.user.get_full_name()},
+        )
 
 
 class WalletView(View):
     def get(self, request):
-        return render(request=request, template_name="dashboard/wallet/wallet.html")
+        return render(
+            request=request,
+            template_name="dashboard/wallet/wallet.html",
+            context={"fullname": request.user.get_full_name()},
+        )
 
 
 class InvestView(View):
     def get(self, request):
-        return render(request, "dashboard/invest/invest.html")
+        return render(
+            request,
+            "dashboard/invest/invest.html",
+            context={"fullname": request.user.get_full_name()},
+        )
 
 
 class InvestmentsView(View):
@@ -153,13 +171,20 @@ class InvestmentsView(View):
             investments = paginator.page(paginator.num_pages)
 
         # this is important that we use update instead of manually assigning key, value
-        context.update({"user_investments": investments})
+
+        context.update(
+            {"user_investments": investments, "fullname": request.user.get_full_name()}
+        )
         return render(request, "dashboard/invest/investments.html", context=context)
 
 
 class InvestmentDetailView(View):
     def get(self, request, id):
-        return render(request, "dashboard/invest/detail.html")
+        return render(
+            request,
+            "dashboard/invest/detail.html",
+            context={"fullname": request.user.get_full_name()},
+        )
 
 
 class PaymentVerificationView(View):
@@ -255,7 +280,11 @@ class ProfileView(LoginRequiredMixin, View):
             )
         except Bank.DoesNotExist:
             bank_form = BankForm()
-        context = {"profile_form": profile_form, "bank_form": bank_form}
+        context = {
+            "profile_form": profile_form,
+            "bank_form": bank_form,
+            "fullname": request.user.get_full_name(),
+        }
         return render(
             request, template_name="dashboard/profile/profile.html", context=context
         )
@@ -285,7 +314,7 @@ class HandleProfileSubmit(ProfileView, View):
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, "Save successfull")
-            return redirect("profile")
+            return redirect("profile_url")
         # this ensures that whenever error(s) are displayed in the template
         # the bank form still retains its form displayed
         # else the form shows none because it can access a bank form from the context
@@ -304,7 +333,11 @@ class HandleProfileSubmit(ProfileView, View):
             )
         except Bank.DoesNotExist:
             bank_form = BankForm()
-        context = {"profile_form": profile_form, "bank_form": bank_form}
+        context = {
+            "profile_form": profile_form,
+            "bank_form": bank_form,
+            "fullname": request.user.get_full_name(),
+        }
         return render(
             request, template_name="dashboard/profile/profile.html", context=context
         )
@@ -339,12 +372,16 @@ class HandleBankSubmit(ProfileView, View):
         if bank_form.is_valid():
             bank_form.save()
             messages.success(request, "Save successfull")
-            return redirect("profile")
+            return redirect("profile_url")
 
         user = User.objects.get(id=request.user.id)
         profile_form = self._set_profile_form(user)
         return render(
             request,
             "dashboard/profile/profile.html",
-            {"bank_form": bank_form, "profile_form": profile_form},
+            {
+                "bank_form": bank_form,
+                "profile_form": profile_form,
+                "fullname": request.user.get_full_name(),
+            },
         )
