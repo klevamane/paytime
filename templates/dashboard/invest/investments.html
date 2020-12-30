@@ -77,6 +77,8 @@
                             <h4 class="box-title">
                                 Investment History
                             </h4>
+                            <br>
+                            <small class="text-muted">You can have only one active investment</small>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
@@ -102,7 +104,7 @@
                                         <td>N{{ investment.amount|floatformat|intcomma }}</td>
                                         <td><span class="badge badge-dark">{{ investment.status }}</span></td>
                                         <td>
-                                            <a href="{% url "investment_detail_view_url" id=last_investment.id %}"
+                                            <a href="{% url "investment_detail_view_url" id=investment.id %}"
                                                class="btn btn-dark btn-sm">view</a>
                                         </td>
                                     {% endfor %}

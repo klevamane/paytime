@@ -11,7 +11,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.forms.utils import ErrorList
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import resolve, reverse
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -19,7 +19,7 @@ from pypaystack import Transaction
 
 from dashboard.forms import PaymentForm
 from finance.forms import BankForm
-from finance.models import Bank, Investment, Package, Wallet
+from finance.models import Bank, Investment, Package, RoiSchedule, Wallet
 from paytime import settings
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
 from user.forms import ProfileForm
@@ -100,12 +100,12 @@ class BankUpdateView(LoginRequiredMixin, View):
         )
 
 
-class DocumentView(View):
+class DocumentView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request=request, template_name="dashboard/profile/documents.html")
 
 
-class DepositView(View):
+class DepositView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
             request=request,
@@ -116,7 +116,7 @@ class DepositView(View):
         )
 
 
-class WithdrawalView(View):
+class WithdrawalView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
             request=request,
@@ -125,7 +125,7 @@ class WithdrawalView(View):
         )
 
 
-class TransactionsAllView(View):
+class TransactionsAllView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
             request=request,
@@ -134,7 +134,7 @@ class TransactionsAllView(View):
         )
 
 
-class WalletView(View):
+class WalletView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
             request=request,
@@ -143,7 +143,7 @@ class WalletView(View):
         )
 
 
-class InvestView(View):
+class InvestView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
             request,
@@ -152,14 +152,16 @@ class InvestView(View):
         )
 
 
-class InvestmentsView(View):
+class InvestmentsView(LoginRequiredMixin, View):
     def get(self, request):
         # get user investments
         context = {}
 
-        user_investments_qs = Investment.objects.filter(user=request.user)
+        user_investments_qs = Investment.objects.filter(user=request.user).order_by(
+            "-id"
+        )
         if user_investments_qs:
-            last_investment = user_investments_qs.last()
+            last_investment = user_investments_qs.latest("id")
             context["last_investment"] = last_investment
         page = request.GET.get("page", 1)
         paginator = Paginator(user_investments_qs, 5)
@@ -178,8 +180,17 @@ class InvestmentsView(View):
         return render(request, "dashboard/invest/investments.html", context=context)
 
 
-class InvestmentDetailView(View):
+class InvestmentDetailView(LoginRequiredMixin, View):
     def get(self, request, id):
+        # get the investment by Id
+        # get the ROI Schedule of the particular investment
+        # not these can only be done if the investment exists
+        # and belongs to the current user
+        # investment = Investment.objects.get(id=id)
+        # roi_schedules = RoiSchedule.objects.filter(
+        #     investment_id=investment.id
+        # ).order_by("maturity_date")
+
         return render(
             request,
             "dashboard/invest/detail.html",
@@ -195,7 +206,6 @@ class PaymentVerificationView(View):
             # not enough values to unpack
             # return an invalid response
             return
-            pass
         transaction = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
         response = transaction.verify(reference_id)
         if response[0] == 200:
@@ -230,7 +240,7 @@ class PaymentVerificationView(View):
         )
 
 
-class PaymentView(View):
+class PaymentView(LoginRequiredMixin, View):
     def get(self, request):
         try:
             package = Package.objects.get(codename=request.GET.get("codename"))
@@ -248,6 +258,7 @@ class PaymentView(View):
                 "email": request.user.email,
                 "firstname": request.user.firstname,
                 "lastname": request.user.lastname,
+                "fullname": request.user.get_full_name(),
                 "paystatck_pub_key": settings.PAYSTACK_PUBLIC_KEY,
             },
         )

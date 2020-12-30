@@ -1,12 +1,15 @@
 from __future__ import absolute_import
 
+import functools
 import logging
+import time
 from smtplib import SMTPSenderRefused
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.exceptions import ValidationError
-from django.core.mail import BadHeaderError, EmailMessage, send_mail
-from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import BadHeaderError, EmailMessage
+from django.db import connection, reset_queries
+from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 from six import text_type
 
@@ -105,3 +108,34 @@ def validate_ng_mobile_number(mobile_number):
         )
     ):
         raise ValidationError(_("Enter a valid Nigerian mobile number"))
+
+
+def query_debugger(func):
+    """Get the number of queries used in a function
+
+    This decorator gets the number of queries used in a function
+    and the time taken
+
+    Args:
+        func: The function to be decorated
+    """
+
+    @functools.wraps(func)
+    def inner_func(*args, **kwargs):
+        # reset saved queries when a Django request is started
+        reset_queries()
+
+        begin_queries = len(connection.queries)
+
+        start_time = time.perf_counter()
+        response = func(*args, **kwargs)
+        end_time = time.perf_counter()
+
+        stop_queries = len(connection.queries)
+
+        print("Function name ->> {}".format(func.__name__))
+        print("Number of Queries ->> {}".format(stop_queries - begin_queries))
+        print("Completed in ->> {}s".format(end_time - start_time))
+        return response
+
+    return inner_func

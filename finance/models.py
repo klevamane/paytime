@@ -133,6 +133,7 @@ class Payment(DirtyFieldsMixin, TimeStampMixin):
 
 
 INVESTMENT_STATUS = [
+    ("active", "Active"),
     ("cancelled", "Cancelled"),
     ("completed", "Completed"),
     ("pending", "Pending"),
