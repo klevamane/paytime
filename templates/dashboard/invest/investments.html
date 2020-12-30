@@ -94,7 +94,7 @@
                                     <tbody>
                                     {% for investment in user_investments %}
                                         <tr>
-                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ forloop.counter0|add:user_investments.start_index }}</td>
                                         <td>{{ investment.created_at }}</td>
                                         <td>{{ investment.package.name }}</td>
                                         <td>{{ investment.package.return_on_investmentent }}%</td>
@@ -114,27 +114,41 @@
 
 
                 {% if user_investments.has_other_pages %}
-                    <ul class="pagination">
-                        {% if user_investments.has_previous %}
-                            <li class="page-item"><a class="page-link" href="?page={{ user_investments.previous_page_number }}">&laquo;</a></li>
-                        {% else %}
-                            <li class="disabled page-item"><span>&laquo;</span></li>
-                        {% endif %}
-                        {% for i in user_investments.paginator.page_range %}
-                            {% if user_investments.number == i %}
-                                <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                            {% else %}
-                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                        {% if user_investments.has_next %}
-                            <li class="page-item"><a class="page-link" href="?page={{ user_investments.next_page_number }}">&raquo;</a></li>
-                        {% else %}
-                            <li class="disabled page-item"><span>&raquo;</span></li>
-                        {% endif %}
-                    </ul>
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                {% if user_investments.has_previous %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ user_investments.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><a class="page-link"
+                                                                      href="#">Previous</a>
+                                    </li>
+                                {% endif %}
+                                {% for i in user_investments.paginator.page_range %}
+                                    {% if user_investments.number == i %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ i }}<span class="sr-only">(current)</span></span>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if user_investments.has_next %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ user_investments.next_page_number }}">Next</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><a class="page-link"
+                                                                      href="#">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
                 {% endif %}
+
             </div>
+
             <div class="col-lg-3"></div>
 
         </div>
