@@ -8,49 +8,50 @@
         <div class="row">
             <div class="col-lg-9">
                 {% if last_investment %}
-                <div class="row">
+                    <div class="row">
 
 
-                    <!-- ************* ACTIVE INVESTMENT ************-->
+                        <!-- ************* ACTIVE INVESTMENT ************-->
 
-                    <div class="col-12 col-lg-12">
-                        <div class="box box-body pull-up">
-                            <!--Use stretched-link to make the entire card clickable-->
-                            <a href="{% url "investment_detail_view_url" id=last_investment.id %}"
-                               class="stretched-link"></a>
-                            <div class="d-flex justify-content-between">
-                                <div class="p-0">
+                        <div class="col-12 col-lg-12">
+                            <div class="box box-body pull-up">
+                                <!--Use stretched-link to make the entire card clickable-->
+                                <a href="{% url "investment_detail_view_url" id=last_investment.id %}"
+                                   class="stretched-link"></a>
+                                <div class="d-flex justify-content-between">
+                                    <div class="p-0">
 
-                                    <div class="text-center">
-                                        <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
+                                        <div class="text-center">
+                                            <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
+                                        </div>
+                                        <div>
+                                            <h3 class="no-margin text-bold">Medium {{ last_investment.name }}</h3>
+                                            <span>Ovviy</span>
+                                        </div>
                                     </div>
                                     <div>
-                                        <h3 class="no-margin text-bold">Medium {{ last_investment.name }}</h3>
-                                        <span>Ovviy</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div>
-                                        <p class="no-margin font-weight-600"><span class="text-warning">Capital</span> /
-                                            <strong>N{{ last_investment.amount|floatformat|intcomma }}</strong></p>
-                                        <p class="no-margin font-weight-600"><span
-                                                class="text-warning">Interest Paid</span> /
-                                            <strong>N500,000</strong></p>
-                                        <p class="no-margin font-weight-600"><span class="text-warning">Possible Interest Left</span>
-                                            /
-                                            <strong>N300,000,000</strong></p>
-                                    </div>
-                                    <div class="mt-10">
-                                        <p class="no-margin font-weight-600"><span
-                                                class="text-warning"><strong>{{ last_investment.package.return_on_investmentent }}% ROI</strong></span>
-                                        </p>
-                                        <p class="no-margin"><strong>5d working days left</strong></p>
+                                        <div>
+                                            <p class="no-margin font-weight-600"><span
+                                                    class="text-warning">Capital</span> /
+                                                <strong>N{{ last_investment.amount|floatformat|intcomma }}</strong></p>
+                                            <p class="no-margin font-weight-600"><span
+                                                    class="text-warning">Interest Paid</span> /
+                                                <strong>N500,000</strong></p>
+                                            <p class="no-margin font-weight-600"><span class="text-warning">Possible Interest Left</span>
+                                                /
+                                                <strong>N300,000,000</strong></p>
+                                        </div>
+                                        <div class="mt-10">
+                                            <p class="no-margin font-weight-600"><span
+                                                    class="text-warning"><strong>{{ last_investment.package.return_on_investmentent }}% ROI</strong></span>
+                                            </p>
+                                            <p class="no-margin"><strong>5d working days left</strong></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endif %}
 
 
@@ -100,7 +101,8 @@
                                         <td>N{{ investment.amount|floatformat|intcomma }}</td>
                                         <td><span class="badge badge-dark">{{ investment.status }}</span></td>
                                         <td>
-                                            <a href="{% url "investment_detail_view_url" id=last_investment.id %}" class="btn btn-dark btn-sm">view</a>
+                                            <a href="{% url "investment_detail_view_url" id=last_investment.id %}"
+                                               class="btn btn-dark btn-sm">view</a>
                                         </td>
                                     {% endfor %}
                                     </tbody>
@@ -110,6 +112,28 @@
                     </div>
                 {% endif %}
 
+
+                {% if user_investments.has_other_pages %}
+                    <ul class="pagination">
+                        {% if user_investments.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ user_investments.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li class="disabled page-item"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in user_investments.paginator.page_range %}
+                            {% if user_investments.number == i %}
+                                <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if user_investments.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ user_investments.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li class="disabled page-item"><span>&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
             </div>
             <div class="col-lg-3"></div>
 

@@ -65,6 +65,7 @@ class SignUp(View):
         return render(request, "authentication/signup.html", {"form": form})
 
     def _get_activation_url(self, request, user):
+        log.warning("Deprecated; we would be makng use of oauth Signup process")
         domain = get_current_site(request).domain
         # TODO we can add token_generated_at to the user model
         # so that in the validation we can determin the expiry of the token

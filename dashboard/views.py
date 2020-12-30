@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.forms.utils import ErrorList
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -136,14 +137,23 @@ class InvestView(View):
 class InvestmentsView(View):
     def get(self, request):
         # get user investments
-        last_investment = None
-        user_investments = Investment.objects.filter(user=request.user)
-        if user_investments:
-            last_investment = user_investments.last()
-        context = {
-            "user_investments": user_investments,
-            "last_investment": last_investment,
-        }
+        context = {}
+
+        user_investments_qs = Investment.objects.filter(user=request.user)
+        if user_investments_qs:
+            last_investment = user_investments_qs.last()
+            context["last_investment"] = last_investment
+        page = request.GET.get("page", 1)
+        paginator = Paginator(user_investments_qs, 5)
+        try:
+            investments = paginator.page(page)
+        except PageNotAnInteger:
+            investments = paginator.page(1)
+        except EmptyPage:
+            investments = paginator.page(paginator.num_pages)
+
+        # this is important that we use update instead of manually assigning key, value
+        context.update({"user_investments": investments})
         return render(request, "dashboard/invest/investments.html", context=context)
 
 
