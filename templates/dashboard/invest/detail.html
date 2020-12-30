@@ -103,6 +103,9 @@
                         <h4 class="box-title">
                             ROI Schedule
                         </h4>
+                        <br>
+                        <small class="text-muted">The maturity date is a proposed date, until the ROI schedule starts processing</small>
+
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">
@@ -118,16 +121,18 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {% for roi_schedule in roi_schedules %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>12/12/2020</td>
-                                    <td>N75,000</td>
-                                    <td>$845.69</td>
-                                    <td>Processing</td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ roi_schedule.maturity_date }}</td>
+                                    <td>{{ investment.package.return_on_investmentent }}%</td>
+                                    <td>N{{ roi_schedule.roi_amount|floatformat }}</td>
+                                    <td>{{ roi_schedule.status }}</td>
                                     <td>
-                                        <button class="btn btn-outline-dark btn-sm" disabled>Requested</button>
+                                        <button class="btn btn-outline-dark btn-sm" disabled>No Action</button>
                                     </td>
                                 </tr>
+                                {% endfor %}
                                 <tr>
                                     <td>1</td>
                                     <td>12/12/2020</td>
@@ -135,7 +140,7 @@
                                     <td>$845.69</td>
                                     <td>Open</td>
                                     <td>
-                                        <button class="btn btn-success btn-sm">Request payment</button>
+                                        <button class="btn btn-success btn-sm">Transfer to wallet</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -143,9 +148,9 @@
                                     <td>12/12/2020</td>
                                     <td>N75,000</td>
                                     <td>$854.65</td>
-                                    <td>Complete</td>
+                                    <td>Completed</td>
                                     <td>
-                                        <button class="btn btn-outline-dark btn-sm" disabled>Payment completed</button>
+                                        <button class="btn  btn-success btn-sm" disabled>Transfered to wallet</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -153,7 +158,7 @@
                                     <td>12/12/2020</td>
                                     <td>N75,000</td>
                                     <td>$845.69</td>
-                                    <td>Complete</td>
+                                    <td>Completed</td>
                                     <td>
                                         <button class="btn btn-outline-dark btn-sm" disabled>Payment completed</button>
                                     </td>

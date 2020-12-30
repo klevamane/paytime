@@ -186,15 +186,20 @@ class InvestmentDetailView(LoginRequiredMixin, View):
         # get the ROI Schedule of the particular investment
         # not these can only be done if the investment exists
         # and belongs to the current user
-        # investment = Investment.objects.get(id=id)
-        # roi_schedules = RoiSchedule.objects.filter(
-        #     investment_id=investment.id
-        # ).order_by("maturity_date")
+        try:
+            investment = Investment.objects.get(id=id, user_id=request.user.id)
+        except Investment.DoesNotExist:
+            # TODO redirect to a 404 page
+            return
 
         return render(
             request,
             "dashboard/invest/detail.html",
-            context={"fullname": request.user.get_full_name()},
+            context={
+                "fullname": request.user.get_full_name(),
+                "investment": investment,
+                "roi_schedules": investment.roischedule_set.order_by("maturity_date"),
+            },
         )
 
 
