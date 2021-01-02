@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import transaction
 from django.forms.utils import ErrorList
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -202,6 +203,73 @@ class InvestmentDetailView(LoginRequiredMixin, View):
             },
         )
 
+    def post(self, request, id):
+        # transfer to wall
+        pass
+
+
+class TransferToWalletView(View):
+    # get roi
+    # check that user owns the investment
+    # check that the status is payable to user
+    # if so deposit to the wallet
+    # update the status of the ROI to transfer completed
+    # if the ROI is the ROI with the last date (maturity date)?
+    # mark all ROIs in that investment as completed
+    # wait already paid ROIs ought to have been marked completed
+
+    # instead, mark the investment as completed
+    # therefore during withrawals or performing investment actions
+    # we need to check if the investment has beeen completed first
+    def get(self, request, _id):
+
+        try:
+            roi_id = int(_id)
+        except AttributeError:
+            # TODO redirect to 404 page
+            return False
+        # we don't want to have a try catch inside the transaction.atomic block
+        # so instead we first check if the ROI exists and handle it if not
+        if not RoiSchedule.objects.filter(
+            id=roi_id, investment__user=request.user, status="request"
+        ).exists():
+            # TODO redirect to 404 page
+            return False
+
+        # Never used try catch block into the transaction block
+        with transaction.atomic():
+            user_wallet, _ = Wallet.objects.get_or_create(user=request.user)
+            roi = RoiSchedule.objects.select_for_update().get(
+                id=roi_id, investment__user=request.user, status="request"
+            )
+            roi.status = "completed"
+            roi.save()
+            user_wallet.do_depost(roi.roi_amount, request.user)
+            # check if this is the last ROI of the investment
+            # if so set the investment status to completed
+            if roi.investment.roischedule_set.order_by("-maturity_date").first() == roi:
+                # go through each and check that their status is completed
+                # before setting this to completed
+                # because there might be a case where by
+                # first roi is ready to be paid to the wallet
+                # as well as the second one (assume that this is the last)
+                # if we go and just check if the invest this is the last one
+                # and complete the investment, it'll mean that something will be wrong
+
+                # there for we can go request that the other roi be paid first
+                # into the wallet
+                # or we just move every of them into the wallet
+                # it is expected that there status be ready to be transferred
+                # but we are just checking still to be sure
+                for r in roi.investment.roischedule_set:
+                    if r.status == "transfer":
+                        r.status = "completed"
+                        r.save()
+                        user_wallet.do_depost(r.roi_amount, request.user)
+                # make the investment status as completed
+                roi.investment.status = "completed"
+                roi.investment.save()
+
 
 class PaymentVerificationView(View):
     def post(self, request):
@@ -211,8 +279,8 @@ class PaymentVerificationView(View):
             # not enough values to unpack
             # return an invalid response
             return
-        transaction = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
-        response = transaction.verify(reference_id)
+        tnx = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
+        response = tnx.verify(reference_id)
         if response[0] == 200:
             verify_amount = response[3]["amount"] / 100
             # check that the amount paid to paystack
@@ -229,7 +297,7 @@ class PaymentVerificationView(View):
                 resolved_url = reverse("investments_view_url")
                 return JsonResponse({"resolved_url": resolved_url}, safe=False)
             # return error to the user indicating that there has been
-            # an amount mismatch therefore the amount has been added to the users
+            # an amount mismatch therefore the amount has been added to the user's wallet
             # get or create a user wallet
             user_wallet, _ = Wallet.objects.get_or_create(user=request.user)
             user_wallet.do_depost(amount, request.user)

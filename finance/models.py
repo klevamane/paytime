@@ -138,8 +138,8 @@ INVESTMENT_STATUS = [
     ("completed", "Completed"),
     ("pending", "Pending"),
     ("processing", "Processing"),
-    ("running", "Running"),
     ("success", "Success"),
+    ("transfer", "Transfer"),
 ]
 
 
@@ -153,7 +153,7 @@ class Investment(DirtyFieldsMixin, TimeStampMixin):
 
 
 ROI_ACTIONS = [
-    ("request", "Request"),
+    ("transfer", "transfer"),
     ("no_action", "No Action"),
     ("payment_completed", "Payment completed"),
 ]
