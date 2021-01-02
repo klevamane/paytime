@@ -80,4 +80,9 @@ urlpatterns = [
         csrf_exempt(views.validate_package_amount),
         name="payment_package_amount_url",
     ),
+    path(
+        "investments/transfer-to-wallet/<int:_id>",
+        csrf_exempt(views.TransferToWalletView.as_view()),
+        name="transfer-to-wallet_url",
+    ),
 ]

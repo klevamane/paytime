@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.forms.utils import ErrorList
-from django.http import HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -191,7 +191,7 @@ class InvestmentDetailView(LoginRequiredMixin, View):
             investment = Investment.objects.get(id=id, user_id=request.user.id)
         except Investment.DoesNotExist:
             # TODO redirect to a 404 page
-            return
+            raise Http404
 
         return render(
             request,
@@ -245,21 +245,26 @@ class TransferToWalletView(View):
             roi.status = "completed"
             roi.save()
             user_wallet.do_depost(roi.roi_amount, request.user)
+
             # check if this is the last ROI of the investment
             # if so set the investment status to completed
             if roi.investment.roischedule_set.order_by("-maturity_date").first() == roi:
-                # go through each and check that their status is completed
-                # before setting this to completed
+                # go through each roi of the particular investment
+                # and check that it's status is completed
+                # before setting the investment and the last (ROI) to completed
                 # because there might be a case where by
                 # first roi is ready to be paid to the wallet
                 # as well as the second one (assume that this is the last)
                 # if we go and just check if the invest this is the last one
                 # and complete the investment, it'll mean that something will be wrong
 
-                # there for we can go request that the other roi be paid first
+                # one way to make this work is
+                #  we can go request that the other roi be paid first
                 # into the wallet
-                # or we just move every of them into the wallet
-                # it is expected that there status be ready to be transferred
+                # or we just move every other ROI
+                # of this investment into the wallet.
+
+                # it is expected that their status be (ready to be transferred)
                 # but we are just checking still to be sure
                 for r in roi.investment.roischedule_set:
                     if r.status == "transfer":
@@ -269,6 +274,8 @@ class TransferToWalletView(View):
                 # make the investment status as completed
                 roi.investment.status = "completed"
                 roi.investment.save()
+                # The last ROI is paid with the capital
+                user_wallet.do_depost(roi.investment.amount, request.user)
 
 
 class PaymentVerificationView(View):
