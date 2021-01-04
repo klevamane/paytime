@@ -142,9 +142,9 @@
                                         </td>
                                     {% elif roi_schedule.status == "transfer" %}
                                         <td>
-                                                <button class="btn btn-success btn-sm sbt" value="{{ roi_schedule.id }}"
-                                                        id="roi-btn-{{ forloop.counter }}" type="submit">Transfer to wallet
-                                                </button>
+                                            <button class="btn btn-success btn-sm sbt" value="{{ roi_schedule.id }}"
+                                                    id="roi-btn-{{ forloop.counter }}" type="submit">Transfer to wallet
+                                            </button>
                                         </td>
                                     {% else %}
                                         <td>
@@ -171,11 +171,12 @@
 
 
         document.addEventListener("click", roiTransfer)
+
         function errorMsg(content) {
             const danger = "danger"
             let elMessages = $('#popup-messages-content');
             {#elMessages.append("<div class='text-center alert alert-"+danger+"''>"+content+"</div>");#}
-            elMessages.append("<div class='text-center alert-dismissible alert alert-"+danger+"''>"+content+"<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+            elMessages.append("<div class='text-center alert-dismissible alert alert-" + danger + "''>" + content + "<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
                 "                    <span aria-hidden=\"true\">&times;</span></div>");
             elMessages[0].scrollIntoView()
         }
@@ -184,55 +185,55 @@
             e.preventDefault()
             if (e.target && e.target.classList.contains("sbt")) {
                 //do something
-            let target = e.target;
-            fetch(`transfer-to-wallet/${target.value}`, {
-                method: "GET"
-            }).then(res => {
-                if (!res.ok) {
-                    errorMsg(res.statusText)
-                }
-                return res.json()
-            })
-                .then(res => {
-                    if (res.hasOwnProperty("idsToUpdate")) {
-                        let counter = 1;
-                        for (let row of roiSchedules.rows) {
+                let target = e.target;
+                fetch(`transfer-to-wallet/${target.value}`, {
+                    method: "GET"
+                }).then(res => {
+                    if (!res.ok) {
+                        errorMsg(res.statusText)
+                    }
+                    return res.json()
+                })
+                    .then(res => {
+                        if (res.hasOwnProperty("idsToUpdate")) {
+                            let counter = 1;
+                            for (let row of roiSchedules.rows) {
 
-                            // skip the first row is the thead which doesn't have an id
-                            if (counter > 1) {
-                                // idsToUpdate is gotting from the endpoint
-                                // idsToUpdate is an array containing the roiSchedule
-                                // table rows to be updated in the UI
+                                // skip the first row is the thead which doesn't have an id
+                                if (counter > 1) {
+                                    // idsToUpdate is gotting from the endpoint
+                                    // idsToUpdate is an array containing the roiSchedule
+                                    // table rows to be updated in the UI
 
-                                // slice id_33 = 33
-                                if (res.idsToUpdate.includes(Number(row.id.slice(3)))) {
-                                console.log("INCLUDES : - ", res.idsToUpdate.includes(Number(row.id.slice(3))))
-                                console.log("SLICED : - ", row.id.slice(3))
-                                console.log("PLAIN : - ", row.id)
-                                console.log("INCLUDES : - ", res.idsToUpdate)
+                                    // slice id_33 = 33
+                                    if (res.idsToUpdate.includes(Number(row.id.slice(3)))) {
+                                        console.log("INCLUDES : - ", res.idsToUpdate.includes(Number(row.id.slice(3))))
+                                        console.log("SLICED : - ", row.id.slice(3))
+                                        console.log("PLAIN : - ", row.id)
+                                        console.log("INCLUDES : - ", res.idsToUpdate)
 
 
-                                // for of loop evaluates the property values as
-                                // oppose to the the property keys va for-in loop
-                                // https://stackoverflow.com/questions/29285897/what-is-the-difference-between-for-in-and-for-of-statements-in-jav/29286412
-                                for (let cell of row.cells) {
-                                    if (cell.innerText === "transfer") {
-                                        cell.innerText = "completed"
-                                    }
-                                    if (cell.children.length > 0 && cell.children[0].nodeName.toLowerCase() === "button") {
-                                        if (cell.children[0].innerText === "Transfer to wallet") {
-                                            cell.children[0].innerText = "Transferred to wallet";
-                                            cell.children[0].disabled = true
+                                        // for of loop evaluates the property values as
+                                        // oppose to the the property keys va for-in loop
+                                        // https://stackoverflow.com/questions/29285897/what-is-the-difference-between-for-in-and-for-of-statements-in-jav/29286412
+                                        for (let cell of row.cells) {
+                                            if (cell.innerText === "transfer") {
+                                                cell.innerText = "completed"
+                                            }
+                                            if (cell.children.length > 0 && cell.children[0].nodeName.toLowerCase() === "button") {
+                                                if (cell.children[0].innerText === "Transfer to wallet") {
+                                                    cell.children[0].innerText = "Transferred to wallet";
+                                                    cell.children[0].disabled = true
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                counter += 1;
                             }
-                            }
-                            counter += 1;
                         }
-                    }
-                })
-        }
+                    })
+            }
         }
 
     </script>
