@@ -116,21 +116,31 @@ class DocumentView(LoginRequiredMixin, View):
 
 class DepositView(LoginRequiredMixin, View):
     def get(self, request):
+        tnxs = Transactions.objects.filter(
+            user_id=request.user.id, transaction_type="deposit"
+        )
         return render(
             request=request,
             template_name="dashboard/transactions/deposit.html",
             context={
                 "fullname": request.user.get_full_name(),
+                "transactions": tnxs if tnxs else None,
             },
         )
 
 
 class WithdrawalView(LoginRequiredMixin, View):
     def get(self, request):
+        tnxs = Transactions.objects.filter(
+            user_id=request.user.id, transaction_type="withdrawal"
+        )
         return render(
             request=request,
             template_name="dashboard/transactions/withrawal.html",
-            context={"fullname": request.user.get_full_name()},
+            context={
+                "fullname": request.user.get_full_name(),
+                "transactions": tnxs if tnxs else None,
+            },
         )
 
 

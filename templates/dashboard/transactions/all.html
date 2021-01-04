@@ -23,7 +23,7 @@
             <tbody>
             {% for transaction in transactions %}
                 <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ transaction.transaction_type|capfirst }}</td>
                 <td>{{ transaction.amount|floatformat|intcomma }}</td>
                 <td>{{ transaction.created_at }}</td>
@@ -31,14 +31,6 @@
                 <td>{{ transaction.for_package|capfirst }}</td>
             </tr>
             {% endfor %}
-            <tr>
-                <th scope="row">2</th>
-                <td>Withrawal</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>False</td>
-            </tr>
             </tbody>
         </table>
     </div>
