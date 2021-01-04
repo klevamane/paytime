@@ -28,7 +28,6 @@ pycodestyle==2.6.0
 pycparser==2.20
 pyflakes==2.2.0
 PyJWT==1.7.1
-pypaystack==1.24
 python-dotenv==0.15.0
 python-networkdays==1.0.2
 python3-openid==3.2.0

@@ -135,7 +135,7 @@
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ roi_schedule.maturity_date }}</td>
                                     <td>{{ investment.package.return_on_investmentent }}%</td>
-                                    <td>N{{ roi_schedule.roi_amount|floatformat }}</td>
+                                    <td>N{{ roi_schedule.roi_amount|floatformat|intcomma }}</td>
                                     <td>{{ roi_schedule.status }}</td>
                                     {% if roi_schedule.status == "completed" %}
                                         <td>
@@ -167,16 +167,13 @@
 
 {% block extrajs %}
     <script>
-        //const roiBtn = document.getElementById("roi-btn");
         const roiSchedules = document.getElementById("roi-schedule-table");
-        //roiBtn.addEventListener("click", roiTransfer, false)
 
         roiSchedules.addEventListener("click", roiTransfer)
 
         function errorMsg(content) {
             const danger = "danger"
             let elMessages = $('#popup-messages-content');
-            {#elMessages.append("<div class='text-center alert alert-"+danger+"''>"+content+"</div>");#}
             elMessages.append("<div class='text-center alert-dismissible alert alert-" + danger + "''>" + content + "<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
                 "                    <span aria-hidden=\"true\">&times;</span></div>");
             elMessages[0].scrollIntoView()

@@ -8,7 +8,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.db.models import Q, Sum
@@ -16,11 +15,7 @@ from django.forms.utils import ErrorList
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from pypaystack import Customer, Transaction
-from pypaystack.baseapi import BaseAPI
 
 from dashboard.forms import PaymentForm
 from finance.forms import BankForm
@@ -268,11 +263,16 @@ class PaymentVerificationView(View):
             # not enough values to unpack
             # return an invalid response
             return
-        tnx = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
-        response = tnx.verify(reference_id)
-        if response[0] == 200:
+
+        headers = {"Authorization": "Bearer {}".format(settings.PAYSTACK_SECRET_KEY)}
+        paystack_verify_url = "https://api.paystack.co/transaction/verify/{}".format(
+            reference_id
+        )
+        response = requests.get(url=paystack_verify_url, headers=headers)
+
+        if response.status_code == 200:
             user_wallet, _ = Wallet.objects.get_or_create(user=request.user)
-            verify_amount = response[3]["amount"] / 100
+            verify_amount = response.json()["data"]["amount"] / 100
             # check that the amount paid to paystack
             # was the amount that was
             if verify_amount == int(amount):
@@ -307,6 +307,7 @@ class PaymentVerificationView(View):
         return JsonResponse(
             {"message": "Transaction not completed unable to verify transaction"},
             safe=False,
+            status=400,
         )
 
 
