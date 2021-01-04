@@ -24,7 +24,7 @@ from pypaystack.baseapi import BaseAPI
 
 from dashboard.forms import PaymentForm
 from finance.forms import BankForm
-from finance.models import Bank, Investment, Package, RoiSchedule, Wallet
+from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
 from paytime import settings
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
 from user.forms import ProfileForm
@@ -136,10 +136,14 @@ class WithdrawalView(LoginRequiredMixin, View):
 
 class TransactionsAllView(LoginRequiredMixin, View):
     def get(self, request):
+        tnxs = Transactions.objects.filter(user_id=request.user.id)
         return render(
             request=request,
             template_name="dashboard/transactions/all.html",
-            context={"fullname": request.user.get_full_name()},
+            context={
+                "fullname": request.user.get_full_name(),
+                "transactions": tnxs if tnxs else None,
+            },
         )
 
 

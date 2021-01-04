@@ -1,4 +1,5 @@
 {% extends "partials/transactions/base-transaction-page.html" %}
+{% load humanize %}
 {% load static %}
 
 {% block username %}{{ fullname }} {% endblock %}
@@ -16,22 +17,27 @@
                 <th scope="col">Amount</th>
                 <th scope="col">Date</th>
                 <th scope="col">Status</th>
+                <th scope="col">For Package?</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
+            {% for transaction in transactions %}
+                <tr>
                 <th scope="row">1</th>
-                <td>Deposit</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>{{ transaction.transaction_type|capfirst }}</td>
+                <td>{{ transaction.amount|floatformat|intcomma }}</td>
+                <td>{{ transaction.created_at }}</td>
+                <td>{{ transaction.status|capfirst }}</td>
+                <td>{{ transaction.for_package|capfirst }}</td>
             </tr>
+            {% endfor %}
             <tr>
                 <th scope="row">2</th>
                 <td>Withrawal</td>
                 <td>Jacob</td>
                 <td>Thornton</td>
                 <td>@fat</td>
+                <td>False</td>
             </tr>
             </tbody>
         </table>
