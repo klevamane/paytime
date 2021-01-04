@@ -81,7 +81,7 @@ urlpatterns = [
         name="payment_package_amount_url",
     ),
     path(
-        "investments/transfer-to-wallet/<int:_id>",
+        "investments/detail/transfer-to-wallet/<int:roi_id>",
         csrf_exempt(views.TransferToWalletView.as_view()),
         name="transfer-to-wallet_url",
     ),

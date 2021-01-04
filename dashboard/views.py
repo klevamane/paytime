@@ -203,10 +203,6 @@ class InvestmentDetailView(LoginRequiredMixin, View):
             },
         )
 
-    def post(self, request, id):
-        # transfer to wall
-        pass
-
 
 class TransferToWalletView(View):
     # get roi
@@ -221,31 +217,22 @@ class TransferToWalletView(View):
     # instead, mark the investment as completed
     # therefore during withrawals or performing investment actions
     # we need to check if the investment has beeen completed first
-    def get(self, request, _id):
+    def get(self, request, roi_id):
 
         try:
-            roi_id = int(_id)
-        except AttributeError:
-            # TODO redirect to 404 page
-            return False
-        # we don't want to have a try catch inside the transaction.atomic block
-        # so instead we first check if the ROI exists and handle it if not
-        if not RoiSchedule.objects.filter(
-            id=roi_id, investment__user=request.user, status="request"
-        ).exists():
-            # TODO redirect to 404 page
-            return False
+            roi = RoiSchedule.objects.get(
+                id=roi_id, investment__user=request.user, status="transfer"
+            )
+        except (RoiSchedule.DoesNotExist, ValueError):
+            raise Http404("Operation unsuccessful")
 
-        # Never used try catch block into the transaction block
+        # Never use try catch block in the transaction block
         with transaction.atomic():
             user_wallet, _ = Wallet.objects.get_or_create(user=request.user)
-            roi = RoiSchedule.objects.select_for_update().get(
-                id=roi_id, investment__user=request.user, status="request"
-            )
             roi.status = "completed"
             roi.save()
             user_wallet.do_depost(roi.roi_amount, request.user)
-
+            ids_to_update = [roi.id]
             # check if this is the last ROI of the investment
             # if so set the investment status to completed
             if roi.investment.roischedule_set.order_by("-maturity_date").first() == roi:
@@ -264,18 +251,27 @@ class TransferToWalletView(View):
                 # or we just move every other ROI
                 # of this investment into the wallet.
 
-                # it is expected that their status be (ready to be transferred)
+                # it is expected that their status be (ready to be transferred (ie "transfer")
                 # but we are just checking still to be sure
-                for r in roi.investment.roischedule_set:
+
+                for r in roi.investment.roischedule_set.all():
+                    # since the current ROI has already been paid
+                    # it won't be checked within this loop
                     if r.status == "transfer":
                         r.status = "completed"
                         r.save()
                         user_wallet.do_depost(r.roi_amount, request.user)
+                        ids_to_update.append(r.id)
+
                 # make the investment status as completed
                 roi.investment.status = "completed"
                 roi.investment.save()
+
                 # The last ROI is paid with the capital
                 user_wallet.do_depost(roi.investment.amount, request.user)
+            dic = {}
+            dic.update({"idsToUpdate": ids_to_update})
+            return JsonResponse(dic, safe=False)
 
 
 class PaymentVerificationView(View):

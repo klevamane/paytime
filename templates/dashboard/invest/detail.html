@@ -101,6 +101,8 @@
 
         <div class="row">
             <div class="box">
+                <div id="popup-messages-content">
+                </div>
                 <div class="box-header">
                     <h4 class="box-title">
                         ROI Schedule
@@ -114,7 +116,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-borderless mb-0">
+                        <table class="table table-borderless mb-0" id="roi-schedule-table">
                             <thead>
                             <tr>
                                 <th>No</th>
@@ -127,7 +129,7 @@
                             </thead>
                             <tbody>
                             {% for roi_schedule in roi_schedules %}
-                                <tr>
+                                <tr id="id_{{ roi_schedule.id }}">
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ roi_schedule.maturity_date }}</td>
                                     <td>{{ investment.package.return_on_investmentent }}%</td>
@@ -135,64 +137,23 @@
                                     <td>{{ roi_schedule.status }}</td>
                                     {% if roi_schedule.status == "completed" %}
                                         <td>
-                                            <button class="btn  btn-success btn-sm" disabled>Transfered to wallet
+                                            <button class="btn  btn-success btn-sm" disabled>Transferred to wallet
                                             </button>
                                         </td>
                                     {% elif roi_schedule.status == "transfer" %}
                                         <td>
-                                            <form action="{% url "transfer-to-wallet_url" _id=roi_schedule.id %}" method="GET">
-                                            <button class="btn btn-success btn-sm" id="roi-btn" type="submit">Transfer to wallet</button>
-                                                </form>
+                                                <button class="btn btn-success btn-sm sbt" value="{{ roi_schedule.id }}"
+                                                        id="roi-btn-{{ forloop.counter }}" type="submit">Transfer to wallet
+                                                </button>
                                         </td>
                                     {% else %}
                                         <td>
-                                            <button class="btn btn-outline-dark btn-sm"  disabled>No Action</button>
+                                            <button class="btn btn-outline-dark btn-sm" disabled>No Action</button>
                                         </td>
                                     {% endif %}
 
                                 </tr>
                             {% endfor %}
-                            <tr>
-                                <td>1</td>
-                                <td>12/12/2020</td>
-                                <td>N75,000</td>
-                                <td>$845.69</td>
-                                <td>Open</td>
-                                <td>
-                                    <button class="btn btn-success btn-sm">Transfer to wallet</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>12/12/2020</td>
-                                <td>N75,000</td>
-                                <td>$854.65</td>
-                                <td>Completed</td>
-                                <td>
-                                    <button class="btn  btn-success btn-sm" disabled>Transfered to wallet</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>12/12/2020</td>
-                                <td>N75,000</td>
-                                <td>$845.69</td>
-                                <td>Completed</td>
-                                <td>
-                                    <button class="btn btn-outline-dark btn-sm" disabled>Payment completed</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>12/12/2020</td>
-                                <td>N75,000</td>
-                                <td>$875.38</td>
-                                <td>Pending</td>
-                                <td>
-                                    <button class="btn btn-dark btn-sm" disabled>No Action</button>
-                                </td>
-                            </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -204,17 +165,75 @@
 
 {% block extrajs %}
     <script>
-    const roiBtn = document.getElementById("roi-btn");
-    roiBtn.addEventListener("click", roiTransfer, false)
+        //const roiBtn = document.getElementById("roi-btn");
+        const roiSchedules = document.getElementById("roi-schedule-table");
+        //roiBtn.addEventListener("click", roiTransfer, false)
 
-    function roiTransfer(e) {
-        fetch("investments/validate-payment-package-amount", {
-                body: JSON.stringify({
-                    "amount": amount.value,
-                    "package": pkg.value,
-                    "terms_condition": terms_condition
-                }),
-    }
+
+        document.addEventListener("click", roiTransfer)
+        function errorMsg(content) {
+            const danger = "danger"
+            let elMessages = $('#popup-messages-content');
+            {#elMessages.append("<div class='text-center alert alert-"+danger+"''>"+content+"</div>");#}
+            elMessages.append("<div class='text-center alert-dismissible alert alert-"+danger+"''>"+content+"<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                "                    <span aria-hidden=\"true\">&times;</span></div>");
+            elMessages[0].scrollIntoView()
+        }
+
+        function roiTransfer(e) {
+            e.preventDefault()
+            if (e.target && e.target.classList.contains("sbt")) {
+                //do something
+            let target = e.target;
+            fetch(`transfer-to-wallet/${target.value}`, {
+                method: "GET"
+            }).then(res => {
+                if (!res.ok) {
+                    errorMsg(res.statusText)
+                }
+                return res.json()
+            })
+                .then(res => {
+                    if (res.hasOwnProperty("idsToUpdate")) {
+                        let counter = 1;
+                        for (let row of roiSchedules.rows) {
+
+                            // skip the first row is the thead which doesn't have an id
+                            if (counter > 1) {
+                                // idsToUpdate is gotting from the endpoint
+                                // idsToUpdate is an array containing the roiSchedule
+                                // table rows to be updated in the UI
+
+                                // slice id_33 = 33
+                                if (res.idsToUpdate.includes(Number(row.id.slice(3)))) {
+                                console.log("INCLUDES : - ", res.idsToUpdate.includes(Number(row.id.slice(3))))
+                                console.log("SLICED : - ", row.id.slice(3))
+                                console.log("PLAIN : - ", row.id)
+                                console.log("INCLUDES : - ", res.idsToUpdate)
+
+
+                                // for of loop evaluates the property values as
+                                // oppose to the the property keys va for-in loop
+                                // https://stackoverflow.com/questions/29285897/what-is-the-difference-between-for-in-and-for-of-statements-in-jav/29286412
+                                for (let cell of row.cells) {
+                                    if (cell.innerText === "transfer") {
+                                        cell.innerText = "completed"
+                                    }
+                                    if (cell.children.length > 0 && cell.children[0].nodeName.toLowerCase() === "button") {
+                                        if (cell.children[0].innerText === "Transfer to wallet") {
+                                            cell.children[0].innerText = "Transferred to wallet";
+                                            cell.children[0].disabled = true
+                                        }
+                                    }
+                                }
+                            }
+                            }
+                            counter += 1;
+                        }
+                    }
+                })
+        }
+        }
 
     </script>
 {% endblock %}
