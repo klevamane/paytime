@@ -77,6 +77,7 @@ class Transactions(DirtyFieldsMixin, TimeStampMixin):
     )
     status = models.CharField(choices=TRANSACTION_STATUS, default="none", max_length=20)
     amount = models.DecimalField(decimal_places=2, max_digits=12)
+    for_package = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} by {}".format(self.transaction_type, self.user.get_full_name())
@@ -95,7 +96,7 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
     def __str__(self):
         return "Balance {}".format(self.balance)
 
-    def do_depost(self, amount, user):
+    def do_depost(self, amount, user, for_package=False):
         self.balance += int(amount)
         self.save()
         transaction = Transactions(
@@ -103,6 +104,7 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
             user=user,
             amount=int(amount),
             status="completed",
+            for_package=for_package,
         )
         transaction.save()
 

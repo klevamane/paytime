@@ -43,9 +43,23 @@ days = networkdays.Networkdays(
 # and __init__.py
 @receiver(post_save, sender=Investment)
 def create_roi(sender, instance, created, **kwargs):
+    """
+    Create the return on investments days
+
+    This function is taking into cognizant that
+    the maximum days should be 90 days
+    :param sender:
+    :param instance:
+    :param created:
+    :param kwargs:
+    :return:
+    """
+
     # taking the package days or 90 days
     number_of_wrk_days = instance.package.days or 90
     needed_days = []
+    # get the work days for these two dates
+    # excluding the holidays
     days_needed = networkdays.Networkdays(
         datetime.date(2020, 12, 29), datetime.date(2021, 12, 29), HOLIDAYS
     ).networkdays()

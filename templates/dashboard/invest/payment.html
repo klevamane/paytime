@@ -156,7 +156,7 @@
             e.preventDefault();
 
             // Validate via the django form
-            fetch("investments/validate-payment-package-amount", {
+            fetch("payment/validate-payment-package-amount", {
                 body: JSON.stringify({
                     "amount": amount.value,
                     "package": pkg.value,

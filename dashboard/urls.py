@@ -25,7 +25,7 @@ urlpatterns = [
         views.HandleBankSubmit.as_view(),
         name="bank-details-submit-url",
     ),
-    path("documents", views.DocumentView.as_view(), name="documents"),
+    path("profile/documents", views.DocumentView.as_view(), name="documents"),
     path("users", views.users_list, name="users-list"),
     # Transactions
     path("transactions/deposit", views.DepositView.as_view(), name="deposit_view_url"),
@@ -46,12 +46,12 @@ urlpatterns = [
         name="wallet_url",
     ),
     path(
-        "invest",
+        "investments/invest",
         views.InvestView.as_view(),
         name="invest_view_url",
     ),
     path(
-        "payment",
+        "investments/payment",
         views.PaymentView.as_view(),
         name="payment_view_url",
     ),
@@ -66,7 +66,7 @@ urlpatterns = [
         name="investment_detail_view_url",
     ),
     path(
-        "payment/verification",
+        "investments/payment/verification",
         csrf_exempt(views.PaymentVerificationView.as_view()),
         name="verify_payment_url",
     ),
@@ -76,7 +76,7 @@ urlpatterns = [
         name="paystack_view_url",
     ),
     path(
-        "investments/validate-payment-package-amount",
+        "investments/payment/validate-payment-package-amount",
         csrf_exempt(views.validate_package_amount),
         name="payment_package_amount_url",
     ),

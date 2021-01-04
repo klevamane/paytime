@@ -1,7 +1,7 @@
 {% extends "partials/dashboard/profile/base-profile.html" %}
 {% load static %}
 {% load custom_tags %}
-{% block username %}{{ firstname }} {{ lastname }}{% endblock %}
+{% block username %}{{ fullname }}{% endblock %}
 
 {% block row_details %}
     {% include "partials/messages.html" %}

@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import datetime
 import json
 
+import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,13 +13,14 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.db.models import Q, Sum
 from django.forms.utils import ErrorList
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from pypaystack import Transaction
+from pypaystack import Customer, Transaction
+from pypaystack.baseapi import BaseAPI
 
 from dashboard.forms import PaymentForm
 from finance.forms import BankForm
@@ -105,7 +107,11 @@ class BankUpdateView(LoginRequiredMixin, View):
 
 class DocumentView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request=request, template_name="dashboard/profile/documents.html")
+        return render(
+            request=request,
+            template_name="dashboard/profile/documents.html",
+            context={"fullname": request.user.get_full_name()},
+        )
 
 
 class DepositView(LoginRequiredMixin, View):
@@ -197,6 +203,11 @@ class InvestmentDetailView(LoginRequiredMixin, View):
         total_roi = investment.roischedule_set.aggregate(Sum("roi_amount"))[
             "roi_amount__sum"
         ]
+        # it is expected that for every investment created
+        # there should be it's roi_schedule_set also created
+        # but we still need to check for safety here
+        if investment.roischedule_set.count() == 0:
+            return HttpResponseForbidden()
         total_roi_paid = investment.roischedule_set.filter(
             status="completed"
         ).aggregate(Sum("roi_amount"))["roi_amount__sum"]
@@ -209,6 +220,7 @@ class InvestmentDetailView(LoginRequiredMixin, View):
             .values_list("maturity_date", flat=True)
             .first()
         )
+
         return render(
             request,
             "dashboard/invest/detail.html",
@@ -217,8 +229,8 @@ class InvestmentDetailView(LoginRequiredMixin, View):
                 "investment": investment,
                 "roi_schedules": investment.roischedule_set.order_by("maturity_date"),
                 "total_roi": total_roi,
-                "total_roi_paid": total_roi_paid,
-                "total_roi_left": total_roi - total_roi_paid,
+                "total_roi_paid": total_roi_paid or 0,
+                "total_roi_left": total_roi - (total_roi_paid or 0),
                 "next_payment_date": next_payment_date
                 if next_payment_date is not None
                 else "Completed",
@@ -310,6 +322,7 @@ class PaymentVerificationView(View):
         tnx = Transaction(authorization_key=settings.PAYSTACK_SECRET_KEY)
         response = tnx.verify(reference_id)
         if response[0] == 200:
+            user_wallet, _ = Wallet.objects.get_or_create(user=request.user)
             verify_amount = response[3]["amount"] / 100
             # check that the amount paid to paystack
             # was the amount that was
@@ -322,18 +335,25 @@ class PaymentVerificationView(View):
                     user=request.user,
                 )
                 package.save()
+                # the client should be able to redirect to the
+                # desired page using this url
                 resolved_url = reverse("investments_view_url")
+                user_wallet.do_depost(amount, request.user, True)
                 return JsonResponse({"resolved_url": resolved_url}, safe=False)
-            # return error to the user indicating that there has been
-            # an amount mismatch therefore the amount has been added to the user's wallet
-            # get or create a user wallet
-            user_wallet, _ = Wallet.objects.get_or_create(user=request.user)
-            user_wallet.do_depost(amount, request.user)
-            messages.info(
-                request,
-                "We experienced an amount mismatch, we have instead updated your wallet",
-            )
-            resolved_url = reverse("wallet_url")
+
+            else:
+                # return error to the user indicating that there has been
+                # an amount mismatch therefore the amount has been added to the user's wallet
+                # get or create a user wallet
+                user_wallet.do_depost(amount, request.user)
+                messages.info(
+                    request,
+                    "We experienced an amount mismatch, we have instead updated your wallet",
+                )
+                resolved_url = reverse("wallet_url")
+            # add to transaction table as deposit
+            # type package,
+            # would the user be allowed to directly deposit into their wallet?
             return JsonResponse({"resolved_url": resolved_url}, safe=False)
         return JsonResponse(
             {"message": "Transaction not completed unable to verify transaction"},

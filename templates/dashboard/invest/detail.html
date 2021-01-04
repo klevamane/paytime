@@ -1,4 +1,5 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
+{% load humanize %}
 {% load custom_tags %}
 {% block username %}{{ fullname }} {% endblock %}
 
@@ -24,7 +25,7 @@
                         <div>
                             <div>
                                 <p class="no-margin text-bold"><span class="text-warning">Capital</span></p>
-                                <p class="no-margin text-bold">N50,000,000</p>
+                                <p class="no-margin text-bold">N{{ investment.amount|floatformat|intcomma }}</p>
                             </div>
                             <div class="mt-10">
                                 <p class="no-margin font-weight-600 text-bold"><span
@@ -53,13 +54,13 @@
                         <div>
                             <div>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-success">ROI</span> /
-                                    {{ total_roi|floatformat }}
+                                    N{{ total_roi|floatformat|intcomma }}
                                 </p>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-success">Paid</span> /
-                                    {{ total_roi_paid|floatformat }}
+                                    N{{ total_roi_paid|floatformat|intcomma }}
                                 </p>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-warning">Left</span> /
-                                    {{ total_roi_left|floatformat }}
+                                    N{{ total_roi_left|floatformat|intcomma }}
                                 </p>
                             </div>
                         </div>
@@ -116,7 +117,7 @@
 
                 </div>
                 <div class="box-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="table-roi-schedule">
                         <table class="table table-borderless mb-0" id="roi-schedule-table">
                             <thead>
                             <tr>
@@ -170,8 +171,7 @@
         const roiSchedules = document.getElementById("roi-schedule-table");
         //roiBtn.addEventListener("click", roiTransfer, false)
 
-
-        document.addEventListener("click", roiTransfer)
+        roiSchedules.addEventListener("click", roiTransfer)
 
         function errorMsg(content) {
             const danger = "danger"
