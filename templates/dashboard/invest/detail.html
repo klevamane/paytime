@@ -18,7 +18,7 @@
                             </div>
                             <div>
                                 <h3 class="no-margin text-bold">Ovviy</h3>
-                                <span>Medium</span>
+                                <span>{{ investment.package.name }}</span>
                             </div>
                         </div>
                         <div>
@@ -29,7 +29,7 @@
                             <div class="mt-10">
                                 <p class="no-margin font-weight-600 text-bold"><span
                                         class="text-warning">Duration</span></p>
-                                <p class="no-margin">6 Months</p>
+                                <p class="no-margin">{{ investment.package.days }} days(wrk)</p>
                             </div>
                         </div>
                     </div>
@@ -46,24 +46,25 @@
                                 <a href="#"><i class="cc EOS mr-5" title="EOS"></i></a>
                             </div>
                             <div>
-                                <h3 class="no-margin text-bold">15% ROI</h3>
+                                <h3 class="no-margin text-bold">{{ investment.package.return_on_investmentent }}% ROI</h3>
                                 <span>Exchange</span>
                             </div>
                         </div>
                         <div>
                             <div>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-success">ROI</span> /
-                                    N7,500,000
+                                    {{ total_roi|floatformat }}
                                 </p>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-success">Paid</span> /
-                                    N7,000,000
+                                    {{ total_roi_paid|floatformat }}
                                 </p>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-warning">Left</span> /
-                                    N500,000
+                                    {{ total_roi_left|floatformat }}
                                 </p>
                             </div>
                         </div>
                     </div>
+                    <p></p>
                 </div>
             </div>
 
@@ -78,7 +79,7 @@
                             </div>
                             <div>
                                 <h3 class="no-margin text-bold">Next Payment</h3>
-                                <span>25/01/2021</span>
+                                <span>{{ next_payment_date }}</span>
                             </div>
                         </div>
                         <div>
@@ -90,7 +91,7 @@
                             <div class="mt-10">
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-warning">Period</span>
                                 </p>
-                                <p class="no-margin">5 wrkd left</p>
+                                <p class="no-margin">{{ period }} days left</p>
                             </div>
                         </div>
                     </div>

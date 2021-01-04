@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import datetime
 import json
 
 from django.contrib import messages
@@ -9,6 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
+from django.db.models import Q, Sum
 from django.forms.utils import ErrorList
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -192,7 +194,20 @@ class InvestmentDetailView(LoginRequiredMixin, View):
         except Investment.DoesNotExist:
             # TODO redirect to a 404 page
             raise Http404
-
+        total_roi = investment.roischedule_set.aggregate(Sum("roi_amount"))[
+            "roi_amount__sum"
+        ]
+        total_roi_paid = investment.roischedule_set.filter(
+            status="completed"
+        ).aggregate(Sum("roi_amount"))["roi_amount__sum"]
+        invv = (
+            investment.roischedule_set.exclude(
+                Q(status="completed") | Q(status="transfer")
+            )
+            .order_by("maturity_date")
+            .values_list("maturity_date", flat=True)
+            .first()
+        )
         return render(
             request,
             "dashboard/invest/detail.html",
@@ -200,6 +215,11 @@ class InvestmentDetailView(LoginRequiredMixin, View):
                 "fullname": request.user.get_full_name(),
                 "investment": investment,
                 "roi_schedules": investment.roischedule_set.order_by("maturity_date"),
+                "total_roi": total_roi,
+                "total_roi_paid": total_roi_paid,
+                "total_roi_left": total_roi - total_roi_paid,
+                "next_payment_date": invv if invv is not None else "Completed",
+                "period": (invv - datetime.datetime.now().date()).days if invv else 0,
             },
         )
 
