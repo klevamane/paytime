@@ -9,7 +9,7 @@ from finance.models import Bank
 class BankForm(forms.ModelForm):
     class Meta:
         model = Bank
-        fields = ["bank", "account_number", "user"]
+        fields = ["bank", "account_number", "user", "can_update"]
         widgets = {
             "bank": forms.widgets.Select(attrs={"cursor": "pointer"}),
             "user": forms.widgets.HiddenInput(),

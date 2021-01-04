@@ -7,12 +7,6 @@ from dashboard import views
 
 urlpatterns = [
     path("", views.users_list, name="dashboard-home"),
-    path("add-bank-account", views.BankDetailsView.as_view(), name="add-bank-account"),
-    path(
-        "update-bank-account",
-        views.BankUpdateView.as_view(),
-        name="update-bank-account",
-    ),
     # profile
     path("profile", views.ProfileView.as_view(), name="profile_url"),
     path(

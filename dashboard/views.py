@@ -40,71 +40,6 @@ def dashboard_data(request):
     return render(request, "dashboard/users-list.html")
 
 
-class BankDetailsView(LoginRequiredMixin, View):
-    def get(self, request):
-        return render(
-            request=request,
-            template_name="dashboard/add-bank-details.html",
-            context={"form": BankForm(), "view_path": request.path.rsplit("/")[2]},
-        )
-
-    def post(self, request):
-        form = BankForm(data=request.POST)
-        if Bank.objects.filter(user_id=request.user.id).exists():
-            messages.error(request, FAILURE_MESSAGES["cannot_add_multiple_bank"])
-            return render(
-                request,
-                template_name="dashboard/add-bank-details.html",
-                context={"form": form},
-            )
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.updated_by = instance.user = request.user
-            instance.save()
-            messages.success(request, SUCCESS_MESSAGES["bank_account_added"])
-            return redirect("dashboard-home")
-        return render(
-            request,
-            template_name="dashboard/add-bank-details.html",
-            context={"form": form},
-        )
-
-
-class BankUpdateView(LoginRequiredMixin, View):
-    def post(self, request):
-        instance = Bank.objects.get(user_id=request.user.id)
-        if not instance.can_update:
-            messages.error(request, FAILURE_MESSAGES["cannot_update_bank"])
-            return render(
-                request,
-                template_name="dashboard/update-bank-details.html",
-                context={"form": BankForm()},
-            )
-        form = BankForm(data=request.POST, instance=instance)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.updated_by = instance.user = request.user
-            instance.save()
-            messages.success(request, SUCCESS_MESSAGES["bank_account_updated"])
-            return render(
-                request,
-                template_name="dashboard/update-bank-details.html",
-                context={"form": BankForm()},
-            )
-        return render(
-            request,
-            template_name="dashboard/update-bank-details.html",
-            context={"form": form},
-        )
-
-    def get(self, request):
-        return render(
-            request=request,
-            template_name="dashboard/update-bank-details.html",
-            context={"form": BankForm(), "view_path": request.path.rsplit("/")[2]},
-        )
-
-
 class DocumentView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
@@ -459,7 +394,7 @@ class HandleProfileSubmit(ProfileView, View):
         profile_form = ProfileForm(request.POST, instance=user)
         if profile_form.is_valid():
             profile_form.save()
-            messages.success(request, "Save successfull")
+            messages.success(request, "Save successful")
             return redirect("profile_url")
         # this ensures that whenever error(s) are displayed in the template
         # the bank form still retains its form displayed
@@ -517,7 +452,7 @@ class HandleBankSubmit(ProfileView, View):
             bank_form = BankForm(data)
         if bank_form.is_valid():
             bank_form.save()
-            messages.success(request, "Save successfull")
+            messages.success(request, "Save successful")
             return redirect("profile_url")
 
         user = User.objects.get(id=request.user.id)
