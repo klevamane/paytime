@@ -355,6 +355,8 @@ class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = User.objects.get(id=request.user.id)
         profile_form = self._set_profile_form(user)
+        # disable email field to prevent subsequent edits
+        profile_form.fields["email"].disabled = True
         try:
             bank = Bank.objects.get(user=user)
             bank_form = BankForm(
@@ -392,7 +394,10 @@ class ProfileView(LoginRequiredMixin, View):
 class HandleProfileSubmit(ProfileView, View):
     def post(self, request):
         user = User.objects.get(id=request.user.id)
-        profile_form = ProfileForm(request.POST, instance=user)
+        data = request.POST.copy()
+        # ensures that the email field is not updated
+        data["email"] = user.email
+        profile_form = ProfileForm(data, instance=user)
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, "Save successful")

@@ -132,7 +132,7 @@ WSGI_APPLICATION = "paytime.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "paytime"),
+        "NAME": os.getenv("DB_NAME", "paytime2"),
         "HOST": os.getenv("DB_HOST", "127.0.0.1"),
         "PASSWORD": os.getenv("DB_PASSWORD", "password"),
         "USER": os.getenv("DB_USER", "comfy"),
