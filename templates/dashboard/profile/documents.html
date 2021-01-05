@@ -121,14 +121,16 @@
 
 {% block extrajs %}
     <script>
-    let fileInput = document.getElementById("id_file")
-    let fileInputPlaceHolderLabel = document.getElementById("id_file_id")
-    fileInput.addEventListener("change",(e) => {
-        let filename = fileInput.files[0].name
-        if (filename) {
-            fileInputPlaceHolderLabel.innerText = filename
-        }
-    } )
+        // make the file input show the file name
+        // when the file is selected
+        let fileInput = document.getElementById("id_file")
+        let fileInputPlaceHolderLabel = document.getElementById("id_file_id")
+        fileInput.addEventListener("change",(e) => {
+            let filename = fileInput.files[0].name
+            if (filename) {
+                fileInputPlaceHolderLabel.innerText = filename
+            }
+        } )
 
     </script>
 {% endblock %}
