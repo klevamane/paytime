@@ -39,7 +39,8 @@
                                     </div>
                                     <div class="custom-file">
                                         {{ form.file|addcss:"custom-file-input" }}
-                                        <label class="custom-file-label" id="id_file_id" for="id_file">Choose file</label>
+                                        <label class="custom-file-label" id="id_file_id" for="id_file">Choose
+                                            file</label>
 
                                     </div>
 
@@ -66,15 +67,17 @@
                         <span class="float-right font-weight-bold" id="id_progress_pass_value">0%</span>
                     </h4>
                     <div class="progress mb-4">
-                        <div class="progress-bar bg-danger" role="progressbar" id="id_progress_pass" style="width: 0%" aria-valuenow="20"
+                        <div class="progress-bar bg-danger" role="progressbar" id="id_progress_pass" style="width: 0%"
+                             aria-valuenow="20"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <h4 class="small">
                         Add driver's licence
-                        <span class="float-right font-weight-bold" id="id_progress_licence_value">10%</span>
+                        <span class="float-right font-weight-bold" id="id_progress_licence_value">0%</span>
                     </h4>
                     <div class="progress mb-4">
-                        <div class="progress-bar bg-warning" role="progressbar" id="id_progress_licence" style="width: 0%" aria-valuenow="40"
+                        <div class="progress-bar bg-warning" role="progressbar" id="id_progress_licence"
+                             style="width: 0%" aria-valuenow="40"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <h4 class="small">
@@ -82,7 +85,8 @@
                         <span class="float-right font-weight-bold" id="id_progress_nat_id_value">0%</span>
                     </h4>
                     <div class="progress mb-4">
-                        <div class="progress-bar" role="progressbar" id="id_progress_nat_id" style="width: 0%" aria-valuenow="60"
+                        <div class="progress-bar" role="progressbar" id="id_progress_nat_id" style="width: 0%"
+                             aria-valuenow="60"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <h4 class="small">
@@ -90,7 +94,8 @@
                         <span class="float-right font-weight-bold" id="id_progress_other_value">0%</span>
                     </h4>
                     <div class="progress mb-4">
-                        <div class="progress-bar bg-info" role="progressbar" id="id_progress_other" style="width: 0%" aria-valuenow="80"
+                        <div class="progress-bar bg-info" role="progressbar" id="id_progress_other" style="width: 0%"
+                             aria-valuenow="80"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <h4 class="small">
@@ -98,7 +103,8 @@
                         <span class="float-right font-weight-bold" id="id_text_complete_text">Not Complete!</span>
                     </h4>
                     <div class="progress" id="progress-complete">
-                        <div class="progress-bar bg-success" role="progressbar" id="id_progress_complete" style="width: 0%" aria-valuenow="100"
+                        <div class="progress-bar bg-success" role="progressbar" id="id_progress_complete"
+                             style="width: 0" aria-valuenow="0"
                              aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
@@ -127,38 +133,40 @@
         // when the file is selected
         let fileInput = document.getElementById("id_file")
         let fileInputPlaceHolderLabel = document.getElementById("id_file_id")
-        fileInput.addEventListener("change",(e) => {
+        fileInput.addEventListener("change", (e) => {
             let filename = fileInput.files[0].name
             if (filename) {
                 fileInputPlaceHolderLabel.innerText = filename
             }
-        } );
-        if (documentVerified !== "False") {
-            document.getElementById("id_progress_complete").style.width = "100%"
-            document.getElementById("id_text_complete_text").innerText = "Complete!"
+        });
+        if (documentVerified !== "" || documentVerified !== undefined) {
+            if (documentVerified === "True") {
+                document.getElementById("id_progress_complete").style.width = "100%"
+                document.getElementById("id_text_complete_text").innerText = "Complete!"
+            }
 
-        const typeOfDocument = "{{ document.type }}";
-        switch (typeOfDocument) {
-            case "International passport":
-                document.getElementById("id_progress_pass").style.width = "100%";
-                document.getElementById("id_progress_pass_value").innerText = "100%";
-                break;
-            case "Drivers Licence":
-                document.getElementById("id_progress_licence").style.width = "100%";
-                document.getElementById("id_progress_licence_value").innerText = "100%";
-                break;
-            case "National Identity":
-                document.getElementById("id_progress_nat_id").style.width = "100%";
-                document.getElementById("id_progress_nat_id_value").innerText = "100%";
-                break;
-            case "Other":
-                document.getElementById("id_progress_other").style.width = "100%";
-                document.getElementById("id_progress_other_value").innerText = "100%";
-                break;
-            default:
+            const typeOfDocument = "{{ document.type }}";
+            switch (typeOfDocument) {
+                case "International passport":
+                    document.getElementById("id_progress_pass").style.width = "100%";
+                    document.getElementById("id_progress_pass_value").innerText = "100%";
+                    break;
+                case "Drivers Licence":
+                    document.getElementById("id_progress_licence").style.width = "100%";
+                    document.getElementById("id_progress_licence_value").innerText = "100%";
+                    break;
+                case "National Identity":
+                    document.getElementById("id_progress_nat_id").style.width = "100%";
+                    document.getElementById("id_progress_nat_id_value").innerText = "100%";
+                    break;
+                case "Other":
+                    document.getElementById("id_progress_other").style.width = "100%";
+                    document.getElementById("id_progress_other_value").innerText = "100%";
+                    break;
+                default:
+            }
+
         }
-
-    }
 
     </script>
 {% endblock %}

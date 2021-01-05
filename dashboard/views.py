@@ -56,6 +56,7 @@ class DocumentView(LoginRequiredMixin, View):
         )
 
     def post(self, request):
+        user_document = None
         try:
             user_document = Document.objects.get(user=request.user)
             form = DocumentForm(request.POST, request.FILES, instance=user_document)
@@ -76,10 +77,15 @@ class DocumentView(LoginRequiredMixin, View):
                     request,
                     "The file type is not supported, kindly upload a supported file",
                 )
+                # add document to document form on post to enable the posted page extract the document data
                 return render(
                     request=request,
                     template_name="dashboard/profile/documents.html",
-                    context={"form": form, "fullname": request.user.get_full_name()},
+                    context={
+                        "document": user_document if user_document else instance,
+                        "form": form,
+                        "fullname": request.user.get_full_name(),
+                    },
                 )
 
             instance.save()
@@ -87,7 +93,11 @@ class DocumentView(LoginRequiredMixin, View):
             return render(
                 request=request,
                 template_name="dashboard/profile/documents.html",
-                context={"form": form, "fullname": request.user.get_full_name()},
+                context={
+                    "document": user_document if user_document else instance,
+                    "form": form,
+                    "fullname": request.user.get_full_name(),
+                },
             )
 
 
