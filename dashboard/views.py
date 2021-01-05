@@ -41,10 +41,18 @@ DOCUMENT_FILE_TYPES = ["png", "jpg", "jpeg", "pdf"]
 class DocumentView(LoginRequiredMixin, View):
     def get(self, request):
         form = DocumentForm()
+        try:
+            document = Document.objects.get(user=request.user)
+        except Document.DoesNotExist:
+            document = None
         return render(
             request=request,
             template_name="dashboard/profile/documents.html",
-            context={"form": form, "fullname": request.user.get_full_name()},
+            context={
+                "document": document,
+                "form": form,
+                "fullname": request.user.get_full_name(),
+            },
         )
 
     def post(self, request):
