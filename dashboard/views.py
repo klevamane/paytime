@@ -64,13 +64,15 @@ class DocumentView(LoginRequiredMixin, View):
             form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
+
             instance.user = request.user
-            file = request.FILES["file"]
+            # use get to avoid MultiValueDictKeyError
+            file = request.FILES.get("file")
             error = None
             file_type = None
             try:
                 file_type = file.name.split(".")[-1].lower()
-            except IndexError:
+            except (IndexError, AttributeError):
                 error = True
             if file_type not in DOCUMENT_FILE_TYPES or error:
                 messages.error(
@@ -78,27 +80,29 @@ class DocumentView(LoginRequiredMixin, View):
                     "The file type is not supported, kindly upload a supported file",
                 )
                 # add document to document form on post to enable the posted page extract the document data
-                return render(
-                    request=request,
-                    template_name="dashboard/profile/documents.html",
-                    context={
-                        "document": user_document if user_document else instance,
-                        "form": form,
-                        "fullname": request.user.get_full_name(),
-                    },
+                return self._render_profile_document(
+                    form, instance, request, user_document
+                )
+            if (file.size / 1024) > 601:
+                messages.error(request, "The file size must be less or equal to 600KB")
+                return self._render_profile_document(
+                    form, instance, request, user_document
                 )
 
             instance.save()
             messages.success(request, "Document uploaded successfully")
-            return render(
-                request=request,
-                template_name="dashboard/profile/documents.html",
-                context={
-                    "document": user_document if user_document else instance,
-                    "form": form,
-                    "fullname": request.user.get_full_name(),
-                },
-            )
+            return self._render_profile_document(form, instance, request, user_document)
+
+    def _render_profile_document(self, form, instance, request, user_document):
+        return render(
+            request=request,
+            template_name="dashboard/profile/documents.html",
+            context={
+                "document": user_document if user_document else instance,
+                "form": form,
+                "fullname": request.user.get_full_name(),
+            },
+        )
 
 
 class DepositView(LoginRequiredMixin, View):
@@ -154,11 +158,16 @@ class WalletView(LoginRequiredMixin, View):
 
 
 class InvestView(LoginRequiredMixin, View):
+    packages = Package.objects.all()
+
     def get(self, request):
         return render(
             request,
             "dashboard/invest/invest.html",
-            context={"fullname": request.user.get_full_name()},
+            context={
+                "fullname": request.user.get_full_name(),
+                "packages": self.packages,
+            },
         )
 
 
@@ -247,10 +256,11 @@ class TransferToWalletView(View):
     # check that user owns the investment
     # check that the status is payable to user
     # if so deposit to the wallet
-    # update the status of the ROI to transfer completed
+    # update the status of the ROI from transfer to completed
     # if the ROI is the ROI with the last date (maturity date)?
     # mark all ROIs in that investment as completed
-    # wait already paid ROIs ought to have been marked completed
+
+    # Wait! already paid ROIs ought to have been marked completed
 
     # instead, mark the investment as completed
     # therefore during withrawals or performing investment actions
@@ -374,6 +384,7 @@ class PaymentView(LoginRequiredMixin, View):
             package = Package.objects.get(codename=request.GET.get("codename"))
         except Package.DoesNotExist:
             package = None
+
         if package:
             payment_form = PaymentForm(initial={"package": package})
         else:
@@ -425,6 +436,9 @@ class ProfileView(LoginRequiredMixin, View):
             "profile_form": profile_form,
             "bank_form": bank_form,
             "fullname": request.user.get_full_name(),
+            "profile_picture_url": request.user.profile_picture.url.lstrip("/")
+            if request.user.profile_picture
+            else "",
         }
         return render(
             request, template_name="dashboard/profile/profile.html", context=context
@@ -444,6 +458,8 @@ class ProfileView(LoginRequiredMixin, View):
                 "state": user.state,
                 "mobile": user.mobile,
                 "date_of_birth": user.date_of_birth,
+                "gender": user.gender,
+                # "profile_picture": None
             }
         )
 
@@ -454,7 +470,7 @@ class HandleProfileSubmit(ProfileView, View):
         data = request.POST.copy()
         # ensures that the email field is not updated
         data["email"] = user.email
-        profile_form = ProfileForm(data, instance=user)
+        profile_form = ProfileForm(data, files=request.FILES, instance=user)
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request, "Save successful")
@@ -481,6 +497,9 @@ class HandleProfileSubmit(ProfileView, View):
             "profile_form": profile_form,
             "bank_form": bank_form,
             "fullname": request.user.get_full_name(),
+            "profile_picture_url": request.user.profile_picture.url.lstrip("/")
+            if request.user.profile_picture
+            else "",
         }
         return render(
             request, template_name="dashboard/profile/profile.html", context=context
@@ -525,5 +544,8 @@ class HandleBankSubmit(ProfileView, View):
                 "bank_form": bank_form,
                 "profile_form": profile_form,
                 "fullname": request.user.get_full_name(),
+                "profile_picture_url": request.user.profile_picture.url.lstrip("/")
+                if request.user.profile_picture
+                else "",
             },
         )

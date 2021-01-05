@@ -1,74 +1,51 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
 {% load custom_tags %}
 {% block username %}{{ fullname }} {% endblock %}
+{% load humanize %}
 
 {% block content %}
     <div class="container">
         <h2 class="mb-5 text-fade">Start Investment</h2>
         <div class="row">
             <!-- CARD 1-->
-            <div class="col-lg-4">
-                <div class="box pull-up">
-                    <div class="ribbon ribbon-two-dark">
-                        <span>New</span>
-                    </div>
-                    <div class="box-body text-center">
-                        <h4 class="pack text-primary">
-                            Ovviy Short
-                            <span>minimum 100k</span>
-                        </h4>
-                        <h5 class="text-uppercase text-primary">Starter</h5>
+            {% for package in packages %}
 
-                        <hr>
-                        <p><strong>100k Minimum</strong></p>
-                        <p><strong>24x7</strong> Support</p>
-                        <p><strong>3 Months</strong> Duration</p>
-                        <p><strong>ROI</strong> 15%</p>
-                        <p><strong>50M Maximum</strong></p>
-                        <a class="btn btn-primary my-30" href="{% url "payment_view_url" %}?codename=ovviy_min">Select plan</a>
-                    </div>
-                </div>
-            </div>
+                <div class="col-lg-4">
+                    <div class="box pull-up">
+                        {% if package.is_new %}
+                            <div class="ribbon">
+                                <span>New</span>
+                            </div>
+                        {% endif %}
+                        <div class="box-body text-center">
+                            <h4 class="pack text-primary
+                            {% if package.level == "silver" %} text-muted{% endif %}
+                            {% if package.level == "gold" %} text-warning{% endif %}
+                            ">
+                                {{ package.name }}
+                                <span>minimum {% widthratio package.minimum_amount 1000 1|floatformat %}k</span>
+                            </h4>
+                            <h5 class="text-uppercase text-primary
+                            {% if package.level == "silver" %} text-muted{% endif %}
+                            {% if package.level == "gold" %} text-muted{% endif %}"
+                            >
+                                {{ package.level }}
+                            </h5>
 
-            <div class="col-lg-4">
-                <div class="box pull-up">
-                    <div class="box-body text-center">
-                        <h4 class="pack text-primary">
-                            Ovviy Long
-                            <span>minimum 500k</span>
-                        </h4>
-                        <h5 class="text-uppercase text-primary">Recommended</h5>
-
-                        <hr>
-                        <p><strong>500k Minimum</strong></p>
-                        <p><strong>24x7</strong> Support</p>
-                        <p><strong>6 Months</strong> Duration</p>
-                        <p><strong>ROI</strong> 15%</p>
-                        <p><strong>50M Maximum</strong></p>
-                        <a class="btn btn-primary my-30" href="{% url "payment_view_url" %}?codename=ovviy_long">Select plan</a>
+                            <hr>
+                            <p><strong>{% widthratio package.minimum_amount 1000 1|floatformat %}k Minimum</strong></p>
+                            <p><strong>24x7</strong> Support</p>
+                            <p><strong>{{ package.days }} Days</strong> Duration</p>
+                            <p><strong>ROI</strong> {{ package.return_on_investmentent }}%</p>
+                            <p><strong>{{ package.minimum_amount|floatformat|intcomma }} Maximum</strong></p>
+                            <a href="{% url "payment_view_url" %}?codename={{ package.codename }}" class="btn btn-primary
+                            {% if package.level == "silver" %}btn-dark my-30{% endif %}
+                            {% if package.level == "gold" %}btn-warning my-30{% endif %}"
+                            >Select plan</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="box pull-up">
-                    <div class="box-body text-center">
-                        <h4 class="pack text-success">
-                            Ovviy Medium
-                            <span>minimum 1M</span>
-                        </h4>
-                        <h5 class="text-uppercase text-primary">Go</h5>
-
-                        <hr>
-                        <p><strong>1 million Minimum</strong></p>
-                        <p><strong>24x7</strong> Support</p>
-                        <p><strong>9 Months</strong> Duration</p>
-                        <p><strong>ROI</strong> 15%</p>
-                        <p><strong>50M Maximum</strong></p>
-                        <a class="btn btn-primary my-30" href="{% url "payment_view_url" %}?codename=ovviy_mid">Select plan</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

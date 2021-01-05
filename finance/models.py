@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import datetime
+
 from dirtyfields import DirtyFieldsMixin
 from django.db import models
 
@@ -115,6 +117,14 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
         pass
 
 
+PACKGE_CHOICES = [
+    ("fresher", "Fresher"),
+    ("bronze", "Bronze"),
+    ("silver", "Silver"),
+    ("gold", "Gold"),
+]
+
+
 class Package(DirtyFieldsMixin, TimeStampMixin):
     name = models.CharField(max_length=30, unique=True)
     minimum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
@@ -122,6 +132,11 @@ class Package(DirtyFieldsMixin, TimeStampMixin):
     return_on_investmentent = models.PositiveIntegerField()
     codename = models.CharField(max_length=30, unique=True)
     days = models.IntegerField()
+    level = models.CharField(choices=PACKGE_CHOICES, default="silver", max_length=30)
+
+    @property
+    def is_new(self):
+        return (self.created_at - datetime.datetime.now().date()).days < 60
 
     def __str__(self):
         return self.name

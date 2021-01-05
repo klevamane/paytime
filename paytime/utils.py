@@ -48,6 +48,7 @@ FAILURE_MESSAGES = {
     "enter_valid_amount": "Enter a valid amount",
     "select_pkg_for_amt": "Select a valid package for this amount",
     "amount_specific_range": "The amount must be in the range of {} to {}",
+    "image_size_limit": "The image size should not be greater that {}",
 }
 
 

@@ -68,6 +68,10 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     area = models.CharField(max_length=30, blank=True, null=True)
     city = models.CharField(max_length=30, blank=True, null=True)
     state = models.CharField(max_length=30, blank=True, null=True)
+    profile_picture = models.ImageField(
+        blank=True, null=True, upload_to="profile_pictures"
+    )
+    gender = models.CharField(max_length=6, blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
     # we need to replace with is_staff

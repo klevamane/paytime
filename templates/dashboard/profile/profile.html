@@ -12,11 +12,15 @@
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
                         <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-2" src="{% static "img/profile-1.png" %}"
-                             alt="">
+{#                        <img class="img-account-profile rounded-circle mb-2" src="{% static "img/profile-1.png" %}"#}
+                        <img class="img-account-profile rounded-circle mb-2" src="{% if profile_picture_url == "" %}{% static "img/profile-1.png" %}{% else %}{{ profile_picture_url }}{% endif %}"
+                             alt="" width="200px">
                         <!-- Profile picture help block-->
-                        <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 500 KB</div>
-                        <button class="btn btn-primary" type="button">Upload new image</button>
+                        <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 250 KB</div>
+                        <form>
+
+                        </form>
+                        <button class="btn btn-primary" type="button" onclick="$('#id_profile_picture').trigger('click');">Upload new image</button>
                     </div>
                 </div>
             </div>
@@ -26,7 +30,7 @@
                 <div class="card mb-4">
                     <div class="card-header">Profile Details</div>
                     <div class="card-body">
-                        <form name="profile_form" action="{% url "profile-details-submit-url" %}" method="POST">
+                        <form name="profile_form" action="{% url "profile-details-submit-url" %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <!-- Form Row-->
@@ -87,8 +91,37 @@
                                 </div>
                                 <!-- Form Group (birthday)-->
                                 <div class="form-group col-md-6">
-                                    <label class="small mb-1" for="inputBirthday">Birthday</label>
+                                    <label class="small mb-1" for="inputBirthday">Birthday (YYYY-MM-DD)</label>
+                                    {% if profile_form.errors|lookup:profile_form.date_of_birth %}
+                                        {{ profile_form.date_of_birth|addcss:"form-control is-invalid" }}
+                                        <small class="form-text text-danger">{{ profile_form.date_of_birth.errors }}</small>
+                                    {% else %}
                                     {{ profile_form.date_of_birth|addcss:"form-control" }}
+                                     {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Form Row-->
+                            <div class="form-row">
+                                <!-- Form Group (phone number)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputPhone">Gender</label>
+                                    {% if profile_form.errors|lookup:profile_form.gender %}
+                                        {{ profile_form.gender|addcss:"form-control is-invalid" }}
+                                        <small class="form-text text-danger">{{ profile_form.gender.errors }}</small>
+                                    {% else %}
+                                        {{ profile_form.gender|addcss:"form-control" }}
+                                    {% endif %}
+                                </div>
+                                <!-- Form Group (birthday)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputBirthday">Profile Picture</label>
+                                    {% if profile_form.errors|lookup:profile_form.profile_picture %}
+                                        {{ profile_form.profile_picture|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ profile_form.profile_picture.errors }}</small>
+                                    {% else %}
+                                    {{ profile_form.profile_picture|addcss:"form-control" }}
+                                    {% endif %}
                                 </div>
                             </div>
                             <!-- Save changes button-->
@@ -106,7 +139,7 @@
                                 <div class="form-row">
 
                                 <div class="form-group col-md-7">
-                                        <label for="exampleFormControlSelect1">Bank</label>
+                                        <label for="id_bank">Bank</label>
                                         {{ bank_form.bank|addcss:"form-control" }}
                                       </div>
 

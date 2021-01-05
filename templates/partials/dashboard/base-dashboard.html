@@ -70,7 +70,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">transaction:</h6>
                     <a class="collapse-item" href="{% url "transactions_all_url" %}">All</a>
-                    <a class="collapse-item active" href="{% url "deposit_view_url" %}">Deposits</a>
+                    <a class="collapse-item " href="{% url "deposit_view_url" %}">Deposits</a>
                     <a class="collapse-item" href="{% url "withdrawal_view_url" %}">Withdrawls</a>
                 </div>
             </div>
@@ -105,7 +105,6 @@
                     <h6 class="collapse-header">Make money:</h6>
                     <a class="collapse-item" href="{% url "invest_view_url" %}">Invest</a>
                     <a class="collapse-item" href="{% url "investments_view_url" %}">Investments</a>
-                    <a class="collapse-item" href="{% url "investment_detail_view_url" id=1 %}">Detail</a>
                     <a class="collapse-item" href="{% url "payment_view_url" %}">Payment</a>
                 </div>
             </div>
