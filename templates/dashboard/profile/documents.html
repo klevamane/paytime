@@ -1,8 +1,11 @@
 {% extends "partials/dashboard/profile/base-profile.html" %}
+{% load custom_tags %}
 {% load static %}
 {% block username %}{{ fullname }}{% endblock %}
 
+
 {% block row_details %}
+    {% include "partials/messages.html" %}
     <div class="row">
         <div class="col-xl-4">
             <!-- Profile Picture Card-->
@@ -16,22 +19,16 @@
             </div>
         </div>
         <div class="col-xl-8">
-
             <div class="card mb-4">
                 <div class="card-header">Profile Details</div>
                 <div class="card-body">
-                    <form>
-
+                    <form enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
                         <!-- Form Row-->
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label class="small mb-1" for="exampleFormControlSelect1">Document type</label>
-                                <select class="form-control form-control-solid" id="exampleFormControlSelect1">
-                                    <option>International Passport</option>
-                                    <option>Drivers Licence</option>
-                                    <option>National Id</option>
-                                    <option>Other valid Id</option>
-                                </select>
+                                <label class="small mb-1" for="id_type">Document type</label>
+                                {{ form.type|addcss:"form-control form-control-solid" }}
                             </div>
                         </div>
                         <div class="form-row">
@@ -41,16 +38,17 @@
                                         <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
                                     </div>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                               aria-describedby="inputGroupFileAddon01">
-                                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                        {{ form.file|addcss:"custom-file-input" }}
+                                        <label class="custom-file-label" id="id_file_id" for="id_file">Choose file</label>
+
                                     </div>
+
                                 </div>
                             </div>
                         </div>
 
                         <!-- Save changes button-->
-                        <button class="btn btn-primary" type="button">Save changes</button>
+                        <button class="btn btn-primary" type="submit">Save changes</button>
                     </form>
                 </div>
             </div>
@@ -121,3 +119,16 @@
     </div>
 {% endblock %}
 
+{% block extrajs %}
+    <script>
+    let fileInput = document.getElementById("id_file")
+    let fileInputPlaceHolderLabel = document.getElementById("id_file_id")
+    fileInput.addEventListener("change",(e) => {
+        let filename = fileInput.files[0].name
+        if (filename) {
+            fileInputPlaceHolderLabel.innerText = filename
+        }
+    } )
+
+    </script>
+{% endblock %}

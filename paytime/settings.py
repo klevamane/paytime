@@ -27,7 +27,7 @@ load_dotenv(os.path.join(BASE_DIR, "", ".env"))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "f1odp(q9txl!$pbc+r!w&=yu_2virk8wp7hv%v71v-r)$jbt-g"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", False)
@@ -186,7 +186,15 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 # MEDIA_ROOT = "/deploy/paytime/media"
+# https://data-flair.training/blogs/django-file-upload/
+
+# This is the URL the user can go to and upload their files from the browser
 MEDIA_URL = "/media/"
+
+# Tells Django to store all the uploaded files in a folder called ’media’
+# created in the BASE_DIR, i.e., the project Directory
+# therefore we need to create a folder called media in the root
+# of this project, on the same level as manage.py
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
@@ -231,6 +239,8 @@ LOGGING = {
 }
 
 django_heroku.settings(locals(), logging=False)
+
+# tell django which model to use as user model
 AUTH_USER_MODEL = "user.User"
 
 # check this sites for precommit setup

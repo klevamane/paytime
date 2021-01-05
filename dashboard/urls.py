@@ -1,9 +1,11 @@
 from __future__ import absolute_import
 
+from django.conf.urls.static import static
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
 
 from dashboard import views
+from paytime import settings
 
 urlpatterns = [
     path("", views.users_list, name="dashboard-home"),
@@ -80,3 +82,7 @@ urlpatterns = [
         name="transfer-to-wallet_url",
     ),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -22,8 +22,8 @@ from finance.forms import BankForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
 from paytime import settings
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
-from user.forms import ProfileForm
-from user.models import User
+from user.forms import DocumentForm, ProfileForm
+from user.models import Document, User
 
 
 def users_list(request):
@@ -35,13 +35,52 @@ def dashboard_data(request):
     return render(request, "dashboard/users-list.html")
 
 
+DOCUMENT_FILE_TYPES = ["png", "jpg", "jpeg", "pdf"]
+
+
 class DocumentView(LoginRequiredMixin, View):
     def get(self, request):
+        form = DocumentForm()
         return render(
             request=request,
             template_name="dashboard/profile/documents.html",
-            context={"fullname": request.user.get_full_name()},
+            context={"form": form, "fullname": request.user.get_full_name()},
         )
+
+    def post(self, request):
+        try:
+            user_document = Document.objects.get(user=request.user)
+            form = DocumentForm(request.POST, request.FILES, instance=user_document)
+        except Document.DoesNotExist:
+            form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            file = request.FILES["file"]
+            error = None
+            file_type = None
+            try:
+                file_type = file.name.split(".")[-1].lower()
+            except IndexError:
+                error = True
+            if file_type not in DOCUMENT_FILE_TYPES or error:
+                messages.error(
+                    request,
+                    "The file type is not supported, kindly upload a supported file",
+                )
+                return render(
+                    request=request,
+                    template_name="dashboard/profile/documents.html",
+                    context={"form": form, "fullname": request.user.get_full_name()},
+                )
+
+            instance.save()
+            messages.success(request, "Document uploaded successfully")
+            return render(
+                request=request,
+                template_name="dashboard/profile/documents.html",
+                context={"form": form, "fullname": request.user.get_full_name()},
+            )
 
 
 class DepositView(LoginRequiredMixin, View):
@@ -437,8 +476,6 @@ class HandleBankSubmit(ProfileView, View):
             # we don't want a user to
             # be able do update this
             del data["user"]
-        if "can_update" in data:
-            del data["can_update"]
         data["user"] = request.user
         # set this so the user isn't able to update
         # in future

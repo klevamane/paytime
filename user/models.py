@@ -120,3 +120,10 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+class Document(DirtyFieldsMixin, models.Model):
+    type = models.CharField(max_length=30)
+    file = models.FileField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    verified = models.BooleanField(default=False)
