@@ -52,6 +52,7 @@ class DocumentView(LoginRequiredMixin, View):
                 "document": document,
                 "form": form,
                 "fullname": request.user.get_full_name(),
+                "profile_picture_url": request.user.profile_picture.url,
             },
         )
 
@@ -101,6 +102,7 @@ class DocumentView(LoginRequiredMixin, View):
                 "document": user_document if user_document else instance,
                 "form": form,
                 "fullname": request.user.get_full_name(),
+                "profile_picture_url": request.user.profile_picture.url,
             },
         )
 
@@ -436,7 +438,7 @@ class ProfileView(LoginRequiredMixin, View):
             "profile_form": profile_form,
             "bank_form": bank_form,
             "fullname": request.user.get_full_name(),
-            "profile_picture_url": request.user.profile_picture.url.lstrip("/")
+            "profile_picture_url": request.user.profile_picture.url
             if request.user.profile_picture
             else "",
         }
@@ -497,7 +499,7 @@ class HandleProfileSubmit(ProfileView, View):
             "profile_form": profile_form,
             "bank_form": bank_form,
             "fullname": request.user.get_full_name(),
-            "profile_picture_url": request.user.profile_picture.url.lstrip("/")
+            "profile_picture_url": request.user.profile_picture.url
             if request.user.profile_picture
             else "",
         }
@@ -544,7 +546,7 @@ class HandleBankSubmit(ProfileView, View):
                 "bank_form": bank_form,
                 "profile_form": profile_form,
                 "fullname": request.user.get_full_name(),
-                "profile_picture_url": request.user.profile_picture.url.lstrip("/")
+                "profile_picture_url": request.user.profile_picture.url
                 if request.user.profile_picture
                 else "",
             },
