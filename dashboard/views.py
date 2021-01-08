@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.db.models import Q, Sum
@@ -152,10 +153,35 @@ class TransactionsAllView(LoginRequiredMixin, View):
 
 class WalletView(LoginRequiredMixin, View):
     def get(self, request):
+        wallet, _ = Wallet.objects.get_or_create(user=request.user)
         return render(
             request=request,
             template_name="dashboard/wallet/wallet.html",
-            context={"fullname": request.user.get_full_name()},
+            context={
+                "fullname": request.user.get_full_name(),
+                "wallet": wallet,
+                "roi_gain": wallet.total_withrawals - wallet.total_deposits,
+            },
+        )
+
+    def post(self, request):
+        wallet, _ = Wallet.objects.get_or_create(user=request.user)
+        try:
+            wallet.do_withdrawal(wallet.balance, request.user)
+
+        except ValidationError as e:
+            import pdb
+
+            pdb.set_trace()
+            messages.error(request, e.messages[0])
+        return render(
+            request=request,
+            template_name="dashboard/wallet/wallet.html",
+            context={
+                "fullname": request.user.get_full_name(),
+                "wallet": wallet,
+                "roi_gain": wallet.total_withrawals - wallet.total_deposits,
+            },
         )
 
 

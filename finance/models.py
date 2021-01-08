@@ -3,14 +3,16 @@ from __future__ import absolute_import
 import datetime
 
 from dirtyfields import DirtyFieldsMixin
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Sum
 
-# Create your models here.
 from dashboard.models import TimeStampMixin
 from finance.validators import validate_account_number
+from paytime.utils import FAILURE_MESSAGES
 from user.models import User
 
-Banks = [
+BANKS = [
     ("access_bank", "Access Bank"),
     ("citibank", "Citibank"),
     ("dynamic_standard_bank", "Dynamic Standard Bank"),
@@ -39,7 +41,7 @@ Banks = [
 class Bank(DirtyFieldsMixin, TimeStampMixin):
     # When a user adds a bank account
     # automatically create a wallet for the user
-    bank = models.CharField(max_length=30, choices=Banks, default="access_bank")
+    bank = models.CharField(max_length=30, choices=BANKS, default="access_bank")
     account_number = models.CharField(
         max_length=10,
         validators=[validate_account_number],
@@ -98,23 +100,55 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
     def __str__(self):
         return "Balance {}".format(self.balance)
 
-    def do_depost(self, amount, user, for_package=False):
+    def do_depost(self, amount, user, for_package=False, status="completed"):
         self.balance += int(amount)
         self.save()
+        self._make_transaction(amount, user, for_package, status)
+
+    def _make_transaction(
+        self, amount, user, for_package=False, tnx_type="deposit", status="pending"
+    ):
         transaction = Transactions(
-            transaction_type="deposit",
+            transaction_type=tnx_type,
             user=user,
             amount=int(amount),
-            status="completed",
+            status=status,
             for_package=for_package,
         )
         transaction.save()
 
-    def do_withdrawal(self):
-        # whatever transaction done here should be updated to the transactions Table
-        # the user will request for withrawal
-        # we add that to the transactions table as pending
-        pass
+    def do_withdrawal(self, amount, user, for_package=False, status="pending"):
+        try:
+            if int(amount) <= int(self.balance):
+                self.balance -= amount
+                self._make_transaction(amount, user, for_package, "withdrawal", status)
+                return
+        except TypeError:
+            raise ValidationError(
+                message=FAILURE_MESSAGES["enter_valid_amount"], code=400
+            )
+
+        raise ValidationError(message=FAILURE_MESSAGES["insufficient_funds"], code=400)
+
+    @property
+    def total_withrawals(self):
+        return self._get_transaction_total("withdrawal")
+
+    @property
+    def total_deposits(self):
+        return self._get_transaction_total("deposit")
+
+    def latest_transactions(self):
+        # print this with .query to view the sql
+        return self.user.transactions.all().order_by("-created_at")[0:5]
+
+    def _get_transaction_total(self, tnx_type):
+        return (
+            self.user.transactions.filter(transaction_type=tnx_type).aggregate(
+                Sum("amount")
+            )["amount__sum"]
+            or 0
+        )
 
 
 PACKGE_CHOICES = [

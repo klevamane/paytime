@@ -1,34 +1,128 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
+{% load humanize %}
 {% load static %}
+{% load custom_template_tags %}
 
 {% block content %}
     <div class="container">
+    {% include "partials/messages.html" %}
+        <div class="row">
+
+            <div class="col-12 col-xl-4">
+                <div class="box" id="wallet_box">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Wallet</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="d-flex justify-content-between bb-1 pb-5">
+                            <h5 class="text-success">Balance</h5>
+                            <h5 class="">{{ wallet.balance|humanize_number }}</h5>
+                        </div>
+                        <div class="d-flex justify-content-between pb-5 pt-10">
+                            <h4>NGR</h4>
+                            <h4>NAIRA</h4>
+                        </div>
+                        <div class="d-flex justify-content-between pb-10">
+                            <h4>BAL</h4>
+                            <h4>{{ wallet.balance }}</h4>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url "payment_view_url" %}" class="btn btn-danger"><i class="fa fa-arrow-circle-down"></i> DEPOSIT</a>
+                            <a type="button" class="btn btn-success mt-0" data-toggle="modal" data-target="#withdrawl-modal"><i class="fa fa-arrow-circle-up"></i>
+                                WITHDRAW
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-12 col-xl-8">
+                 <div class="row">
+                <div class="col-12 col-xl-4">
+                        <div class="box box-body pull-up">
+                            <div class="d-flex justify-content-between">
+                                <div class="p-0">
+                                    <div class="text-center">
+                                        <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
+                                    </div>
+                                    <div>
+                                        <h3 class="no-margin text-bold">Total</h3>
+                                        <span>Deposits</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="no-margin font-weight-600"><span class="text-warning">N{{ wallet.total_deposits|humanize_number }}</span></p>
+                                        <p class="no-margin">Invested</p>
+                                    </div>
+                                    <div class="mt-10">
+                                        <p class="no-margin font-weight-600"><span class="text-warning">Since</span></p>
+                                        <p class="no-margin">Inception</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 <div class="col-12 col-xl-4">
+                        <div class="box box-body pull-up">
+                            <div class="d-flex justify-content-between">
+                                <div class="p-0">
+                                    <div class="text-center">
+                                        <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
+                                    </div>
+                                    <div>
+                                        <h3 class="no-margin text-bold">Total</h3>
+                                        <span>Withdrawn</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="no-margin font-weight-600"><span class="text-warning"></span>N{{ wallet.total_withrawals }}</p>
+                                        <p class="no-margin">Received</p>
+                                    </div>
+                                    <div class="mt-10">
+                                        <p class="no-margin font-weight-600"><span class="text-warning">Since</span></p>
+                                        <p class="no-margin">Inception</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-12 col-xl-4">
+                        <div class="box box-body pull-up">
+                            <div class="d-flex justify-content-between">
+                                <div class="p-0">
+                                    <div class="text-center">
+                                        <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
+                                    </div>
+                                    <div>
+                                        <h3 class="no-margin text-bold">Diff</h3>
+                                        <span>Differential</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <p class="no-margin font-weight-600"><span class="text-warning">{{ roi_gain|humanize_number }}</span>
+                                            </p>
+                                        <p class="no-margin">+ or -</p>
+                                    </div>
+                                    <div class="mt-10">
+                                        <p class="no-margin font-weight-600"><span class="text-warning">Since</span></p>
+                                        <p class="no-margin">Inception</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     </div>
+
+            </div>
+
+        </div>
+
+
         <div class="row">
 
             <div class="col-xxl-3 col-lg-12">
-                <div class="card bg-primary text-white mb-4">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="mr-3">
-                                <div class="text-white-75 small">Balance</div>
-                                <div class="text-lg font-weight-bold">N40,000</div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="feather feather-calendar feather-xl text-white-50">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-gradient-primary d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="{% url "transactions_all_url" %}">View
-                            Report</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
 
 
                 <div class="card card-header-actions mb-5">
@@ -36,65 +130,25 @@
                         Latest Transactions
                     </div>
                     <div class="card-body">
-                        {#                    <div class="container">#}
-                        <div class="row">
+                        {% for transaction in wallet.latest_transactions %}
+                            <div class="row">
                             <div class="col-md-2 col-sm-2">
+                                {% if transaction.transaction_type == "deposit" %}
                                 <i class="fas fa-fw fa-2x fa-arrow-circle-right text-success"></i>
+                                {% else %}
+                                    <i class="fas fa-fw fa-2x fa-arrow-circle-left text-danger"></i>
+                                {% endif %}
                             </div>
                             <div class="col-md-7 col-sm-7">
-                                Deposit
-                                <p>Small facebook</p>
+                                {{ transaction.transaction_type|capfirst }}
+                                <br>
+                                <small>{{ transaction.created_at }}</small>
                             </div>
-                            <div class="col-md-3 col-sm-3">N200,000</div>
+                            <div class="col-md-3 col-sm-3">{{ transaction.amount|floatformat|intcomma }}</div>
 
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-2 col-sm-2">
-                                <i class="fas fa-fw fa-2x fa-arrow-circle-left text-danger"></i>
-                            </div>
-                            <div class="col-md-7 col-sm-7">
-                                Withdrawal
-                                <p>Small facebook</p>
-                            </div>
-                            <div class="col-md-3 col-sm-3">N200,000</div>
-                        </div>
-
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-2 col-sm-2">
-                                <i class="fas fa-fw fa-2x fa-arrow-circle-right text-success"></i>
-                            </div>
-                            <div class="col-md-7 col-sm-7">
-                                Deposit
-                                <p>Small facebook</p>
-                            </div>
-                            <div class="col-md-3 col-sm-3">N30,000</div>
-
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-2 col-sm-2">
-                                <i class="fas fa-fw fa-2x fa-arrow-circle-right text-success"></i>
-                            </div>
-                            <div class="col-md-7 col-sm-7">
-                                Deposit
-                                <p>Small facebook</p>
-                            </div>
-                            <div class="col-md-3 col-sm-3">N55,000</div>
-                        </div>
-
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-2 col-sm-2">
-                                <i class="fas fa-fw fa-2x fa-arrow-circle-left text-danger"></i>
-                            </div>
-                            <div class="col-md-7 col-sm-7">
-                                Withdrawal
-                                <p>Small facebook</p>
-                            </div>
-                            <div class="col-md-3 col-sm-3">N55,000</div>
-                        </div>
+                            <hr>
+                        {% endfor %}
                     </div>
                     <a class="card-footer" href="{% url "transactions_all_url" %}">
                         <div class="d-flex align-items-center justify-content-between small text-body">
@@ -267,7 +321,7 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <i class="cc REP"></i>
-                                                    <span>Ripple</span>
+                                                    <span>Difference</span>
                                                 </div>
                                             </td>
                                             <td>
@@ -756,7 +810,7 @@
                 </div>
 
 
-                <div class="box">
+                <div class="box" id="wallet_box">
                     <div class="box-header with-border">
                         <h4 class="box-title">Wallet Balance</h4>
                     </div>
@@ -774,8 +828,8 @@
                             <h4>0.0000000</h4>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-danger"><i class="fa fa-arrow-circle-down"></i> DEPOSIT
-                            </button>
+                            <a href="{% url "payment_view_url" %}" class="btn btn-danger"><i class="fa fa-arrow-circle-down"></i> DEPOSIT
+                            </a>
                             <button type="button" class="btn btn-success mt-0"><i class="fa fa-arrow-circle-up"></i>
                                 WITHDRAW
                             </button>
@@ -1144,25 +1198,6 @@
                                     <td>$875.38</td>
                                     <td><span class="badge badge-success">Success</span></td>
                                 </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td><i class="cc LTC font-size-18"></i></td>
-                                    <td>johen.com</td>
-                                    <td>nothte@gmail.com</td>
-                                    <td>BCC98F59</td>
-                                    <td>$845.69</td>
-                                    <td><span class="badge badge-danger">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td><i class="cc ADA font-size-18"></i></td>
-                                    <td>dummy.com</td>
-                                    <td>johendoe@gmail.com</td>
-                                    <td>BCC98F59</td>
-                                    <td>$158.69</td>
-                                    <td><span class="badge badge-success">Success</span></td>
-                                </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -1170,5 +1205,30 @@
                 </div>
             </div>
         </div>
+
+
+    <div class="modal fade" id="withdrawl-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to withdraw everything?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">Select "Withdraw" below if you are ready withrawl all your funds.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <form method="POST" action="{% url "wallet_url" %}">
+                    {% csrf_token %}
+                    <button class="btn btn-success" type="submit">Withdraw</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 {% endblock %}
