@@ -4,9 +4,11 @@ import datetime
 
 from dirtyfields import DirtyFieldsMixin
 from django.contrib import messages
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import Q, Sum
+from django.template.defaultfilters import floatformat
 
 from dashboard.models import TimeStampMixin
 from finance.validators import validate_account_number
@@ -205,6 +207,11 @@ class Investment(DirtyFieldsMixin, TimeStampMixin):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return "{} for package: {}".format(
+            intcomma(floatformat(self.amount)), self.package
+        )
+
     @property
     def total_roi(self):
         return self.roischedule_set.aggregate(Sum("roi_amount"))["roi_amount__sum"] or 0
@@ -266,3 +273,6 @@ class RoiSchedule(DirtyFieldsMixin, TimeStampMixin):
         choices=INVESTMENT_STATUS, max_length=20, default="pending"
     )
     roi_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+
+    def __str__(self):
+        return "Roi amount: {} status: {}".format(self.roi_amount, self.status)
