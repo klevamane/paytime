@@ -121,10 +121,10 @@
                                              style="height: 40px; width: 40px; vertical-align: bottom" alt="">
                                         <span class="text-primary" style="font-size: 20px">interswitch</span>
                                     </h2>
-                                    <p><strong>Duration :</strong> 75 working days</p>
-                                    <p><strong>ROI :</strong> 15%</p>
-                                    <p><strong>Minimum Investment amount :</strong> N100,000</p>
-                                    <p><strong>Maximum Investment amount :</strong> N50,000,000</p>
+                                    <p><strong>Duration: </strong><span id="duration"></span> working days</p>
+                                    <p><strong >ROI: </strong><span id="roi"></span>%</p>
+                                    <p><strong>Minimum Investment amount: </strong>N<span id="min-inv"></span></p>
+                                    <p><strong>Maximum Investment amount: </strong>N<span id="max-inv"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +150,31 @@
     <script>
 
         const paymentForm = document.getElementById('paymentForm');
+        const duration = document.getElementById('duration');
+        const roi = document.getElementById('roi');
+        const maxInv = document.getElementById('max-inv');
+        const minInv = document.getElementById('min-inv');
+
         paymentForm.addEventListener("submit", payWithPaystack, false);
+        packageSelector = addEventListener("change", updatePackageDetails, false)
+
+
+        function updatePackageDetails(e) {
+            const codename = e.target.value;
+            if (!codename) return
+            fetch(`payment/get-package-details/${e.target.value}`, {
+                method: "GET"
+            }).then(res => res.json())
+            .then(response => {
+                console.log(response)
+                if (response !== null) {
+                    duration.innerText = response.duration;
+                    roi.innerText = response.roi;
+                    maxInv.innerText = response.maximum_amount;
+                    minInv.innerText = response.minimum_amount;
+                }
+            })
+        }
 
         function payWithPaystack(e) {
             const amount = document.getElementById('id_amount');

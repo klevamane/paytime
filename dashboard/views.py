@@ -7,6 +7,7 @@ import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -15,6 +16,7 @@ from django.db.models import Q, Sum
 from django.forms.utils import ErrorList
 from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
+from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
@@ -404,6 +406,23 @@ def validate_package_amount(request):
     if payment_form.errors:
         return JsonResponse({**payment_form.errors}, status=400)
     return JsonResponse({}, status=200)
+
+
+class PackageDetail(LoginRequiredMixin, View):
+    def get(self, request, codename):
+        data = None
+        try:
+            package = Package.objects.get(codename=codename)
+        except (Package.DoesNotExist, AttributeError, ValueError):
+            return JsonResponse(data=data, status=400, safe=False)
+
+        data = {
+            "duration": package.days,
+            "roi": package.return_on_investmentent,
+            "minimum_amount": intcomma(floatformat(package.minimum_amount)),
+            "maximum_amount": intcomma(floatformat(package.maximum_amount)),
+        }
+        return JsonResponse(data=data, status=200, safe=False)
 
 
 class ProfileView(LoginRequiredMixin, View):
