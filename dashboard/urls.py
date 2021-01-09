@@ -67,11 +67,6 @@ urlpatterns = [
         name="verify_payment_url",
     ),
     path(
-        "investments/paystack",
-        views.PaystackView.as_view(),
-        name="paystack_view_url",
-    ),
-    path(
         "investments/payment/validate-payment-package-amount",
         csrf_exempt(views.validate_package_amount),
         name="payment_package_amount_url",

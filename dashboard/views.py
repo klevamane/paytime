@@ -241,6 +241,7 @@ class TransferToWalletView(View):
     # mark all ROIs in that investment as completed
 
     # Wait! already paid ROIs ought to have been marked completed
+    # anyways still mark
 
     # instead, mark the investment as completed
     # therefore during withrawals or performing investment actions
@@ -304,6 +305,10 @@ class TransferToWalletView(View):
 
 class PaymentVerificationView(View):
     def post(self, request):
+        # check if user already has an active investment
+        # a user having an active investment shouldn't be able
+        # to make any other payment
+
         try:
             amount, pkg, reference_id = list((json.loads(request.body)).values())
         except ValueError:
@@ -352,7 +357,7 @@ class PaymentVerificationView(View):
             # would the user be allowed to directly deposit into their wallet?
             return JsonResponse({"resolved_url": resolved_url}, safe=False)
         return JsonResponse(
-            {"message": "Transaction not completed unable to verify transaction"},
+            {"message": FAILURE_MESSAGES["incomplete_unverifiable_tnx"]},
             safe=False,
             status=400,
         )
@@ -360,6 +365,8 @@ class PaymentVerificationView(View):
 
 class PaymentView(LoginRequiredMixin, View):
     def get(self, request):
+        if request.user.has_active_investment:
+            messages.error(request, FAILURE_MESSAGES["user_has_active_investment"])
         try:
             package = Package.objects.get(codename=request.GET.get("codename"))
         except Package.DoesNotExist:
@@ -382,20 +389,21 @@ class PaymentView(LoginRequiredMixin, View):
         )
 
 
+@login_required
 def validate_package_amount(request):
+
+    if request.user.has_active_investment:
+        response = {
+            "success": False,
+            "message": FAILURE_MESSAGES["user_has_active_investment"],
+        }
+        return JsonResponse(data=response, status=400)
+
     data = json.loads(request.body)
     payment_form = PaymentForm(data=data)
     if payment_form.errors:
         return JsonResponse({**payment_form.errors}, status=400)
     return JsonResponse({}, status=200)
-
-
-class PaystackView(View):
-    def get(self, request):
-        pass
-
-    def post(self, request):
-        pass
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -486,10 +494,9 @@ class HandleProfileSubmit(ProfileView, View):
 class HandleBankSubmit(ProfileView, View):
     def post(self, request):
         data = request.POST.dict()
-        if "user" in data:
-            # we don't want a user to
-            # be able do update this
-            del data["user"]
+
+        # we don't want a user to
+        # be able do update this
         data["user"] = request.user
         # set this so the user isn't able to update
         # in future
@@ -511,6 +518,7 @@ class HandleBankSubmit(ProfileView, View):
             bank_form.save()
             messages.success(request, "Save successful")
             return redirect("profile_url")
+
         for k, err in bank_form.errors.items():
             messages.error(request, err[0])
         user = User.objects.get(id=request.user.id)

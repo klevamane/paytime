@@ -56,7 +56,7 @@
                                             <span><strong><a href="#exampleModalLong" data-toggle="modal"
                                                              data-target="#exampleModalLong">terms and conditions</a></strong></span>
                                         </div>
-                                        <button class="btn btn-success btn-block my-4" type="submit">Make Payment
+                                        <button class="btn btn-success btn-block my-4" {% if request.user.has_active_investment %}disabled{% endif %} type="submit">Make Payment
                                         </button>
                                         <a href="{% url "invest_view_url" %}"
                                            class="mt-4 text-muted text-decoration-none">
@@ -165,20 +165,26 @@
                 body: JSON.stringify({
                     "amount": amount.value,
                     "package": pkg.value,
-                    "terms_condition": terms_condition
+                    "terms_condition": terms_condition,
                 }),
                 method: "POST"
             }).then(res => res.json())
-                .then(validation_error => {
-                    if (Object.keys(validation_error).length > 0) {
-                        if (validation_error.hasOwnProperty("amount")) {
+                .then(response => {
+                    if (response.hasOwnProperty("success")) {
+                        if (response.success === false) {
+                            // an error exists
+                            throw Error(response.message)
+                        }
+                    }
+                    if (Object.keys(response).length > 0) {
+                        if (response.hasOwnProperty("amount")) {
                             amount.classList.add("is-invalid")
-                            amount_error.innerHTML = validation_error.amount
+                            amount_error.innerHTML = response.amount
                             amount_error.style.display = "block"
                         }
-                        if (validation_error.hasOwnProperty("package")) {
+                        if (response.hasOwnProperty("package")) {
                             amount.classList.add("is-invalid")
-                            package_error.innerHTML = validation_error.package
+                            package_error.innerHTML = response.package
                             package_error.style.display = "block"
                         }
 
@@ -227,7 +233,6 @@
 
                                     }
                                     const message = 'Payment complete! Reference: ' + response.reference;
-                                    {#alert(message);#}
                                 }
                             });
                             handler.openIframe();
@@ -237,6 +242,14 @@
                     }
 
                 })
+            .catch((err) => {
+                // Do nothing as it's not expected that the user
+                // should be able to make payment in the firstplace
+                // if the user has an active investment
+                // because the payment button ought to be disabled
+                // with the page showing thr error message
+                console.log("ERROR CAUGHT ->", err);
+            })
         }
     </script>
 

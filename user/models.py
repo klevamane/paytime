@@ -125,6 +125,10 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     def is_staff(self):
         return self.is_admin
 
+    @property
+    def has_active_investment(self):
+        return self.investment_set.filter(status__in=["active", "pending"]).exists()
+
 
 class Document(DirtyFieldsMixin, models.Model):
     type = models.CharField(max_length=30)

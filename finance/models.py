@@ -109,14 +109,14 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
     def _make_transaction(
         self, amount, user, for_package=False, tnx_type="deposit", status="pending"
     ):
-        transaction = Transactions(
+        tnx = Transactions(
             transaction_type=tnx_type,
             user=user,
             amount=int(amount),
             status=status,
             for_package=for_package,
         )
-        transaction.save()
+        tnx.save()
 
     @transaction.atomic()
     def do_withdrawal(self, amount, user, for_package=False, status="pending"):
@@ -194,9 +194,6 @@ INVESTMENT_STATUS = [
     ("cancelled", "Cancelled"),
     ("completed", "Completed"),
     ("pending", "Pending"),
-    ("processing", "Processing"),
-    ("success", "Success"),
-    ("transfer", "Transfer"),
 ]
 
 
