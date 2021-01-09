@@ -10,7 +10,6 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 
-from dashboard.models import TimeStampMixin
 from paytime.utils import validate_ng_mobile_number
 
 
