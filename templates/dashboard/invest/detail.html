@@ -1,7 +1,9 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
 {% load humanize %}
 {% load custom_tags %}
-{% block username %}{{ fullname }} {% endblock %}
+
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -54,13 +56,13 @@
                         <div>
                             <div>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-success">ROI</span> /
-                                    N{{ total_roi|floatformat|intcomma }}
+                                    N{{ investment.total_roi|floatformat|intcomma }}
                                 </p>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-success">Paid</span> /
-                                    N{{ total_roi_paid|floatformat|intcomma }}
+                                    N{{ investment.total_roi_paid|floatformat|intcomma }}
                                 </p>
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-warning">Left</span> /
-                                    N{{ total_roi_left|floatformat|intcomma }}
+                                    N{{ investment.total_roi_left|floatformat|intcomma }}
                                 </p>
                             </div>
                         </div>
@@ -92,7 +94,7 @@
                             <div class="mt-10">
                                 <p class="no-margin font-weight-600 text-bold"><span class="text-warning">Period</span>
                                 </p>
-                                <p class="no-margin">{{ period }} days left</p>
+                                <p class="no-margin">{{ investment.period_in_days }} days left</p>
                             </div>
                         </div>
                     </div>
@@ -130,7 +132,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for roi_schedule in roi_schedules %}
+                            {% for roi_schedule in investment.get_roi_schedules %}
                                 <tr id="id_{{ roi_schedule.id }}">
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ roi_schedule.maturity_date }}</td>

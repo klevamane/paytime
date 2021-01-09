@@ -1,7 +1,10 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
 {% load static %}
 {% load custom_tags %}
-{% block username %}{{ fullname }} {% endblock %}
+
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}
+{% endif %}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -9,10 +12,12 @@
         {% include "partials/messages.html" %}
         <div class="row">
             <div class="col-lg-10">
+
                 <ul class="nav nav-tabs mb-5" role="tablist">
                     <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#debit-card" role="tab"
                                             aria-selected="true"><span class="hidden-sm-up"><i
-                            class="fa fa-cc"></i></span> <span class="hidden-xs-down">Debit Card</span></a></li>
+                            class="fa fa-cc"></i></span> <span class="hidden-xs-down">Debit Card</span></a>
+                    </li>
                 </ul>
 
 

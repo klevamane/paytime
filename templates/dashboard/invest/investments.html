@@ -1,7 +1,9 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
 {% load custom_tags %}
 {% load humanize %}
-{% block username %}{{ fullname }} {% endblock %}
+
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -26,8 +28,8 @@
                                             <a href="#"><i class="cc XRP mr-5" title="XRP"></i></a>
                                         </div>
                                         <div>
-                                            <h3 class="no-margin text-bold">Medium {{ last_investment.name }}</h3>
-                                            <span>Ovviy</span>
+                                            <h3 class="no-margin text-bold">{{ last_investment.package.name|capfirst|truncatechars:12 }}</h3>
+                                            <span>{{ last_investment.package.name }}</span>
                                         </div>
                                     </div>
                                     <div>
@@ -37,10 +39,10 @@
                                                 <strong>N{{ last_investment.amount|floatformat|intcomma }}</strong></p>
                                             <p class="no-margin font-weight-600"><span
                                                     class="text-warning">Interest Paid</span> /
-                                                <strong>N500,000</strong></p>
+                                                <strong>N{{ last_investment.total_roi_paid|floatformat|intcomma }}</strong></p>
                                             <p class="no-margin font-weight-600"><span class="text-warning">Possible Interest Left</span>
                                                 /
-                                                <strong>N300,000,000</strong></p>
+                                                <strong>N{{ last_investment.total_roi_left|floatformat|intcomma }}</strong></p>
                                         </div>
                                         <div class="mt-10">
                                             <p class="no-margin font-weight-600"><span

@@ -2,7 +2,8 @@
 {% load humanize %}
 {% load static %}
 
-{% block username %}{{ fullname }} {% endblock %}
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
 
 {% block transaction_options %}
     {% if not transactions %}
@@ -23,7 +24,7 @@
 
     <div class="row flex-row">
 
-        <button class="btn btn-primary btn-sm mb-4">Make withdrawal</button>
+        <a class="btn btn-primary btn-sm mb-4" href="{% url "wallet_url" %}">Make withdrawal</a>
         <table class="table">
             <thead>
             <tr>

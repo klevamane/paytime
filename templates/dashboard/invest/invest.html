@@ -1,6 +1,8 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
 {% load custom_tags %}
-{% block username %}{{ fullname }} {% endblock %}
+
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
 {% load humanize %}
 
 {% block content %}

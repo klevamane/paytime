@@ -17,6 +17,7 @@ from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonRespon
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
+from django.views.generic import ListView
 
 from dashboard.forms import PaymentForm
 from finance.forms import BankForm
@@ -52,8 +53,6 @@ class DocumentView(LoginRequiredMixin, View):
             context={
                 "document": document,
                 "form": form,
-                "fullname": request.user.get_full_name(),
-                "profile_picture_url": request.user.profile_picture.url,
             },
         )
 
@@ -102,53 +101,33 @@ class DocumentView(LoginRequiredMixin, View):
             context={
                 "document": user_document if user_document else instance,
                 "form": form,
-                "fullname": request.user.get_full_name(),
                 "profile_picture_url": request.user.profile_picture.url,
             },
         )
 
 
-class DepositView(LoginRequiredMixin, View):
-    def get(self, request):
-        tnxs = Transactions.objects.filter(
-            user_id=request.user.id, transaction_type="deposit"
-        )
-        return render(
-            request=request,
-            template_name="dashboard/transactions/deposit.html",
-            context={
-                "fullname": request.user.get_full_name(),
-                "transactions": tnxs if tnxs else None,
-            },
-        )
+class TransactionsAllView(LoginRequiredMixin, ListView):
+    qry = {}
+
+    model = Transactions
+    template_name = "dashboard/transactions/all.html"
+    paginate_by = 5
+    context_object_name = "transactions"
+
+    def get_queryset(self):
+        return Transactions.objects.filter(
+            user_id=self.request.user.id, **self.qry
+        ).order_by("-id")
 
 
-class WithdrawalView(LoginRequiredMixin, View):
-    def get(self, request):
-        tnxs = Transactions.objects.filter(
-            user_id=request.user.id, transaction_type="withdrawal"
-        )
-        return render(
-            request=request,
-            template_name="dashboard/transactions/withrawal.html",
-            context={
-                "fullname": request.user.get_full_name(),
-                "transactions": tnxs if tnxs else None,
-            },
-        )
+class DepositView(TransactionsAllView):
+    qry = {"transaction_type": "deposit"}
+    template_name = "dashboard/transactions/deposit.html"
 
 
-class TransactionsAllView(LoginRequiredMixin, View):
-    def get(self, request):
-        tnxs = Transactions.objects.filter(user_id=request.user.id)
-        return render(
-            request=request,
-            template_name="dashboard/transactions/all.html",
-            context={
-                "fullname": request.user.get_full_name(),
-                "transactions": tnxs if tnxs else None,
-            },
-        )
+class WithdrawalView(TransactionsAllView):
+    qry = {"transaction_type": "withdrawal"}
+    template_name = "dashboard/transactions/withrawal.html"
 
 
 class WalletView(LoginRequiredMixin, View):
@@ -158,7 +137,6 @@ class WalletView(LoginRequiredMixin, View):
             request=request,
             template_name="dashboard/wallet/wallet.html",
             context={
-                "fullname": request.user.get_full_name(),
                 "wallet": wallet,
                 "roi_gain": wallet.total_withrawals - wallet.total_deposits,
             },
@@ -168,17 +146,15 @@ class WalletView(LoginRequiredMixin, View):
         wallet, _ = Wallet.objects.get_or_create(user=request.user)
         try:
             wallet.do_withdrawal(wallet.balance, request.user)
-
+            messages.success(
+                request, SUCCESS_MESSAGES["operation_successful"].format("withdrawal")
+            )
         except ValidationError as e:
-            import pdb
-
-            pdb.set_trace()
             messages.error(request, e.messages[0])
         return render(
             request=request,
             template_name="dashboard/wallet/wallet.html",
             context={
-                "fullname": request.user.get_full_name(),
                 "wallet": wallet,
                 "roi_gain": wallet.total_withrawals - wallet.total_deposits,
             },
@@ -193,7 +169,6 @@ class InvestView(LoginRequiredMixin, View):
             request,
             "dashboard/invest/invest.html",
             context={
-                "fullname": request.user.get_full_name(),
                 "packages": self.packages,
             },
         )
@@ -220,10 +195,9 @@ class InvestmentsView(LoginRequiredMixin, View):
             investments = paginator.page(paginator.num_pages)
 
         # this is important that we use update instead of manually assigning key, value
-
-        context.update(
-            {"user_investments": investments, "fullname": request.user.get_full_name()}
-        )
+        # there seem to be an issue an issue we noticed by simply assigning the data
+        # by dict["key"] = value
+        context.update({"user_investments": investments})
         return render(request, "dashboard/invest/investments.html", context=context)
 
 
@@ -237,44 +211,22 @@ class InvestmentDetailView(LoginRequiredMixin, View):
             investment = Investment.objects.get(id=id, user_id=request.user.id)
         except Investment.DoesNotExist:
             raise Http404
-        # roi_amount__sum default key generated by the aggrefate fn
-        total_roi = investment.roischedule_set.aggregate(Sum("roi_amount"))[
-            "roi_amount__sum"
-        ]
+
         # it is expected that for every investment created
         # there should be it's roi_schedule_set also created
         # but we still need to check for safety here
         if investment.roischedule_set.count() == 0:
             return HttpResponseForbidden()
-        total_roi_paid = investment.roischedule_set.filter(
-            status="completed"
-        ).aggregate(Sum("roi_amount"))["roi_amount__sum"]
         # get the next ROI payment date
-        next_payment_date = (
-            investment.roischedule_set.exclude(
-                Q(status="completed") | Q(status="transfer")
-            )
-            .order_by("maturity_date")
-            .values_list("maturity_date", flat=True)
-            .first()
-        )
 
         return render(
             request,
             "dashboard/invest/detail.html",
             context={
-                "fullname": request.user.get_full_name(),
                 "investment": investment,
-                "roi_schedules": investment.roischedule_set.order_by("maturity_date"),
-                "total_roi": total_roi,
-                "total_roi_paid": total_roi_paid or 0,
-                "total_roi_left": total_roi - (total_roi_paid or 0),
-                "next_payment_date": next_payment_date
-                if next_payment_date is not None
+                "next_payment_date": investment.next_payment_date
+                if investment.next_payment_date is not None
                 else "Completed",
-                "period": (next_payment_date - datetime.datetime.now().date()).days
-                if next_payment_date
-                else 0,
             },
         )
 
@@ -425,7 +377,6 @@ class PaymentView(LoginRequiredMixin, View):
                 "email": request.user.email,
                 "firstname": request.user.firstname,
                 "lastname": request.user.lastname,
-                "fullname": request.user.get_full_name(),
                 "paystatck_pub_key": settings.PAYSTACK_PUBLIC_KEY,
             },
         )
@@ -463,7 +414,6 @@ class ProfileView(LoginRequiredMixin, View):
         context = {
             "profile_form": profile_form,
             "bank_form": bank_form,
-            "fullname": request.user.get_full_name(),
             "profile_picture_url": request.user.profile_picture.url
             if request.user.profile_picture
             else "",
@@ -524,7 +474,6 @@ class HandleProfileSubmit(ProfileView, View):
         context = {
             "profile_form": profile_form,
             "bank_form": bank_form,
-            "fullname": request.user.get_full_name(),
             "profile_picture_url": request.user.profile_picture.url
             if request.user.profile_picture
             else "",
@@ -562,7 +511,8 @@ class HandleBankSubmit(ProfileView, View):
             bank_form.save()
             messages.success(request, "Save successful")
             return redirect("profile_url")
-
+        for k, err in bank_form.errors.items():
+            messages.error(request, err[0])
         user = User.objects.get(id=request.user.id)
         profile_form = self._set_profile_form(user)
         return render(
@@ -571,7 +521,6 @@ class HandleBankSubmit(ProfileView, View):
             {
                 "bank_form": bank_form,
                 "profile_form": profile_form,
-                "fullname": request.user.get_full_name(),
                 "profile_picture_url": request.user.profile_picture.url
                 if request.user.profile_picture
                 else "",

@@ -2,26 +2,27 @@
 {% load humanize %}
 {% load static %}
 
-{% block username %}{{ fullname }} {% endblock %}
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
 
 {% block transaction_options %}
     {% if not transactions %}
-                    <div class="box">
-                        <div class="box-header">
-                            <h4 class="box-title">
-                                No transaction yet
-                            </h4>
-                        </div>
-                        <div class="box-body py-5 text-center">
-                            <p class="text-center">You haven't made any deposits or withdrawals yet
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">
+                    No transaction yet
+                </h4>
+            </div>
+            <div class="box-body py-5 text-center">
+                <p class="text-center">You haven't made any deposits or withdrawals yet
 
-                        </div>
-                    </div>
-        {% else %}
-    <p class="text-center">All transactions</p>
-    <small class="text-muted text-center d-block">Deposits made for package? only reflects in the wallet after the package investment cycle is complete</small>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center">All transactions</p>
+        <small class="text-muted text-center d-block"><strong class="text-primary">Deposit made for a package</strong> only reflects in the wallet after the package investment cycle is complete</small>
 
-    <div class="row flex-row">
+        <div class="row flex-row">
 
         <table class="table">
             <thead>
@@ -37,7 +38,7 @@
             <tbody>
             {% for transaction in transactions %}
                 <tr>
-                <th scope="row">{{ forloop.counter }}</th>
+                <th scope="row">{{ forloop.counter0|add:page_obj.start_index }}</th>
                 <td>{{ transaction.transaction_type|capfirst }}</td>
                 <td>{{ transaction.amount|floatformat|intcomma }}</td>
                 <td>{{ transaction.created_at }}</td>
@@ -48,6 +49,40 @@
             </tbody>
         </table>
     </div>
+
+        {% if page_obj.has_other_pages %}
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><a class="page-link"
+                                                                      href="#">Previous</a>
+                                    </li>
+                                {% endif %}
+                                {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ i }}<span class="sr-only">(current)</span></span>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><a class="page-link"
+                                                                      href="#">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                {% endif %}
     {% endif %}
 
 {% endblock %}

@@ -1,7 +1,9 @@
 {% extends "partials/dashboard/profile/base-profile.html" %}
 {% load static %}
 {% load custom_tags %}
-{% block username %}{{ fullname }}{% endblock %}
+
+{% block username %}{{ request.user.get_full_name }}{% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
 
 {% block row_details %}
     {% include "partials/messages.html" %}
@@ -12,8 +14,7 @@
                     <div class="card-header">Profile Picture</div>
                     <div class="card-body text-center">
                         <!-- Profile picture image-->
-{#                        <img class="img-account-profile rounded-circle mb-2" src="{% static "img/profile-1.png" %}"#}
-                        <img class="img-account-profile rounded-circle mb-2" src="{% if profile_picture_url == "" %}{% static "img/profile-1.png" %}{% else %}{{ profile_picture_url }}{% endif %}"
+                        <img class="img-account-profile rounded-circle mb-2" src="{% if request.user.profile_picture == "" %}{% static "img/profile-1.png" %}{% else %}{{ request.user.profile_picture.url }}{% endif %}"
                              alt="" width="200px">
                         <!-- Profile picture help block-->
                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 200 KB</div>

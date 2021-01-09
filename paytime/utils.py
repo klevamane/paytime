@@ -39,17 +39,21 @@ SUCCESS_MESSAGES = {
     "already_activated": "Your email is already verified and activated",
     "kindly_verify": "Hi {} kindly use this link to verify your account\n {}",
     "verified": "Your email has been verified, proceed to login",
+    "operation_successful": "The {} was successful",
 }
 
 FAILURE_MESSAGES = {
     "account_not_active": "Your account is not active, please contact the adminstrator",
+    "amount_specific_range": "The amount must be in the range of {} to {}",
     "cannot_add_multiple_bank": "You cannot add multiple bank accounts, try updating instead",
     "cannot_update_bank": "You cannot update your bank account. Kindly contact us to proceed",
     "enter_valid_amount": "Enter a valid amount",
-    "select_pkg_for_amt": "Select a valid package for this amount",
-    "amount_specific_range": "The amount must be in the range of {} to {}",
+    "enter_valid_account_no": "Enter a valid account number",
+    "funds_too_low": "Wallet balance is too low",
     "image_size_limit": "The image size should not be greater that {}",
     "insufficient_funds": "Insufficient Funds",
+    "select_pkg_for_amt": "Select a valid package for this amount",
+    "specify_account_digits": "{} digit account number is required",
 }
 
 

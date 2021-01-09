@@ -2,7 +2,8 @@
 {% load humanize %}
 {% load static %}
 
-{% block username %}{{ fullname }} {% endblock %}
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
 
 {% block transaction_options %}
     {% if not transactions %}
@@ -19,12 +20,14 @@
                     </div>
         {% else %}
     <p class="text-center">Deposits</p>
+        <small class="text-center d-block">Deposits are only carried out via packages! There is no direct deposit into the wallet</small class="text-center">
 
     <div class="row flex-row">
 
-        <button class="btn btn-primary btn-sm mb-4">Make deposit</button>
+        <a class="btn btn-primary btn-sm mb-4" href="{% url "payment_view_url" %}">Make deposit</a>
         <table class="table">
-            <thead>
+
+        <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Amount</th>
