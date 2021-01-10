@@ -21,5 +21,9 @@ class MessageCenter(LoginRequiredMixin, TimeStampMixin):
     subject = models.CharField(max_length=30)
     message = models.CharField(max_length=30)
     # if to is None, then the message is directed to the admin(s)
-    to = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    to = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name="messages"
+    )
     read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

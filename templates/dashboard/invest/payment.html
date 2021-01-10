@@ -1,4 +1,5 @@
 {% extends "partials/dashboard/base-dashboard.html" %}
+{% load humanize %}
 {% load static %}
 {% load custom_tags %}
 
@@ -6,6 +7,13 @@
 {% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}
 {% endif %}{% endblock %}
 
+{% block message_center_msgs_badge %}
+    {% include "partials/navbar_messages_badge.html" %}
+{% endblock %}
+
+{% block message_center_mgs %}
+    {% include "partials/navbar_msgs.html" %}
+{% endblock %}
 {% block content %}
     <div class="container">
         <h3 class="mb-5">Payment</h3>

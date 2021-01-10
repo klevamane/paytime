@@ -1,0 +1,2 @@
+{% if request.user.total_unread_messages > 0 %}
+    <span class="badge badge-danger badge-counter">{{ request.user.total_unread_messages }}</span>{% endif %}

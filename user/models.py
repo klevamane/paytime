@@ -128,6 +128,13 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     def has_active_investment(self):
         return self.investment_set.filter(status__in=["active", "pending"]).exists()
 
+    def get_user_messages(self):
+        return self.messages.all().order_by("created_at", "read")
+
+    @property
+    def total_unread_messages(self):
+        return self.messages.filter(read=False).count()
+
 
 class Document(DirtyFieldsMixin, models.Model):
     type = models.CharField(max_length=30)
