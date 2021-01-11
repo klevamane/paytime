@@ -19,9 +19,10 @@ from django.shortcuts import redirect, render
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 
 from dashboard.forms import PaymentForm
+from dashboard.models import MessageCenter
 from finance.forms import BankForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
 from paytime import settings
@@ -467,6 +468,24 @@ class ProfileView(LoginRequiredMixin, View):
                 # "profile_picture": None
             }
         )
+
+
+class MessageView(LoginRequiredMixin, View):
+    template_name = "dashboard/messages/detail.html"
+    model = MessageCenter
+
+    def get_queryset(self):
+        return MessageCenter.objects.filter(to=self.request.user)
+
+
+class MessageDetail(MessageView, DetailView):
+    pass
+
+
+class MessageInboxList(MessageView, ListView):
+    template_name = "dashboard/messages/inbox.html"
+    ordering = ["-created_at"]
+    paginate_by = 4
 
 
 class HandleProfileSubmit(ProfileView, View):

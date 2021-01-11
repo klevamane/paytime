@@ -145,6 +145,25 @@
                 <span>Tables</span></a>
         </li>
 
+         <li class="nav-item {% if "/profile" in request.path %}active{% endif %}">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMessages" aria-expanded="true"
+               aria-controls="collapseMessages">
+                <i class="fas fa-fw fa-envelope"></i>
+                <span>Messages</span>
+            </a>
+            <div id="collapseMessages" class="collapse" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Messages Screens:</h6>
+                    <a class="collapse-item" href="{% url "documents" %}">Create</a>
+                    <a class="collapse-item" href="{% url "profile_url" %}">Inbox</a>
+                    <a class="collapse-item" href="{% url "documents" %}">Sent</a>
+                    <div class="collapse-divider"></div>
+
+                </div>
+            </div>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
@@ -278,19 +297,6 @@
                             </h6>
                             {% block message_center_mgs %}
                             {% endblock %}
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="{% static "img/undraw_profile_2.svg" %}"
-                                         alt="">
-                                    <div class="status-indicator bg-success"></div>
-                                </div>
-                                <div class="font-weight-bold">
-                                    <div class="text-truncate">I have the photos that you ordered last month, how
-                                        would you like them sent to you?
-                                    </div>
-                                    <div class="small text-gray-500">Jae Chun · 58m</div>
-                                </div>
-                            </a>
                             <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                         </div>
                     </li>

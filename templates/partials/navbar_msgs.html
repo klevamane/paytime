@@ -2,20 +2,20 @@
 {% load humanize %}
 
 {% if request.user.get_user_messages %}
-        {% for msg in request.user.get_user_messages %}
+    {% for msg in request.user.get_user_messages %}
 
-            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="{% static "img/undraw_profile_2.svg" %}"
-                                         alt="">
-                                    <div class="status-indicator bg-success"></div>
-                                </div>
-                                <div class="{% if not msg.read %}font-weight-bold{% endif %}">
-                                    <div class="text-truncate">{{ msg.subject }}
-                                    </div>
-                                    <div class="small text-gray-500">{{ msg.created_at|naturaltime }}</div>
-                                </div>
-                            </a>
+        <a class="dropdown-item d-flex align-items-center" href="#">
+            <div class="dropdown-list-image mr-3">
+                <img class="rounded-circle" src="{% static "img/undraw_profile_2.svg" %}"
+                     alt="">
+                <div class="status-indicator bg-success"></div>
+            </div>
+            <div class="{% if not msg.read %}font-weight-bold{% endif %}">
+                <div class="text-truncate">{{ msg.subject }}
+                </div>
+                <div class="small text-gray-500">{{ msg.created_at|naturaltime }}</div>
+            </div>
+        </a>
 
-        {% endfor %}
-    {% endif %}
+    {% endfor %}
+{% endif %}

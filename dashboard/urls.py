@@ -81,4 +81,15 @@ urlpatterns = [
         csrf_exempt(views.TransferToWalletView.as_view()),
         name="transfer-to-wallet_url",
     ),
+    # Messages
+    path(
+        "messages/inbox/detail/<int:pk>",
+        views.MessageDetail.as_view(),
+        name="message_inbox_detail_view_url",
+    ),
+    path(
+        "messages/inbox",
+        views.MessageInboxList.as_view(),
+        name="message_inbox_view_url",
+    ),
 ]
