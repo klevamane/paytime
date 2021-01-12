@@ -19,9 +19,9 @@ from django.shortcuts import redirect, render
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views import View
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 
-from dashboard.forms import PaymentForm
+from dashboard.forms import MessageForm, PaymentForm
 from dashboard.models import MessageCenter
 from finance.forms import BankForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
@@ -486,6 +486,16 @@ class MessageInboxList(MessageView, ListView):
     template_name = "dashboard/messages/inbox.html"
     ordering = ["-created_at"]
     paginate_by = 4
+
+
+class MessageCreateView(MessageView, CreateView):
+    template_name = "dashboard/messages/create.html"
+    model = MessageCenter
+    form_class = MessageForm
+
+    def get_success_url(self):
+        messages.success(self.request, "Your message has been sent to the admin")
+        return reverse("message_new_view_url")
 
 
 class HandleProfileSubmit(ProfileView, View):

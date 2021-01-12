@@ -92,4 +92,9 @@ urlpatterns = [
         views.MessageInboxList.as_view(),
         name="message_inbox_view_url",
     ),
+    path(
+        "messages/new",
+        views.MessageCreateView.as_view(),
+        name="message_new_view_url",
+    ),
 ]

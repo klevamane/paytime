@@ -155,11 +155,10 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Messages Screens:</h6>
-                    <a class="collapse-item" href="{% url "documents" %}">Create</a>
-                    <a class="collapse-item" href="{% url "profile_url" %}">Inbox</a>
+                    <a class="collapse-item" href="{% url "message_new_view_url" %}">Create</a>
+                    <a class="collapse-item" href="{% url "message_inbox_view_url" %}">Inbox</a>
                     <a class="collapse-item" href="{% url "documents" %}">Sent</a>
                     <div class="collapse-divider"></div>
-
                 </div>
             </div>
         </li>
@@ -177,7 +176,6 @@
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
         <!-- Main Content -->
         <div id="content">
 

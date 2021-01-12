@@ -4,6 +4,7 @@ from django import forms
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from dashboard.models import MessageCenter
 from finance.models import Package, Payment
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
 
@@ -57,3 +58,11 @@ class PaymentForm(forms.ModelForm):
                 )
             )
         return amount
+
+
+class MessageForm(forms.ModelForm):
+    message = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = MessageCenter
+        fields = ["subject", "message"]
