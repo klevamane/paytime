@@ -19,3 +19,10 @@ def humanize_number(value, precision=2):
         return f"{ int_val/1000.0:.{precision}f}".rstrip("0").rstrip(".") + "K"
     else:
         return f"{int_val/1_000_000.0:.{precision}f}".rstrip("0").rstrip(".") + "M"
+
+
+@register.filter(name="ends_with", is_safe=False)
+def ends_with(text, endswith_string):
+    if isinstance(text, str):
+        return text.endswith(endswith_string)
+    return False

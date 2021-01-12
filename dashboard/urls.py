@@ -24,7 +24,7 @@ urlpatterns = [
     path("profile/documents", views.DocumentView.as_view(), name="documents"),
     path("users", views.users_list, name="users-list"),
     # Transactions
-    path("transactions/deposit", views.DepositView.as_view(), name="deposit_view_url"),
+    path("transactions/deposits", views.DepositView.as_view(), name="deposit_view_url"),
     path(
         "transactions/withrawal",
         views.WithdrawalView.as_view(),
@@ -91,6 +91,11 @@ urlpatterns = [
         "messages/inbox",
         views.MessageInboxList.as_view(),
         name="message_inbox_view_url",
+    ),
+    path(
+        "messages/sent",
+        views.MessageSentListView.as_view(),
+        name="message_sent_view_url",
     ),
     path(
         "messages/new",

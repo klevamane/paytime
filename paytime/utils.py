@@ -37,6 +37,7 @@ SUCCESS_MESSAGES = {
     "bank_account_added": "Your bank account has been added",
     "bank_account_updated": "Your bank account has been updated",
     "already_activated": "Your email is already verified and activated",
+    "msg_sent_to_admin": "Your message has been sent to the admin",
     "kindly_verify": "Hi {} kindly use this link to verify your account\n {}",
     "verified": "Your email has been verified, proceed to login",
     "operation_successful": "The {} was successful",

@@ -488,14 +488,25 @@ class MessageInboxList(MessageView, ListView):
     paginate_by = 4
 
 
+class MessageSentListView(MessageInboxList):
+    template_name = "dashboard/messages/sent.html"
+
+    def get_queryset(self):
+        return MessageCenter.objects.filter(sender=self.request.user).order_by("-id")
+
+
 class MessageCreateView(MessageView, CreateView):
     template_name = "dashboard/messages/create.html"
     model = MessageCenter
     form_class = MessageForm
 
     def get_success_url(self):
-        messages.success(self.request, "Your message has been sent to the admin")
-        return reverse("message_new_view_url")
+        messages.success(self.request, SUCCESS_MESSAGES["msg_sent_to_admin"])
+        return reverse("message_inbox_view_url")
+
+    def form_valid(self, form):
+        form.instance.sender = self.request.user
+        return super().form_valid(form)
 
 
 class HandleProfileSubmit(ProfileView, View):
