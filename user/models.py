@@ -49,8 +49,6 @@ class UserManager(BaseUserManager):
 class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     firstname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
-    # note that the default character numbers must be less than or 100
-    # add https: // res.cloudinary.com / dnrh79klc + /image/path
     email = models.EmailField(
         max_length=50,
         unique=True,
@@ -80,7 +78,7 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
 
     # ensure this is objects and not object
     # else User.objects.all() won't work
-    # it has to be Class.object.all()
+    # it has to be Model.objects.all()
     # and most 3rd party packages depend on objects
     objects = UserManager()
 
@@ -118,7 +116,7 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     # allows assignment property to the image value
     # from the view
     def __setitem__(self, key, value):
-        self.image = value
+        self.profile_picture = value
 
     @property
     def is_staff(self):
@@ -129,7 +127,7 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
         return self.investment_set.filter(status__in=["active", "pending"]).exists()
 
     def get_user_messages(self):
-        return self.messages.all().order_by("created_at", "read")
+        return self.messages.all().order_by("read", "-created_at")[0:4]
 
     @property
     def total_unread_messages(self):

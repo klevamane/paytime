@@ -70,12 +70,16 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">transaction:</h6>
-                    <a class="collapse-item {% if request.path|ends_with:"/transactions/all" %}active{% endif %}" href="{% url "transactions_all_url" %}">All</a>
-                    <a class="collapse-item {% if request.path|ends_with:"/transactions/deposits" %}active{% endif %}" href="{% url "deposit_view_url" %}">Deposits</a>
-                    <a class="collapse-item {% if request.path|ends_with:"/transactions/withrawal" %}active{% endif %}" href="{% url "withdrawal_view_url" %}">Withdrawls</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/transactions/all" %}active{% endif %}"
+                       href="{% url "transactions_all_url" %}">All</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/transactions/deposits" %}active{% endif %}"
+                       href="{% url "deposit_view_url" %}">Deposits</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/transactions/withrawal" %}active{% endif %}"
+                       href="{% url "withdrawal_view_url" %}">Withdrawls</a>
                 </div>
             </div>
         </li>
+
 
         <li class="nav-item {% if "/wallet" in request.path %}active{% endif %}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWallet"
@@ -86,9 +90,12 @@
             <div id="collapseWallet" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Manage Money:</h6>
-                    <a class="collapse-item {% if request.path|ends_with:"/wallet" %}active{% endif %}" href="{% url "wallet_url" %}">Wallet</a>
-                    <a class="collapse-item {% if request.path|ends_with:"transactions/deposit" %}active{% endif %}" href="{% url "deposit_view_url" %}">Deposit</a>
-                    <a class="collapse-item {% if request.path|ends_with:"transactions/withdrawal" %}active{% endif %}" href="{% url "withdrawal_view_url" %}">Withraw</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/wallet" %}active{% endif %}"
+                       href="{% url "wallet_url" %}">Wallet</a>
+                    <a class="collapse-item {% if request.path|ends_with:"transactions/deposit" %}active{% endif %}"
+                       href="{% url "deposit_view_url" %}">Deposit</a>
+                    <a class="collapse-item {% if request.path|ends_with:"transactions/withdrawal" %}active{% endif %}"
+                       href="{% url "withdrawal_view_url" %}">Withraw</a>
                 </div>
             </div>
         </li>
@@ -104,9 +111,12 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Make money:</h6>
-                    <a class="collapse-item {% if request.path|ends_with:"/invest" %}active{% endif %}"" href="{% url "invest_view_url" %}">Invest</a>
-                    <a class="collapse-item {% if request.path|ends_with:"/investments" %}active{% endif %}"" href="{% url "investments_view_url" %}">Investments</a>
-                    <a class="collapse-item {% if request.path|ends_with:"/payment" %}active{% endif %}"" href="{% url "payment_view_url" %}">Payment</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/invest" %}active{% endif %}"
+                    href="{% url "invest_view_url" %}">Invest</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/investments" %}active{% endif %}"
+                    href="{% url "investments_view_url" %}">Investments</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/payment" %}active{% endif %}"
+                    href="{% url "payment_view_url" %}">Payment</a>
                 </div>
             </div>
         </li>
@@ -114,12 +124,39 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <!-- Heading -->
+
+        <!-- MESSAGE CENTER -->
+        <div class="sidebar-heading">
+            Message Center
+        </div>
+        <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
+            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMessages" aria-expanded="true"
+               aria-controls="collapseMessages">
+                <i class="fas fa-fw fa-envelope"></i>
+                <span>Messages</span>
+            </a>
+            <div id="collapseMessages" class="collapse" aria-labelledby="headingPages"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Messages Screens:</h6>
+                    <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}"
+                       href="{% url "message_new_view_url" %}">Create</a>
+                    <a class="collapse-item {% if "messages/inbox" in request.path %}active{% endif %}"
+                       href="{% url "message_inbox_view_url" %}">Inbox</a>
+                    <a class="collapse-item {% if "/messages/sent" in request.path %}active{% endif %}"
+                       href="{% url "message_sent_view_url" %}">Sent</a>
+                    <div class="collapse-divider"></div>
+                </div>
+            </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+         <!-- PROFILE -->
         <div class="sidebar-heading">
             Profile
         </div>
-
-        <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item {% if "/profile" in request.path %}active{% endif %}">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
                aria-controls="collapsePages">
@@ -130,42 +167,18 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Profile Screens:</h6>
-                    <a class="collapse-item {% if request.path|ends_with:"/profile" %}active{% endif %}" href="{% url "profile_url" %}">Profile</a>
-                    <a class="collapse-item {% if "/profile/document" in request.path %}active{% endif %}" href="{% url "documents" %}">Documents</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/profile" %}active{% endif %}"
+                       href="{% url "profile_url" %}">Profile</a>
+                    <a class="collapse-item {% if "/profile/document" in request.path %}active{% endif %}"
+                       href="{% url "documents" %}">Documents</a>
                     <a class="collapse-item" href="{% url "account_change_password" %}">Change password</a>
                     <div class="collapse-divider"></div>
 
                 </div>
             </div>
         </li>
-
-        <!-- Nav Item - Tables -->
-        <li class="nav-item">
-            <a class="nav-link" href="{% url "dashboard-home" %}">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
-        </li>
-
-         <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
-            <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMessages" aria-expanded="true"
-               aria-controls="collapseMessages">
-                <i class="fas fa-fw fa-envelope"></i>
-                <span>Messages</span>
-            </a>
-            <div id="collapseMessages" class="collapse" aria-labelledby="headingPages"
-                 data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Messages Screens:</h6>
-                    <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}" href="{% url "message_new_view_url" %}">Create</a>
-                    <a class="collapse-item {% if "messages/inbox" in request.path %}active{% endif %}" href="{% url "message_inbox_view_url" %}">Inbox</a>
-                    <a class="collapse-item {% if "/messages/sent" in request.path %}active{% endif %}" href="{% url "message_sent_view_url" %}">Sent</a>
-                    <div class="collapse-divider"></div>
-                </div>
-            </div>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
+         <!-- Divider -->
+        <hr class="sidebar-divider">
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
@@ -187,20 +200,6 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
-
-                <!-- Topbar Search -->
-                <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                               aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">

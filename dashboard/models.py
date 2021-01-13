@@ -25,10 +25,7 @@ class MessageCenter(LoginRequiredMixin, TimeStampMixin):
         User, on_delete=models.CASCADE, null=True, blank=True, related_name="messages"
     )
     sender = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
+        User, on_delete=models.CASCADE, null=True, blank=True, related_name="sent_msgs"
     )
     sent_from_admin = models.BooleanField(default=False)
     read = models.BooleanField(default=False)
