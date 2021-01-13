@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 
-import datetime
 import json
 
 import requests
@@ -12,9 +11,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
-from django.db.models import Q, Sum
 from django.forms.utils import ErrorList
-from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
@@ -45,7 +43,6 @@ DOCUMENT_FILE_TYPES = ["png", "jpg", "jpeg", "pdf"]
 
 class DocumentView(LoginRequiredMixin, View):
     def get(self, request):
-        form = DocumentForm()
         try:
             document = Document.objects.get(user=request.user)
         except Document.DoesNotExist:
@@ -55,7 +52,7 @@ class DocumentView(LoginRequiredMixin, View):
             template_name="dashboard/profile/documents.html",
             context={
                 "document": document,
-                "form": form,
+                "form": DocumentForm(),
             },
         )
 
@@ -83,7 +80,6 @@ class DocumentView(LoginRequiredMixin, View):
                     request,
                     "The file type is not supported, kindly upload a supported file",
                 )
-                # add document to document form on post to enable the posted page extract the document data
                 return self._render_profile_document(
                     form, instance, request, user_document
                 )
@@ -206,10 +202,6 @@ class InvestmentsView(LoginRequiredMixin, View):
 
 class InvestmentDetailView(LoginRequiredMixin, View):
     def get(self, request, id):
-        # get the investment by Id
-        # get the ROI Schedule of the particular investment
-        # not these can only be done if the investment exists
-        # and belongs to the current user
         try:
             investment = Investment.objects.get(id=id, user_id=request.user.id)
         except Investment.DoesNotExist:
@@ -220,7 +212,6 @@ class InvestmentDetailView(LoginRequiredMixin, View):
         # but we still need to check for safety here
         if investment.roischedule_set.count() == 0:
             return HttpResponseForbidden()
-        # get the next ROI payment date
 
         return render(
             request,
@@ -246,9 +237,6 @@ class TransferToWalletView(View):
     # Wait! already paid ROIs ought to have been marked completed
     # anyways still mark
 
-    # instead, mark the investment as completed
-    # therefore during withrawals or performing investment actions
-    # we need to check if the investment has beeen completed first
     def get(self, request, roi_id):
 
         try:
@@ -278,7 +266,7 @@ class TransferToWalletView(View):
                 # and complete the investment, it'll mean that something will be wrong
 
                 # one way to make this work is
-                #  we can go request that the other roi be paid first
+                #  we can ensure that the other rois be paid first
                 # into the wallet
                 # or we just move every other ROI
                 # of this investment into the wallet.
@@ -411,11 +399,10 @@ def validate_package_amount(request):
 
 class PackageDetail(LoginRequiredMixin, View):
     def get(self, request, codename):
-        data = None
         try:
             package = Package.objects.get(codename=codename)
         except (Package.DoesNotExist, AttributeError, ValueError):
-            return JsonResponse(data=data, status=400, safe=False)
+            return JsonResponse(data=None, status=400, safe=False)
 
         data = {
             "duration": package.days,
@@ -432,23 +419,28 @@ class ProfileView(LoginRequiredMixin, View):
         profile_form = self._set_profile_form(user)
         # disable email field to prevent subsequent edits
         profile_form.fields["email"].disabled = True
+        context = self._set_profile_context(profile_form, request, user)
+        return render(
+            request, template_name="dashboard/profile/profile.html", context=context
+        )
+
+    def _set_profile_context(self, profile_form, request, user):
         try:
             bank = Bank.objects.get(user=user)
+            # set the intial value/upon load, the value of the user's
+            # bank details
             bank_form = BankForm(
                 initial={"bank": bank.bank, "account_number": bank.account_number}
             )
         except Bank.DoesNotExist:
             bank_form = BankForm()
-        context = {
+        return {
             "profile_form": profile_form,
             "bank_form": bank_form,
             "profile_picture_url": request.user.profile_picture.url
             if request.user.profile_picture
             else "",
         }
-        return render(
-            request, template_name="dashboard/profile/profile.html", context=context
-        )
 
     def _set_profile_form(self, user):
         # returns the intial value/upon load, the value of the user's
@@ -502,6 +494,9 @@ class MessageCreateView(MessageView, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, SUCCESS_MESSAGES["msg_sent_to_admin"])
+        # we would lazily reverse if done withing the class as
+        # oppsose to this method
+        # see https://stackoverflow.com/questions/48669514/difference-between-reverse-and-reverse-lazy-in-django
         return reverse("message_inbox_view_url")
 
     def form_valid(self, form):
@@ -529,22 +524,7 @@ class HandleProfileSubmit(ProfileView, View):
         # perhaps we can make use of messages, ie putting the errors in messages will
         # help us avoid this
         # but we currently want to show the errors withing the template input itself
-        try:
-            bank = Bank.objects.get(user=user)
-            # set the intial value/upon load, the value of the user's
-            # bank details
-            bank_form = BankForm(
-                initial={"bank": bank.bank, "account_number": bank.account_number}
-            )
-        except Bank.DoesNotExist:
-            bank_form = BankForm()
-        context = {
-            "profile_form": profile_form,
-            "bank_form": bank_form,
-            "profile_picture_url": request.user.profile_picture.url
-            if request.user.profile_picture
-            else "",
-        }
+        context = self._set_profile_context(profile_form, request, user)
         return render(
             request, template_name="dashboard/profile/profile.html", context=context
         )
