@@ -11879,6 +11879,16 @@ body{
 }
 }
 
+
+/** MESSAGES ***/
+
+.email-wrapper .message-body .sender-details {
+    padding: 20px 15px 0;
+    border-bottom: 1px solid #e9e9e9;
+    display: -webkit-flex;
+    display: flex;
+}
+
 /*.card-margin {*/
 /*    margin-bottom: 1.875rem;*/
 /*}*/

@@ -470,8 +470,12 @@ class MessageView(LoginRequiredMixin, View):
         return MessageCenter.objects.filter(to=self.request.user)
 
 
-class MessageDetail(MessageView, DetailView):
-    pass
+class MessageInboxDetail(MessageView, DetailView):
+    template_name = "dashboard/messages/detail.html"
+    model = MessageCenter
+
+    def get_queryset(self):
+        return self.request.user.messages
 
 
 class MessageInboxList(MessageView, ListView):
