@@ -18,16 +18,16 @@
 {% block content %}
 
     <div class="container">
-        <h2>Messages</h2>
+        <h3>Message</h3>
 
-        <div class="mail-view d-md-block col-md-9 col-lg-7 bg-white">
+        <div class="mail-view d-md-block col-md-9 col-lg-7 bg-white px-3">
             <div class="row">
                 <div class="col-md-12 mb-4 mt-4">
                     <div class="btn-toolbar">
                         <div class="btn-group">
                         </div>
                         <div class="btn-group">
-                                <a data-toggle="modal" data-target="#deleteMsgModal" class="btn btn-sm btn-outline-secondary" type="submit">Delete</a>
+                                <a data-toggle="modal" data-target="#deleteMsgModal" class="btn btn-sm btn btn-outline-secondary" type="submit">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <p class="sender-email"> Admin <a href="#">ovviytrade@admin.com</a> &nbsp<i
                                 class="mdi mdi-account-multiple-plus"></i></p></div>
                 </div>
-                <div class="message-content"><p>Hi {{ request.user.firstname }},</p>
+                <div class="message-content py-5"><p>Hi {{ request.user.firstname }},</p>
                     <p>{{ messagecenter.message }}</p>
                     <p><br><br>Regards,<br>Ovviytrade</p></div>
             </div>

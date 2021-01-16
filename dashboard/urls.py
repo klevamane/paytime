@@ -85,7 +85,7 @@ urlpatterns = [
     path(
         "messages/inbox/detail/<int:pk>",
         views.MessageInboxDetail.as_view(),
-        name="message_inbox_detail_view_url",
+        name="message_detail_view_url",
     ),
     path(
         "messages/inbox",

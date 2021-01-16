@@ -478,17 +478,6 @@ class MessageInboxDetail(MessageView, DetailView):
         return self.request.user.messages
 
 
-# class MessageDeleteView(LoginRequiredMixin, View):
-#     def post(self, request, pk):
-#         try:
-#             msg = MessageCenter.objects.get(pk=pk, to=request.user)
-#         except MessageCenter.DoesNotExist:
-#             raise Http404
-#
-#         msg.delete()
-#         return reverse("message_inbox_view_url")
-
-
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "dashboard/messagecenter_confirm_delete.html"
     model = MessageCenter
