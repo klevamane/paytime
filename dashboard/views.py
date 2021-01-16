@@ -17,7 +17,7 @@ from django.shortcuts import redirect, render
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views import View
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
 from dashboard.forms import MessageForm, PaymentForm
 from dashboard.models import MessageCenter
@@ -476,6 +476,25 @@ class MessageInboxDetail(MessageView, DetailView):
 
     def get_queryset(self):
         return self.request.user.messages
+
+
+# class MessageDeleteView(LoginRequiredMixin, View):
+#     def post(self, request, pk):
+#         try:
+#             msg = MessageCenter.objects.get(pk=pk, to=request.user)
+#         except MessageCenter.DoesNotExist:
+#             raise Http404
+#
+#         msg.delete()
+#         return reverse("message_inbox_view_url")
+
+
+class MessageDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = "dashboard/messagecenter_confirm_delete.html"
+    model = MessageCenter
+
+    def get_success_url(self):
+        return reverse("message_inbox_view_url")
 
 
 class MessageInboxList(MessageView, ListView):

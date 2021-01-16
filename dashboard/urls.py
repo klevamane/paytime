@@ -93,6 +93,11 @@ urlpatterns = [
         name="message_inbox_view_url",
     ),
     path(
+        "messages/delete/<int:pk>",
+        views.MessageDeleteView.as_view(),
+        name="message_delete_view_url",
+    ),
+    path(
         "messages/sent",
         views.MessageSentListView.as_view(),
         name="message_sent_view_url",

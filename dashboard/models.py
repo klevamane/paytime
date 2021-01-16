@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import models
 
-# Create your models here.
 from user.models import User
 
 
