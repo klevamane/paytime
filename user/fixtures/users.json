@@ -1,0 +1,13 @@
+[
+  {
+    "pk": 1,
+    "model": "user.User",
+    "fields": {
+      "firstname": "user-1-fn",
+      "lastname": "user-1-ln",
+      "email": "user-1@test.com",
+      "created_at": "2021-01-09",
+      "updated_at": "2021-01-09"
+    }
+  }
+]

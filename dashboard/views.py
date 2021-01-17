@@ -398,6 +398,8 @@ def validate_package_amount(request):
 
 
 class PackageDetail(LoginRequiredMixin, View):
+    """Returns AJAX data"""
+
     def get(self, request, codename):
         try:
             package = Package.objects.get(codename=codename)

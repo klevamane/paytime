@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from django.core import signing
 from django.db import models
 
 from paytime.utils import validate_ng_mobile_number
@@ -125,6 +126,21 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     @property
     def has_active_investment(self):
         return self.investment_set.filter(status__in=["active", "pending"]).exists()
+
+    @property
+    def login_link(self):
+        # need a pk to generate a link to me
+        if not self.pk:
+            self.save()
+        key = None
+        return signing.dumps(
+            {
+                "email": self.email,
+                "first_name": self.firstname,
+                "last_name": self.lastname,
+            },
+            key=key,
+        )
 
     def get_user_messages(self):
         return self.messages.all().order_by("read", "-created_at")[0:4]

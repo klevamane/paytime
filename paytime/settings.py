@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from __future__ import absolute_import
 
 import os
+import sys
 from pathlib import Path
 
 import django_heroku
@@ -34,6 +35,7 @@ DEBUG = os.getenv("DEBUG", False)
 
 ALLOWED_HOSTS = ["pay-time.herokuapp.com/", "127.0.0.1"]
 
+TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
 
 # Application definition
 
@@ -113,6 +115,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 LOGIN_REDIRECT_URL = "/dashboard"
+LOGIN_URL = "/accounts/login/"
 ACCOUNT_FORMS = {"signup": "authentication.forms.SignupForm"}
 if not DEBUG:
     # if set to "mandatory",
@@ -121,8 +124,10 @@ if not DEBUG:
 else:
     pass
     # ACCOUNT_EMAIL_VERIFICATION = "optional"
-
-    ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+    if TESTING:
+        ACCOUNT_EMAIL_VERIFICATION = "optional"
+    else:
+        ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 WSGI_APPLICATION = "paytime.wsgi.application"
 
@@ -204,6 +209,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "paytime/static")]
+STATICFILES_STORAGE = "whitenoise.django.GzipManifestStaticFilesStorage"
 
 LOGGING = {
     "version": 1,
