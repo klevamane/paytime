@@ -78,19 +78,23 @@ class DocumentView(LoginRequiredMixin, View):
             if file_type not in DOCUMENT_FILE_TYPES or error:
                 messages.error(
                     request,
-                    "The file type is not supported, kindly upload a supported file",
+                    FAILURE_MESSAGES["unsupported_file_type"],
                 )
                 return self._render_profile_document(
                     form, instance, request, user_document
                 )
             if (file.size / 1024) > 601:
-                messages.error(request, "The file size must be less or equal to 600KB")
+                messages.error(
+                    request, FAILURE_MESSAGES["file_size_limit"].format("file", "600KB")
+                )
                 return self._render_profile_document(
                     form, instance, request, user_document
                 )
 
             instance.save()
-            messages.success(request, "Document uploaded successfully")
+            messages.success(
+                request, SUCCESS_MESSAGES["upload_successful"].format("Document")
+            )
             return self._render_profile_document(form, instance, request, user_document)
 
     def _render_profile_document(self, form, instance, request, user_document):
@@ -527,7 +531,9 @@ class HandleProfileSubmit(ProfileView, View):
         profile_form = ProfileForm(data, files=request.FILES, instance=user)
         if profile_form.is_valid():
             profile_form.save()
-            messages.success(request, "Save successful")
+            messages.success(
+                request, SUCCESS_MESSAGES["operation_successful"].format("save")
+            )
             return redirect("profile_url")
         # this ensures that whenever error(s) are displayed in the template
         # the bank form still retains its form displayed
@@ -569,7 +575,9 @@ class HandleBankSubmit(ProfileView, View):
             bank_form = BankForm(data)
         if bank_form.is_valid():
             bank_form.save()
-            messages.success(request, "Save successful")
+            messages.success(
+                request, SUCCESS_MESSAGES["operation_successful"].format("save")
+            )
             return redirect("profile_url")
 
         for k, err in bank_form.errors.items():

@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 
-import json
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import (
     check_password,

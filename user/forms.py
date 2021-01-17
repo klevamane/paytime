@@ -32,7 +32,7 @@ class ProfileForm(forms.ModelForm):
         profile_picture = self.cleaned_data.get("profile_picture")
         if profile_picture and (profile_picture.size / 1024) > 201:
             raise forms.ValidationError(
-                FAILURE_MESSAGES["image_size_limit"].format("200KB")
+                FAILURE_MESSAGES["file_size_limit"].format("image", "200KB")
             )
 
         return profile_picture

@@ -41,6 +41,7 @@ SUCCESS_MESSAGES = {
     "kindly_verify": "Hi {} kindly use this link to verify your account\n {}",
     "verified": "Your email has been verified, proceed to login",
     "operation_successful": "The {} was successful",
+    "upload_successful": "{} uploaded successfully",
 }
 
 FAILURE_MESSAGES = {
@@ -51,11 +52,12 @@ FAILURE_MESSAGES = {
     "enter_valid_amount": "Enter a valid amount",
     "enter_valid_account_no": "Enter a valid account number",
     "funds_too_low": "Wallet balance is too low",
-    "image_size_limit": "The image size should not be greater that {}",
+    "file_size_limit": "The {} size should not be greater than {}",
     "insufficient_funds": "Insufficient Funds",
     "select_pkg_for_amt": "Select a valid package for this amount",
     "specify_account_digits": "{} digit account number is required",
     "incomplete_unverifiable_tnx": "Transaction not completed unable to verify transaction",
+    "unsupported_file_type": "The file type is not supported, kindly upload a supported file",
     "user_has_active_investment": "You already have an active investment, so you cannot make any other payment",
 }
 
