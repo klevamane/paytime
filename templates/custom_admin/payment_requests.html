@@ -1,0 +1,57 @@
+{% extends 'partials/base-admin-dashboard.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+    <div class="container">
+    <h3 class="py-3">Manage payments</h3>
+                    <div class="row">
+
+                        <!--PAYMENT REQUESTS-->
+                        <div class="box">
+                            <div id="popup-messages-content">
+                            </div>
+                            <div class="box-header">
+                                <h4 class="box-title">
+                                    Payment requests
+                                </h4>
+                                <br>
+                                <small class="text-muted">List of payments initiated by investors
+                                    </small>
+                                <br>
+
+                            </div>
+                            <div class="box-body">
+                                <div class="table-responsive" id="table-roi-schedule">
+                                    <table class="table table-borderless mb-0" id="roi-schedule-table">
+                                        <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Date requested</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>User</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for withdrawal_request in transactions %}
+                                                <tr>
+                                                <td>{{ forloop.counter|add:page_obj.start_index }}</td>
+                                                <td>{{ withdrawal_request.created_at }}</td>
+                                                <td>{{ withdrawal_request.amount|floatformat|intcomma }}</td>
+                                                <td>{{ withdrawal_request.status }}</td>
+                                                    <td>{{ withdrawal_request.user.get_full_name|truncatechars:15 }}</td>
+                                                <td><a href="#" class="btn btn-outline-dark">Pay</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% include "partials/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+    </div>
+{% endblock %}

@@ -175,6 +175,7 @@ class Package(DirtyFieldsMixin, TimeStampMixin):
     codename = models.CharField(max_length=30, unique=True)
     days = models.IntegerField()
     level = models.CharField(choices=PACKGE_CHOICES, default="silver", max_length=30)
+    active = models.BooleanField(default=True)
 
     @property
     def is_new(self):

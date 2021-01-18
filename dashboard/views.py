@@ -386,7 +386,6 @@ class PaymentView(LoginRequiredMixin, View):
 
 @login_required
 def validate_package_amount(request):
-
     if request.user.has_active_investment:
         response = {
             "success": False,
@@ -595,3 +594,35 @@ class HandleBankSubmit(ProfileView, View):
                 else "",
             },
         )
+
+
+class AdminDashboardIndexView(View):
+    def get(self, request):
+        return render(request, "custom_admin/dahsboard_index.html")
+
+
+class AdminPaymentRequestsView(ListView):
+
+    model = Transactions
+    template_name = "custom_admin/payment_requests.html"
+    paginate_by = 5
+    context_object_name = "transactions"
+
+    def get_queryset(self):
+        return Transactions.objects.filter(
+            status="pending", transaction_type="withdrawal"
+        ).order_by("id")
+
+
+class AdminAllUsersView(ListView):
+    model = User
+    template_name = "custom_admin/all_users.html"
+    paginate_by = 10
+    context_object_name = "users"
+
+
+class AdminAllPackages(ListView):
+    model = Package
+    template_name = "custom_admin/packages.html"
+    paginate_by = 10
+    context_object_name = "packages"

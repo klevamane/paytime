@@ -107,4 +107,28 @@ urlpatterns = [
         views.MessageCreateView.as_view(),
         name="message_new_view_url",
     ),
+    # 🎒 💼 💼 💼 💼 ADMIN SECTION 💼 💼 💼 💼 🎒
+    path(
+        "admin",
+        views.AdminDashboardIndexView.as_view(),
+        name="admin_dashboard_view",
+    ),
+    # ADMIN PAYMENT REQUESTS
+    path(
+        "admin/payment-requests",
+        views.AdminPaymentRequestsView.as_view(),
+        name="admin_payment_requests_view",
+    ),
+    # ADMIN ALL USERS
+    path(
+        "admin/users",
+        views.AdminAllUsersView.as_view(),
+        name="admin_all_users_view",
+    ),
+    # ADMIN ALL Packages
+    path(
+        "admin/packages",
+        views.AdminAllPackages.as_view(),
+        name="admin_all_packages_view",
+    ),
 ]
