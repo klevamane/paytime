@@ -128,7 +128,7 @@ urlpatterns = [
     # ADMIN ALL Packages
     path(
         "admin/packages",
-        views.AdminAllPackages.as_view(),
-        name="admin_all_packages_view",
+        views.AdminPackageView.as_view(),
+        name="admin_packages_view",
     ),
 ]

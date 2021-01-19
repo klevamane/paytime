@@ -17,11 +17,12 @@ from django.shortcuts import redirect, render
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
 from dashboard.forms import MessageForm, PaymentForm
 from dashboard.models import MessageCenter
-from finance.forms import BankForm
+from finance.forms import BankForm, PackageForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
 from paytime import settings
 from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
@@ -517,6 +518,7 @@ class MessageCreateView(MessageView, CreateView):
         return reverse("message_inbox_view_url")
 
     def form_valid(self, form):
+        # runs if the form is valid
         form.instance.sender = self.request.user
         return super().form_valid(form)
 
@@ -621,8 +623,41 @@ class AdminAllUsersView(ListView):
     context_object_name = "users"
 
 
-class AdminAllPackages(ListView):
+class AdminAllPackagesView(ListView):
     model = Package
     template_name = "custom_admin/packages.html"
     paginate_by = 10
     context_object_name = "packages"
+
+
+class AdminPackageView(View):
+    template = "custom_admin/packages.html"
+    model = Package
+
+    def _get_qs(self):
+        return Package.objects.all().order_by("active")
+
+    def _render(self, request, form):
+        return render(
+            request,
+            template_name=self.template,
+            context={"packages": self._get_qs(), "form": form},
+        )
+
+    def get(self, request):
+        return self._render(request, PackageForm)
+
+    def post(self, request):
+        # import pdb; pdb.set_trace()
+        data = json.loads(request.body)
+        pkg_form = PackageForm(data)
+        if pkg_form.is_valid():
+            pkg_form.save()
+            return JsonResponse(
+                {"success": True, "resolved_url": reverse("admin_packages_view")},
+                status=200,
+                safe=False,
+            )
+        return JsonResponse(
+            {"success": False, "errors": pkg_form.errors}, status=400, safe=False
+        )

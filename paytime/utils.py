@@ -56,7 +56,7 @@ FAILURE_MESSAGES = {
     "insufficient_funds": "Insufficient Funds",
     "select_pkg_for_amt": "Select a valid package for this amount",
     "specify_account_digits": "{} digit account number is required",
-    "incomplete_unverifiable_tnx": "Transaction not completed unable to verify transaction",
+    "incomplete_unverifiable_tnx": "Transaction not completed, unable to verify transaction",
     "unsupported_file_type": "The file type is not supported, kindly upload a supported file",
     "user_has_active_investment": "You already have an active investment, so you cannot make any other payment",
 }

@@ -1,4 +1,5 @@
 {% extends 'partials/base-admin-dashboard.html' %}
+{% load custom_tags %}
 {% load humanize %}
 
 
@@ -6,59 +7,219 @@
     <div class="container">
         <h2 class="mb-5 text-fade">Manage Packages</h2>
         <div class="row">
-    <!------------------------------PACKAGES------------------>
-                        <div class="box">
-                            <div id="popup-messages-content">
-                            </div>
-                            <div class="box-header d-flex justify-content-between">
-                                <div>
-                                    <h4 class="box-title">
-                                    Packages
-                                </h4>
-                                <br>
-                                <small class="text-muted">List of all packages
-                                    </small>
-                                <br>
-                                </div>
-                                <div>
-                                <button class="btn-dark">Create a package</button>
+            <!------------------------------PACKAGES------------------>
+            <div class="box">
+                <div id="popup-messages-content">
+                </div>
+                <div class="box-header d-flex justify-content-between">
+                    <div>
+                        <h4 class="box-title">
+                            Packages
+                        </h4>
+                        <br>
+                        <small class="text-muted">List of all packages
+                        </small>
+                        <br>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#createPackage">Create a package</a>
+                    </div>
+
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive" id="table-roi-schedule">
+                        <table class="table table-borderless mb-0" id="roi-schedule-table">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Codename</th>
+                                <th>Min</th>
+                                <th>Max</th>
+                                <th>ROI</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for package in packages %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ package.name }}</td>
+                                    <td>{{ package.codename }}</td>
+                                    <td>{{ package.minimum_amount|floatformat|intcomma }}</td>
+                                    <td>{{ package.maximum_amount|floatformat|intcomma }}</td>
+                                    <td>{{ package.return_on_investmentent }}%</td>
+                                    <td>{{ package.active }}</td>
+                                    <td><span
+                                            class="fa fa-circle {% if package.active %}text-success{% else %}text-dark{% endif %}  mr-15"></span>
+                                    </td>
+                                    <td><a href="#" class="btn btn-outline-dark">Manage</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% include "partials/pagination.html" %}
+                </div>
+            </div>
+        </div>
+
+
+    <!------------------------------ CREATE PACKAGE MODAL---------------------------------->
+<div class="modal fade" id="createPackage" tabindex="-1" role="dialog" aria-labelledby="createPackage"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create a package to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="user" method="post" id="newPackageForm">
+                {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="mb-3 mb-sm-0">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">Name</span>
+                                            </div>
+                                            {% if form.errors|lookup:form.name %}
+                                                {{ form.name }}
+                                                {{ form.name|addcss:"form-control form-control-user is-invalid" }}
+                                                <small class="form-text text-danger">{{ form.first_name.errors }}</small>
+                                            {% else %}
+                                                {{ form.name|addcss:"form-control form-control-user" }}
+                                            {% endif %}
+                                        </div>
                                     </div>
 
-                            </div>
-                            <div class="box-body">
-                                <div class="table-responsive" id="table-roi-schedule">
-                                    <table class="table table-borderless mb-0" id="roi-schedule-table">
-                                        <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Name</th>
-                                            <th>Codename</th>
-                                            <th>Min</th>
-                                            <th>Max</th>
-                                            <th>ROI</th>
-                                            <th>Status</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for package in packages %}
-                                                <tr>
-                                                <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
-                                                <td>{{ package.name }}</td>
-                                                    <td>{{ package.codename }}</td>
-                                                <td>{{ package.minimum_amount|floatformat|intcomma }}</td>
-                                                    <td>{{ package.maximum_amount|floatformat|intcomma }}</td>
-                                                <td>{{ package.return_on_investmentent }}%</td>
-                                                    <td>{{ package.active }}</td>
-                                                    <td><span class="fa fa-circle {% if package.active %}text-success{% else %}text-dark{% endif %}  mr-15"></span></td>
-                                                <td><a href="#" class="btn btn-outline-dark">Manage</a></td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            {% include "partials/pagination.html" %}
-                            </div>
-                        </div>
+
+                                    <div class="form-group my-4">
+                                        <label class="label" for="id_message">Min Amount</label>
+                                        <div class="input-group">
+                                            {% if form.errors|lookup:form.minimum_amount %}
+                                                {{ form.minimum_amount|addcss:"form-control form-control-user is-invalid" }}
+                                                <small class="form-text text-danger">{{ form.minimum_amount }}</small>
+                                            {% else %}
+                                                {{ form.minimum_amount|addcss:"form-control form-control-user" }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group my-4">
+                                        <label class="label" for="id_message">Max Amount</label>
+                                        <div class="input-group">
+                                            {% if form.errors|lookup:form.maximum_amount %}
+                                                {{ form.maximum_amount|addcss:"form-control form-control-user is-invalid" }}
+                                                <small class="form-text text-danger">{{ form.maximum_amount }}</small>
+                                            {% else %}
+                                                {{ form.maximum_amount|addcss:"form-control form-control-user" }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                <div class="form-group my-4">
+                                        <label class="label" for="id_message">ROI (in number)%</label>
+                                        <div class="input-group">
+                                            {% if form.errors|lookup:form.return_on_investment %}
+                                                {{ form.return_on_investmentent|addcss:"form-control form-control-user is-invalid" }}
+                                                <small class="form-text text-danger">{{ form.return_on_investmentent }}</small>
+                                            {% else %}
+                                                {{ form.return_on_investmentent|addcss:"form-control form-control-user" }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                <div class="form-group my-4">
+                                        <label class="label" for="id_message">Days (in number)</label>
+                                        <div class="input-group">
+                                            {% if form.errors|lookup:form.days %}
+                                                {{ form.days|addcss:"form-control form-control-user is-invalid" }}
+                                                <small class="form-text text-danger">{{ form.day }}</small>
+                                            {% else %}
+                                                {{ form.days|addcss:"form-control form-control-user" }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                <div class="form-group my-4">
+                                        <label class="label" for="id_message">Level</label>
+                                        <div class="input-group">
+                                            {% if form.errors|lookup:form.level %}
+                                                {{ form.level|addcss:"form-control form-control-user is-invalid" }}
+                                                <small class="form-text text-danger">{{ form.level }}</small>
+                                            {% else %}
+                                                {{ form.level|addcss:"form-control form-control-user" }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Create <i class="fa fa-arrow-circle-up"></i></button>
+                            </form>
+
+            </div>
         </div>
     </div>
-{%  endblock %}
+</div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+
+    <script>
+
+
+        const days = document.getElementById("id_days");
+        const level = document.getElementById('id_level');
+        const roi = document.getElementById('id_return_on_investmentent');
+        const name = document.getElementById('id_name');
+        const maxAmt = document.getElementById('id_maximum_amount');
+        const minAmt = document.getElementById('id_minimum_amount');
+
+        let csrfToken = "{{ csrf_token }}";
+        console.log("CROS SITE REF")
+        console.log("CROS SITE REF TOKEN ", csrfToken)
+
+        const createPackageForm = document.getElementById("newPackageForm");
+        createPackageForm.addEventListener("submit", createPackage)
+
+        function errorMsg(content) {
+            const danger = "danger"
+            let elMessages = $('#popup-messages-content');
+            elMessages.append("<div class='text-center alert-dismissible alert alert-" + danger + "''>" + content + "<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                "                    <span aria-hidden=\"true\">&times;</span></div>");
+            elMessages[0].scrollIntoView()
+        }
+
+        function createPackage(e) {
+            e.preventDefault()
+                //do something
+
+            console.log("IT got here finally some thing happened")
+                fetch(`packages`, {
+                    headers: {'X-CSRFToken': csrfToken},
+                    method: "POST",
+                    body: JSON.stringify({
+                        "return_on_investmentent": roi.value,
+                        "name": name.value,
+                        "days": days.value,
+                        "maximum_amount": maxAmt.value,
+                        "minimum_amount": minAmt.value,
+                        "level": level.value
+                    }),
+                }).then(res => res.json())
+                    .then(res => {
+                        if (!res.ok) {
+                            console.log("SOMETHING WENT WRONG")
+                        }
+                        window.location.href = res.resolved_url
+                        res.json()
+                    })
+                .catch((err) => {
+                    console.log("ERROR ->", err);
+                });
+        }
+
+    </script>
+{% endblock %}

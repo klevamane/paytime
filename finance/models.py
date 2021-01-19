@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import datetime
+import re
 
 from dirtyfields import DirtyFieldsMixin
 from django.contrib import messages
@@ -9,11 +10,14 @@ from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import Q, Sum
 from django.template.defaultfilters import floatformat
+from django.utils.text import slugify
 
 from dashboard.models import TimeStampMixin
 from finance.validators import validate_account_number
 from paytime.utils import FAILURE_MESSAGES
 from user.models import User
+
+pattern = re.compile(" ")
 
 BANKS = [
     ("access_bank", "Access Bank"),
@@ -65,6 +69,9 @@ class InvestmentPackage(DirtyFieldsMixin, TimeStampMixin):
     payment_duration = models.PositiveIntegerField()
     minimum_amount = models.DecimalField(decimal_places=2, max_digits=9)
     maximum_amount = models.DecimalField(decimal_places=2, max_digits=9)
+
+    def __str__(self):
+        return "{}".format(self.name)
 
 
 TRANSACTION_TYPE = [("deposit", "Deposit"), ("withdrawal", "Withdrawal")]
@@ -183,6 +190,16 @@ class Package(DirtyFieldsMixin, TimeStampMixin):
 
     def __str__(self):
         return self.name
+
+    def save(self, **kwargs):
+        snakeised_codename = pattern.sub("_", self.name).lower()
+        pkg = Package.objects.filter(codename=snakeised_codename)
+        if pkg:
+            self.codename = snakeised_codename + "_{}".format(pkg.count() + 1)
+        else:
+            self.codename = snakeised_codename
+
+        super(Package, self).save(**kwargs)
 
 
 class Payment(DirtyFieldsMixin, TimeStampMixin):

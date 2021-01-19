@@ -169,7 +169,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Manage packages Screens:</h6>
                     <a class="collapse-item {% if "/admin/packages" in request.path %}active{% endif %}"
-                       href="{% url "admin_all_packages_view" %}">All</a>
+                       href="{% url "admin_packages_view" %}">All</a>
                     <a class="collapse-item {% if "messages/inbox" in request.path %}active{% endif %}"
                        href="{% url "message_inbox_view_url" %}">Inbox</a>
                 </div>
