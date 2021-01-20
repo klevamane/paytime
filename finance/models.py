@@ -177,7 +177,9 @@ PACKGE_CHOICES = [
 class Package(DirtyFieldsMixin, TimeStampMixin):
     name = models.CharField(max_length=30, unique=True)
     minimum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
-    maximum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+    maximum_amount = models.DecimalField(
+        default=0, decimal_places=2, max_digits=12, validators=[]
+    )
     return_on_investmentent = models.PositiveIntegerField()
     codename = models.CharField(max_length=30, unique=True)
     days = models.IntegerField()
@@ -198,7 +200,6 @@ class Package(DirtyFieldsMixin, TimeStampMixin):
             self.codename = snakeised_codename + "_{}".format(pkg.count() + 1)
         else:
             self.codename = snakeised_codename
-
         super(Package, self).save(**kwargs)
 
 

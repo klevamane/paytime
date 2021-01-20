@@ -19,6 +19,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic.list import MultipleObjectMixin
 
 from dashboard.forms import MessageForm, PaymentForm
 from dashboard.models import MessageCenter
@@ -630,25 +631,48 @@ class AdminAllPackagesView(ListView):
     context_object_name = "packages"
 
 
-class AdminPackageView(View):
+def set_pagination_data(queryset, request):
+    """
+    Set the pagination data to be used
+
+    Args:
+        queryset: The queryset to be parginate
+        request: The request object
+    """
+    page = request.GET.get("page", 1)
+    paginator = Paginator(queryset, 7)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        queryset = paginator.page(1)
+    except EmptyPage:
+        queryset = paginator.page(paginator.num_pages)
+    return queryset
+
+
+class AdminPackageView(LoginRequiredMixin, View):
     template = "custom_admin/packages.html"
     model = Package
 
     def _get_qs(self):
-        return Package.objects.all().order_by("active")
+        return Package.objects.all().order_by("-active", "-id")
 
-    def _render(self, request, form):
+    def _render(self, request, context):
         return render(
             request,
             template_name=self.template,
-            context={"packages": self._get_qs(), "form": form},
+            context={**context},
         )
 
     def get(self, request):
-        return self._render(request, PackageForm)
+
+        packages = self._get_qs()
+        packages = set_pagination_data(packages, request)
+        context = dict({"packages": packages, "form": PackageForm})
+        return self._render(request, context)
 
     def post(self, request):
-        # import pdb; pdb.set_trace()
+
         data = json.loads(request.body)
         pkg_form = PackageForm(data)
         if pkg_form.is_valid():
@@ -658,6 +682,7 @@ class AdminPackageView(View):
                 status=200,
                 safe=False,
             )
+
         return JsonResponse(
             {"success": False, "errors": pkg_form.errors}, status=400, safe=False
         )

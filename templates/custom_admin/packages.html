@@ -43,7 +43,7 @@
                             <tbody>
                             {% for package in packages %}
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ forloop.counter0|add:packages.start_index }}</td>
                                     <td>{{ package.name }}</td>
                                     <td>{{ package.codename }}</td>
                                     <td>{{ package.minimum_amount|floatformat|intcomma }}</td>
@@ -59,7 +59,7 @@
                             </tbody>
                         </table>
                     </div>
-                    {% include "partials/pagination.html" %}
+                    {% include "partials/pagination.html" with page_obj=packages %}
                 </div>
             </div>
         </div>
@@ -194,9 +194,7 @@
 
         function createPackage(e) {
             e.preventDefault()
-                //do something
 
-            console.log("IT got here finally some thing happened")
                 fetch(`packages`, {
                     headers: {'X-CSRFToken': csrfToken},
                     method: "POST",
@@ -212,6 +210,7 @@
                     .then(res => {
                         if (!res.ok) {
                             console.log("SOMETHING WENT WRONG")
+                            // do something here
                         }
                         window.location.href = res.resolved_url
                         res.json()

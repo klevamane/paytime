@@ -50,7 +50,7 @@ FAILURE_MESSAGES = {
     "cannot_add_multiple_bank": "You cannot add multiple bank accounts, try updating instead",
     "cannot_update_bank": "You cannot update your bank account. Kindly contact us to proceed",
     "enter_valid_amount": "Enter a valid amount",
-    "enter_valid_account_no": "Enter a valid account number",
+    "enter_valid_number": "Enter a valid {}",
     "funds_too_low": "Wallet balance is too low",
     "file_size_limit": "The {} size should not be greater than {}",
     "insufficient_funds": "Insufficient Funds",
@@ -59,6 +59,7 @@ FAILURE_MESSAGES = {
     "incomplete_unverifiable_tnx": "Transaction not completed, unable to verify transaction",
     "unsupported_file_type": "The file type is not supported, kindly upload a supported file",
     "user_has_active_investment": "You already have an active investment, so you cannot make any other payment",
+    "min_gt_max": "The maximum amount must be greater than the minimum amout",
 }
 
 
