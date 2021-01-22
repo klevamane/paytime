@@ -15,7 +15,7 @@
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2" src="{% if request.user.profile_picture == None %}{% static "img/profile-1.png" %}{% else %}{{ request.user.profile_picture.url }}{% endif %}"
+                    <img class="img-account-profile rounded-circle mb-2" src="{% if request.user.profile_picture == "" %}{% static "img/profile-1.png" %}{% else %}{{ request.user.profile_picture.url }}{% endif %}"
                              alt="" width="200px">
 
                 </div>
