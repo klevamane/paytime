@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from finance.models import Bank, Package
+from paytime.utils import FAILURE_MESSAGES
 
 
 class BankForm(forms.ModelForm):
@@ -29,11 +30,23 @@ class PackageForm(forms.ModelForm):
             "level",
         ]
 
+        widgets = {
+            "level": forms.widgets.Select(attrs={"cursor": "pointer"}),
+            "name": forms.TextInput(attrs={"placeholder": "Enter the package name"}),
+            "minimum_amount": forms.TextInput(
+                attrs={"placeholder": "Enter the minimum amount"}
+            ),
+            "maximum_amount": forms.TextInput(
+                attrs={"placeholder": "Enter the maximum amount"}
+            ),
+            "return_on_investmentent": forms.TextInput(
+                attrs={"placeholder": "Enter the roi (number)"}
+            ),
+            "days": forms.TextInput(attrs={"placeholder": "Enter the number of days"}),
+        }
+
     def clean_maximum_amount(self):
-        import pdb
 
-        pdb.set_trace()
-
-        if self.cleaned_data["maximum_amount"] < self.cleaned_data["minimum_amount"]:
-            raise ValidationError("Maximum amount must be greater than minimum amount")
+        if self.cleaned_data["maximum_amount"] <= self.cleaned_data["minimum_amount"]:
+            raise forms.ValidationError(FAILURE_MESSAGES["min_gt_max"])
         return self.cleaned_data["maximum_amount"]

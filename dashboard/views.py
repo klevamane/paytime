@@ -605,7 +605,6 @@ class AdminDashboardIndexView(View):
 
 
 class AdminPaymentRequestsView(ListView):
-
     model = Transactions
     template_name = "custom_admin/payment_requests.html"
     paginate_by = 5
@@ -655,7 +654,7 @@ class AdminPackageView(LoginRequiredMixin, View):
     model = Package
 
     def _get_qs(self):
-        return Package.objects.all().order_by("-active", "-id")
+        return self.model.objects.all().order_by("-active", "-id")
 
     def _render(self, request, context):
         return render(
@@ -665,14 +664,12 @@ class AdminPackageView(LoginRequiredMixin, View):
         )
 
     def get(self, request):
-
         packages = self._get_qs()
         packages = set_pagination_data(packages, request)
         context = dict({"packages": packages, "form": PackageForm})
         return self._render(request, context)
 
     def post(self, request):
-
         data = json.loads(request.body)
         pkg_form = PackageForm(data)
         if pkg_form.is_valid():

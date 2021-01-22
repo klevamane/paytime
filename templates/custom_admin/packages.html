@@ -22,7 +22,8 @@
                         <br>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#createPackage">Create a package</a>
+                        <a href="#" class="btn btn-dark" data-toggle="modal" data-target="#createPackage">Create a
+                            package</a>
                     </div>
 
                 </div>
@@ -65,103 +66,76 @@
         </div>
 
 
-    <!------------------------------ CREATE PACKAGE MODAL---------------------------------->
-<div class="modal fade" id="createPackage" tabindex="-1" role="dialog" aria-labelledby="createPackage"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create a package to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="user" method="post" id="newPackageForm">
-                {% csrf_token %}
-                                <div class="form-group">
-                                    <div class="mb-3 mb-sm-0">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">Name</span>
-                                            </div>
-                                            {% if form.errors|lookup:form.name %}
-                                                {{ form.name }}
-                                                {{ form.name|addcss:"form-control form-control-user is-invalid" }}
-                                                <small class="form-text text-danger">{{ form.first_name.errors }}</small>
-                                            {% else %}
-                                                {{ form.name|addcss:"form-control form-control-user" }}
-                                            {% endif %}
-                                        </div>
+        <!------------------------------ CREATE PACKAGE MODAL---------------------------------->
+        <div class="modal fade" id="createPackage" tabindex="-1" role="dialog" aria-labelledby="createPackage"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create a package to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="user" method="post" id="newPackageForm">
+                            {% csrf_token %}
+                            <div class="form-group my-4">
+                                    <label class="label" for="id_message">Name</label>
+                                    <div class="input-group">
+                                        {{ form.name|addcss:"form-control form-control-user" }}
                                     </div>
+                                    <small class="form-text text-danger" id="name_error"></small>
+                                </div>
 
-
-                                    <div class="form-group my-4">
-                                        <label class="label" for="id_message">Min Amount</label>
-                                        <div class="input-group">
-                                            {% if form.errors|lookup:form.minimum_amount %}
-                                                {{ form.minimum_amount|addcss:"form-control form-control-user is-invalid" }}
-                                                <small class="form-text text-danger">{{ form.minimum_amount }}</small>
-                                            {% else %}
-                                                {{ form.minimum_amount|addcss:"form-control form-control-user" }}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group my-4">
-                                        <label class="label" for="id_message">Max Amount</label>
-                                        <div class="input-group">
-                                            {% if form.errors|lookup:form.maximum_amount %}
-                                                {{ form.maximum_amount|addcss:"form-control form-control-user is-invalid" }}
-                                                <small class="form-text text-danger">{{ form.maximum_amount }}</small>
-                                            {% else %}
-                                                {{ form.maximum_amount|addcss:"form-control form-control-user" }}
-                                            {% endif %}
-                                        </div>
-                                    </div>
 
                                 <div class="form-group my-4">
-                                        <label class="label" for="id_message">ROI (in number)%</label>
-                                        <div class="input-group">
-                                            {% if form.errors|lookup:form.return_on_investment %}
-                                                {{ form.return_on_investmentent|addcss:"form-control form-control-user is-invalid" }}
-                                                <small class="form-text text-danger">{{ form.return_on_investmentent }}</small>
-                                            {% else %}
-                                                {{ form.return_on_investmentent|addcss:"form-control form-control-user" }}
-                                            {% endif %}
-                                        </div>
+                                    <label class="label" for="id_message">Min Amount</label>
+                                    <div class="input-group">
+                                        {{ form.minimum_amount|addcss:"form-control form-control-user" }}
                                     </div>
+                                    <small class="form-text text-danger" id="min_error"></small>
+                                </div>
 
                                 <div class="form-group my-4">
-                                        <label class="label" for="id_message">Days (in number)</label>
-                                        <div class="input-group">
-                                            {% if form.errors|lookup:form.days %}
-                                                {{ form.days|addcss:"form-control form-control-user is-invalid" }}
-                                                <small class="form-text text-danger">{{ form.day }}</small>
-                                            {% else %}
-                                                {{ form.days|addcss:"form-control form-control-user" }}
-                                            {% endif %}
-                                        </div>
+                                    <label class="label" for="id_message">Max Amount</label>
+                                    <div class="input-group">
+                                        {{ form.maximum_amount|addcss:"form-control form-control-user" }}
                                     </div>
+                                    <small class="form-text text-danger" id="max_error"></small>
+                                </div>
 
                                 <div class="form-group my-4">
-                                        <label class="label" for="id_message">Level</label>
-                                        <div class="input-group">
-                                            {% if form.errors|lookup:form.level %}
-                                                {{ form.level|addcss:"form-control form-control-user is-invalid" }}
-                                                <small class="form-text text-danger">{{ form.level }}</small>
-                                            {% else %}
-                                                {{ form.level|addcss:"form-control form-control-user" }}
-                                            {% endif %}
-                                        </div>
+                                    <label class="label" for="id_message">ROI (in number)%</label>
+                                    <div class="input-group">
+                                        {{ form.return_on_investmentent|addcss:"form-control form-control-user" }}
                                     </div>
-                            <button type="submit" class="btn btn-success btn-lg btn-block">Create <i class="fa fa-arrow-circle-up"></i></button>
-                            </form>
+                                    <small class="form-text text-danger" id="roi_error"></small>
+                                </div>
 
+                                <div class="form-group my-4">
+                                    <label class="label" for="id_message">Days (in number)</label>
+                                    <div class="input-group">
+                                        {{ form.days|addcss:"form-control form-control-user" }}
+                                    </div>
+                                    <small class="form-text text-danger" id="days_error"></small>
+                                </div>
+
+                                <div class="form-group my-4">
+                                    <label class="label" for="id_message">Level</label>
+                                    <div class="input-group">
+                                        {{ form.level|addcss:"form-control form-control-user" }}
+                                    </div>
+                                    <small class="form-text text-danger" id="level_error"></small>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-lg btn-block">Create <i
+                                        class="fa fa-arrow-circle-up"></i></button>
+                        </form>
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
     </div>
 {% endblock %}
 
@@ -177,8 +151,15 @@
         const maxAmt = document.getElementById('id_maximum_amount');
         const minAmt = document.getElementById('id_minimum_amount');
 
+
+        // Errors
+        let daysError = document.getElementById('day_error');
+        let maxAmtError = document.getElementById('max_error');
+        let minAmtError = document.getElementById('min_error');
+        let nameError = document.getElementById('name_error');
+        const roiError = document.getElementById('roi_error');
+
         let csrfToken = "{{ csrf_token }}";
-        console.log("CROS SITE REF")
         console.log("CROS SITE REF TOKEN ", csrfToken)
 
         const createPackageForm = document.getElementById("newPackageForm");
@@ -192,29 +173,57 @@
             elMessages[0].scrollIntoView()
         }
 
+        function setControlError(response, ctrlName, controlErrorElement, ctrlErrorName) {
+            if (response.errors.hasOwnProperty(ctrlErrorName)) {
+                controlErrorElement.innerHTML = response.errors[ctrlErrorName];
+                controlErrorElement.style.display = "block"
+                ctrlName.classList.add("is-invalid")
+            } else {
+                ctrlName.classList.remove("is-invalid")
+                // fixes the null is
+                // null.style error
+                if (controlErrorElement) {
+                    controlErrorElement.style.display = "none"
+                }
+            }
+        }
+
         function createPackage(e) {
             e.preventDefault()
+            fetch(`packages`, {
+                // pass csrfToken as a header
+                // django needs this
+                headers: {'X-CSRFToken': csrfToken},
 
-                fetch(`packages`, {
-                    headers: {'X-CSRFToken': csrfToken},
-                    method: "POST",
-                    body: JSON.stringify({
-                        "return_on_investmentent": roi.value,
-                        "name": name.value,
-                        "days": days.value,
-                        "maximum_amount": maxAmt.value,
-                        "minimum_amount": minAmt.value,
-                        "level": level.value
-                    }),
-                }).then(res => res.json())
-                    .then(res => {
-                        if (!res.ok) {
-                            console.log("SOMETHING WENT WRONG")
-                            // do something here
+                method: "POST",
+                body: JSON.stringify({
+                    "return_on_investmentent": roi.value,
+                    "name": name.value,
+                    "days": days.value,
+                    "maximum_amount": maxAmt.value,
+                    "minimum_amount": minAmt.value,
+                    "level": level.value
+                }),
+            }).then(res => res.json())
+                .then(res => {
+                    if (res.success === false) {
+                        console.log("STILL GETTING here ** *** ** **")
+                        console.log(res)
+                        // success -> false
+                        if (Object.keys(res.errors).length > 0) {
+                            setControlError(res, maxAmt, maxAmtError, "maximum_amount");
+                            setControlError(res, minAmt, minAmtError, "minimum_amount");
+                            setControlError(res, days, daysError, "days");
+                            setControlError(res, roi, roiError, "return_on_investmentent");
+                            setControlError(res, name, nameError, "name");
                         }
+                    } else {
+                        // success -> true
+                        // redirect
+                        console.log("STILL GETTING here ** *** ** **12")
                         window.location.href = res.resolved_url
-                        res.json()
-                    })
+                    }
+                })
                 .catch((err) => {
                     console.log("ERROR ->", err);
                 });

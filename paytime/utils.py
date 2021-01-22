@@ -46,6 +46,7 @@ SUCCESS_MESSAGES = {
 
 FAILURE_MESSAGES = {
     "account_not_active": "Your account is not active, please contact the adminstrator",
+    "alpa_num_only": "Enter only alphanumeric characters",
     "amount_specific_range": "The amount must be in the range of {} to {}",
     "cannot_add_multiple_bank": "You cannot add multiple bank accounts, try updating instead",
     "cannot_update_bank": "You cannot update your bank account. Kindly contact us to proceed",
@@ -59,7 +60,7 @@ FAILURE_MESSAGES = {
     "incomplete_unverifiable_tnx": "Transaction not completed, unable to verify transaction",
     "unsupported_file_type": "The file type is not supported, kindly upload a supported file",
     "user_has_active_investment": "You already have an active investment, so you cannot make any other payment",
-    "min_gt_max": "The maximum amount must be greater than the minimum amout",
+    "min_gt_max": "The maximum amount must be greater than the minimum amount",
 }
 
 

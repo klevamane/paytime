@@ -13,7 +13,11 @@ from django.template.defaultfilters import floatformat
 from django.utils.text import slugify
 
 from dashboard.models import TimeStampMixin
-from finance.validators import validate_account_number
+from finance.validators import (
+    validate_account_number,
+    validate_alphanumeric,
+    validate_number,
+)
 from paytime.utils import FAILURE_MESSAGES
 from user.models import User
 
@@ -176,13 +180,15 @@ PACKGE_CHOICES = [
 
 class Package(DirtyFieldsMixin, TimeStampMixin):
     name = models.CharField(max_length=30, unique=True)
-    minimum_amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+    minimum_amount = models.DecimalField(
+        default=0, decimal_places=2, max_digits=12, validators=[validate_number]
+    )
     maximum_amount = models.DecimalField(
-        default=0, decimal_places=2, max_digits=12, validators=[]
+        default=0, decimal_places=2, max_digits=12, validators=[validate_number]
     )
     return_on_investmentent = models.PositiveIntegerField()
     codename = models.CharField(max_length=30, unique=True)
-    days = models.IntegerField()
+    days = models.IntegerField(validators=[validate_number])
     level = models.CharField(choices=PACKGE_CHOICES, default="silver", max_length=30)
     active = models.BooleanField(default=True)
 
