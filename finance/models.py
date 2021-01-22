@@ -188,7 +188,7 @@ class Package(DirtyFieldsMixin, TimeStampMixin):
     )
     return_on_investmentent = models.PositiveIntegerField()
     codename = models.CharField(max_length=30, unique=True)
-    days = models.IntegerField(validators=[validate_number])
+    days = models.PositiveIntegerField(validators=[validate_number])
     level = models.CharField(choices=PACKGE_CHOICES, default="silver", max_length=30)
     active = models.BooleanField(default=True)
 
