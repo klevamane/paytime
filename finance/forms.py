@@ -28,6 +28,7 @@ class PackageForm(forms.ModelForm):
             "return_on_investmentent",
             "days",
             "level",
+            "active",
         ]
 
         widgets = {
@@ -44,6 +45,13 @@ class PackageForm(forms.ModelForm):
             ),
             "days": forms.TextInput(attrs={"placeholder": "Enter the number of days"}),
         }
+
+    def save(self):
+        super(PackageForm, self).save(commit=False)
+        # if create
+        if not self.instance.pk:
+            self.instance.active = True
+        self.instance.save()
 
     def clean_maximum_amount(self):
 

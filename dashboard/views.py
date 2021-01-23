@@ -13,12 +13,18 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.forms.utils import ErrorList
 from django.http import Http404, HttpResponseForbidden, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import floatformat
 from django.urls import reverse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 from django.views.generic.list import MultipleObjectMixin
 
 from dashboard.forms import MessageForm, PaymentForm
@@ -651,6 +657,7 @@ def set_pagination_data(queryset, request):
 
 class AdminPackageView(LoginRequiredMixin, View):
     template = "custom_admin/packages.html"
+    view_name = "admin_packages_view"
     model = Package
 
     def _get_qs(self):
@@ -675,7 +682,7 @@ class AdminPackageView(LoginRequiredMixin, View):
         if pkg_form.is_valid():
             pkg_form.save()
             return JsonResponse(
-                {"success": True, "resolved_url": reverse("admin_packages_view")},
+                {"success": True, "resolved_url": reverse(self.view_name)},
                 status=200,
                 safe=False,
             )
@@ -683,3 +690,24 @@ class AdminPackageView(LoginRequiredMixin, View):
         return JsonResponse(
             {"success": False, "errors": pkg_form.errors}, status=400, safe=False
         )
+
+
+class AdminPackageUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    template_name = "custom_admin/update_package.html"
+    model = Package
+    form_class = PackageForm
+    context_object_name = "package"
+    success_message = SUCCESS_MESSAGES["operation_successful"].format("operations")
+
+    def get_success_url(self):
+        return reverse("admin_packages_view")
+
+    # def get_initial(self):
+    #     """
+    #     Returns the initial data to use for forms on this view.
+    #     """
+    #     initial = super().get_initial()
+    #     import pdb; pdb.set_trace()
+    #     initial['days'] = self.request.something
+    #
+    #     return initial

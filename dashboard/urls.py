@@ -131,4 +131,9 @@ urlpatterns = [
         views.AdminPackageView.as_view(),
         name="admin_packages_view",
     ),
+    path(
+        "admin/packages/update/<int:pk>",
+        views.AdminPackageUpdateView.as_view(),
+        name="admin_package_update_view",
+    ),
 ]

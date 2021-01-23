@@ -1,0 +1,214 @@
+{% extends 'partials/base-admin-dashboard.html' %}
+{% load custom_tags %}
+{% load humanize %}
+
+
+{% block content %}
+    <div class="container">
+        <h2 class="mb-5 text-fade">Manage Packages</h2>
+        <div class="row">
+            <!------------------------------PACKAGES------------------>
+            <div class="box">
+                <div id="popup-messages-content">
+                </div>
+                <div class="box-header d-flex justify-content-between">
+                    <div>
+                        <h4 class="box-title">
+                            Upadate Package
+                        </h4>
+                        <br>
+                        <small class="text-muted">Update the package details
+                        </small>
+                        <br>
+                    </div>
+                    <span>  <a href="{% url "admin_packages_view" %}" class="btn btn-dark">Back
+                            <i class="fa fa-arrow-circle-left"></i></a>
+                    </span>
+
+
+                </div>
+                <div class="box-body">
+                    <form method="POST">
+                    {% csrf_token %}
+                        <!---FORM ROW--->
+                        <div class="form-row">
+                            <!-- Form Group (phone number)-->
+                            <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputPhone">Name</label>
+                                {% if form.errors|lookup:form.name %}
+                                    {{ form.name|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.name.errors }}</small>
+                                {% else %}
+                                    {{ form.name|addcss:"form-control" }}
+                                {% endif %}
+                            </div>
+                            <!-- Form Group (birthday)-->
+                            <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputBirthday">Minimum Amount</label>
+                                {% if form.errors|lookup:form.minimum_amount %}
+                                    {{ form.minimum_amount|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.minimum_amount.errors }}</small>
+                                {% else %}
+                                    {{ form.minimum_amount|addcss:"form-control" }}
+                                {% endif %}
+                            </div>
+
+                        <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputBirthday">Maximum Amount</label>
+                                {% if form.errors|lookup:form.maximum_amount %}
+                                    {{ form.maximum_amount|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.maximum_amount.errors }}</small>
+                                {% else %}
+                                    {{ form.maximum_amount|addcss:"form-control" }}
+                                {% endif %}
+                            </div>
+
+                        <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputPhone">ROI%</label>
+                                {% if form.errors|lookup:form.name %}
+                                    {{ form.return_on_investmentent|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.return_on_investmentent.errors }}</small>
+                                {% else %}
+                                    {{ form.return_on_investmentent|addcss:"form-control" }}
+                                {% endif %}
+                            </div>
+
+                        <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputBirthday">Days</label>
+                                {% if form.errors|lookup:form.days %}
+                                    {{ form.days|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.days.errors }}</small>
+                                {% else %}
+                                    {{ form.days|addcss:"form-control" }}
+                                {% endif %}
+                            </div>
+
+                        <div class="form-group col-md-6">
+                                <label class="small mb-1" for="inputPhone">Level</label>
+                                {% if form.errors|lookup:form.name %}
+                                    {{ form.level|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ form.level.errors }}</small>
+                                {% else %}
+                                    {{ form.level|addcss:"form-control" }}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!---FORM ROW--->
+
+
+                        <div class="form-row">
+                            <!-- Form Group (phone number)-->
+                            <div class="form-check">
+                                            {{ form.active|addcss:"form-check-input" }}
+                                            <label class="form-check-label" for="id_terms_condition">
+
+                                            </label>
+                                            <span><strong><a href="">Activate</a></strong></span>
+                                        </div>
+
+
+                        </div>
+                      <div class="form-row py-3">
+                           <button type="submit" class="btn btn-dark btn-block">Update the package</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+
+    <script>
+
+
+        const days = document.getElementById("id_days");
+        const level = document.getElementById('id_level');
+        const roi = document.getElementById('id_return_on_investmentent');
+        const name = document.getElementById('id_name');
+        const maxAmt = document.getElementById('id_maximum_amount');
+        const minAmt = document.getElementById('id_minimum_amount');
+
+
+        // Errors
+        let daysError = document.getElementById('day_error');
+        let maxAmtError = document.getElementById('max_error');
+        let minAmtError = document.getElementById('min_error');
+        let nameError = document.getElementById('name_error');
+        const roiError = document.getElementById('roi_error');
+
+        let csrfToken = "{{ csrf_token }}";
+        console.log("CROS SITE REF TOKEN ", csrfToken)
+
+        const createPackageForm = document.getElementById("newPackageForm");
+        createPackageForm.addEventListener("submit", createPackage)
+
+        function errorMsg(content) {
+            const danger = "danger"
+            let elMessages = $('#popup-messages-content');
+            elMessages.append("<div class='text-center alert-dismissible alert alert-" + danger + "''>" + content + "<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                "                    <span aria-hidden=\"true\">&times;</span></div>");
+            elMessages[0].scrollIntoView()
+        }
+
+        function setControlError(response, ctrlName, controlErrorElement, ctrlErrorName) {
+            if (response.errors.hasOwnProperty(ctrlErrorName)) {
+                controlErrorElement.innerHTML = response.errors[ctrlErrorName];
+                controlErrorElement.style.display = "block"
+                ctrlName.classList.add("is-invalid")
+            } else {
+                ctrlName.classList.remove("is-invalid")
+                // fixes the null is
+                // null.style error
+                if (controlErrorElement) {
+                    controlErrorElement.style.display = "none"
+                }
+            }
+        }
+
+        function createPackage(e) {
+            e.preventDefault()
+            fetch(`packages`, {
+                // pass csrfToken as a header
+                // django needs this
+                headers: {'X-CSRFToken': csrfToken},
+
+                method: "POST",
+                body: JSON.stringify({
+                    "return_on_investmentent": roi.value,
+                    "name": name.value,
+                    "days": days.value,
+                    "maximum_amount": maxAmt.value,
+                    "minimum_amount": minAmt.value,
+                    "level": level.value
+                }),
+            }).then(res => res.json())
+                .then(res => {
+                    if (res.success === false) {
+                        console.log("STILL GETTING here ** *** ** **")
+                        console.log(res)
+                        // success -> false
+                        if (Object.keys(res.errors).length > 0) {
+                            setControlError(res, maxAmt, maxAmtError, "maximum_amount");
+                            setControlError(res, minAmt, minAmtError, "minimum_amount");
+                            setControlError(res, days, daysError, "days");
+                            setControlError(res, roi, roiError, "return_on_investmentent");
+                            setControlError(res, name, nameError, "name");
+                        }
+                    } else {
+                        // success -> true
+                        // redirect
+                        console.log("STILL GETTING here ** *** ** **12")
+                        window.location.href = res.resolved_url
+                    }
+                })
+                .catch((err) => {
+                    console.log("ERROR ->", err);
+                });
+        }
+
+    </script>
+{% endblock %}
