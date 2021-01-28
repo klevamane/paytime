@@ -727,6 +727,8 @@ def update_user_document_status(request):
         Document.objects.filter(user__email__in=confirmed_documents).update(
             verified=True
         )
+        # TODO send email to users,
+        # we should use celery for this
     if unconfirmed_documents:
         Document.objects.filter(user__email__in=unconfirmed_documents).update(
             verified=False
