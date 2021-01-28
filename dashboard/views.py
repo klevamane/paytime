@@ -4,7 +4,7 @@ import json
 
 import requests
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.messages.views import SuccessMessageMixin
@@ -25,6 +25,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
+from django.views.generic.edit import FormMixin
 from django.views.generic.list import MultipleObjectMixin
 
 from dashboard.forms import MessageForm, PaymentForm
@@ -702,12 +703,34 @@ class AdminPackageUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView
     def get_success_url(self):
         return reverse("admin_packages_view")
 
-    # def get_initial(self):
-    #     """
-    #     Returns the initial data to use for forms on this view.
-    #     """
-    #     initial = super().get_initial()
-    #     import pdb; pdb.set_trace()
-    #     initial['days'] = self.request.something
-    #
-    #     return initial
+
+class AdminDocumentsView(LoginRequiredMixin, FormMixin, ListView):
+    qry = {}
+
+    model = Document
+    template_name = "custom_admin/documents.html"
+    paginate_by = 10
+    context_object_name = "documents"
+    ordering = "verified"
+
+    form_class = DocumentForm
+
+
+@login_required
+def update_user_document_status(request):
+    if request.method != "POST":
+        return JsonResponse({}, status=200)
+    data = json.loads(request.body)
+    confirmed_documents = data["confirmedDocuments"]
+    unconfirmed_documents = data["unconfirmedDocuments"]
+    if confirmed_documents:
+        Document.objects.filter(user__email__in=confirmed_documents).update(
+            verified=True
+        )
+    if unconfirmed_documents:
+        Document.objects.filter(user__email__in=unconfirmed_documents).update(
+            verified=False
+        )
+    return JsonResponse(
+        {"resolved_url": reverse("admin_documents_all_view")}, status=200
+    )

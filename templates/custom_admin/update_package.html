@@ -104,9 +104,8 @@
                                             <label class="form-check-label" for="id_terms_condition">
 
                                             </label>
-                                            <span><strong><a href="">Activate</a></strong></span>
+                                            <span><strong class="text-primary">Activate</strong></span>
                                         </div>
-
 
                         </div>
                       <div class="form-row py-3">
@@ -161,7 +160,7 @@
                 ctrlName.classList.add("is-invalid")
             } else {
                 ctrlName.classList.remove("is-invalid")
-                // fixes the null is
+                // fixes the null error
                 // null.style error
                 if (controlErrorElement) {
                     controlErrorElement.style.display = "none"
@@ -201,7 +200,6 @@
                     } else {
                         // success -> true
                         // redirect
-                        console.log("STILL GETTING here ** *** ** **12")
                         window.location.href = res.resolved_url
                     }
                 })

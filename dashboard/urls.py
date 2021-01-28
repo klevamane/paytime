@@ -136,4 +136,15 @@ urlpatterns = [
         views.AdminPackageUpdateView.as_view(),
         name="admin_package_update_view",
     ),
+    # ADMIN DOCUMENTS
+    path(
+        "admin/documents",
+        views.AdminDocumentsView.as_view(),
+        name="admin_documents_all_view",
+    ),
+    path(
+        "admin/documents/update-user-document-status",
+        views.update_user_document_status,
+        name="update_user_document_status",
+    ),
 ]

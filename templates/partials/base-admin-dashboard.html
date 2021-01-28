@@ -222,6 +222,10 @@
                     <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}"
                        href="{% url "admin_payment_requests_view" %}">Payment Requests</a>
                     <div class="collapse-divider"></div>
+                <div class="collapse-divider"></div>
+                    <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}"
+                       href="{% url "admin_documents_all_view" %}">Documents</a>
+                    <div class="collapse-divider"></div>
                 </div>
             </div>
         </li>
