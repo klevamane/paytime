@@ -717,6 +717,7 @@ class AdminDocumentsView(LoginRequiredMixin, FormMixin, ListView):
 
 
 @login_required
+@user_passes_test(lambda u: u.is_admin)
 def update_user_document_status(request):
     if request.method != "POST":
         return JsonResponse({}, status=200)
