@@ -147,4 +147,10 @@ urlpatterns = [
         views.update_user_document_status,
         name="update_user_document_status",
     ),
+    # ADMIN SINGLE USER PROFILE
+    path(
+        "admin/users/profile/<int:pk>",
+        views.AdminSingleUserProfileView.as_view(),
+        name="admin_single_user_profile",
+    ),
 ]

@@ -7,11 +7,17 @@ register = template.Library()
 
 @register.filter(name="addcss")
 def addcss(field, css):
-    if field and field != "":
-        return field.as_widget(attrs={"class": css})
+    try:
+        if field and field != "":
+            return field.as_widget(attrs={"class": css})
+    except AttributeError:
+        pass
 
 
 @register.filter(name="lookup")
 def lookup(dictionary, key):
-    """Get dictionary item via template"""
-    return dictionary.get(key.name)
+    try:
+        """Get dictionary item via template"""
+        return dictionary.get(key.name)
+    except AttributeError:
+        pass

@@ -737,3 +737,74 @@ def update_user_document_status(request):
     return JsonResponse(
         {"resolved_url": reverse("admin_documents_all_view")}, status=200
     )
+
+
+class ProfileFormMixin:
+
+    # def _set_profile_context(self, profile_form, request, user):
+    #     try:
+    #         bank = Bank.objects.get(user=user)
+    #         # set the intial value/upon load, the value of the user's
+    #         # bank details
+    #         bank_form = BankForm(
+    #             initial={"bank": bank.bank, "account_number": bank.account_number}
+    #         )
+    #     except Bank.DoesNotExist:
+    #         bank_form = BankForm()
+    #     return {
+    #         "profile_form": profile_form,
+    #         "bank_form": bank_form,
+    #         "profile_picture_url": request.user.profile_picture.url
+    #         if request.user.profile_picture
+    #         else "",
+    #     }
+
+    def _set_bank_form(self, bank, account_number):
+        return {"bank": bank, "account_number": account_number}
+
+    def _set_profile_form(self, user, use_form=False):
+        # returns the intial value/upon load, the value of the user's
+        # profile details
+        data = {
+            "firstname": user.firstname,
+            "lastname": user.lastname,
+            "address1": user.address1,
+            "area": user.area,
+            "email": user.email,
+            "city": user.city,
+            "state": user.state,
+            "mobile": user.mobile,
+            "date_of_birth": user.date_of_birth,
+            "gender": user.gender,
+            # "profile_picture": None
+        }
+        if use_form:
+            return ProfileForm(initial={**data})
+        return data
+
+
+class AdminSingleUserProfileView(FormMixin, ProfileFormMixin, DetailView):
+    template_name = "custom_admin/users_profile.html"
+    model = User
+    form_class = ProfileForm
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        user = self.object
+        context = super().get_context_data(**kwargs)
+        # set the context for the profile form
+        context["profile_form"] = ProfileForm(initial={**self._set_profile_form(user)})
+        # set the context for the bank form
+        try:
+            bank = Bank.objects.get(user=user)
+            context["bank_form"] = BankForm(
+                initial={**self._set_bank_form(bank.bank, bank.account_number)}
+            )
+
+            context["user_profile_photo"] = user.profile_picture.url
+        except Bank.DoesNotExist:
+            context["bank_form"] = BankForm()
+        except ValueError:
+            context["user_profile_photo"] = None
+
+        return context

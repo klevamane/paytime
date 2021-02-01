@@ -32,7 +32,7 @@
                             <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Lastname</th>
+                                <th>View</th>
                                 <th>Email</th>
                                 <th>Document type</th>
                                 <th>Verified?</th>
@@ -43,11 +43,6 @@
                                 {% for document in documents %}
                                     <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ document.user.lastname }}</td>
-                                    <td>{{ document.user.email }}</td>
-                                    <td>{{ document.type }}</td>
-                                    <td>{{ document.verified }}</td>
-                                    <td><input type="checkbox" {% if document.verified %} checked {% endif %} onchange="updateData(this)"></td>
                                     <td>
                                         {% if document.file.url  %}
                                     <a href="#" onclick=openImageModal("{{ document.file.url }}") id="image-link-{{ forloop.counter }}">
@@ -57,6 +52,11 @@
                                             <span>-</span>
                                     {% endif %}
                                     </td>
+                                    <td>{{ document.user.email }}</td>
+                                    <td>{{ document.type }}</td>
+                                    <td>{{ document.verified }}</td>
+                                    <td><input type="checkbox" {% if document.verified %} checked {% endif %} onchange="updateData(this)"></td>
+
                                     </tr>
                                 {% endfor %}
                             </tbody>

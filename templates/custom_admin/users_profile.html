@@ -1,0 +1,165 @@
+{% extends 'partials/base-admin-dashboard.html' %}
+{% load custom_tags %}
+{% load humanize %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container">
+    <div class="row">
+            <div class="col-xl-4">
+                <!-- Profile Picture Card-->
+                <div class="card">
+                    <div class="card-header">Profile Picture</div>
+                    <div class="card-body text-center">
+                        <!-- Profile picture image-->
+                        <img class="img-account-profile rounded-circle mb-2" src="{% if user_profile_photo == "" %}{% static "img/profile-1.png" %}{% else %}{{ user_profile_photo }}{% endif %}"
+                             alt="" width="200px">
+                        <form>
+
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8">
+
+                <!-- Account details card-->
+                <div class="card mb-4">
+                    <div class="card-header">Profile Details</div>
+                    <div class="card-body">
+                        <form name="profile_form"  enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Form Row-->
+                            <div class="form-row">
+                                <!-- Form Group (first name)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputFirstName">First name</label>
+                                    {{ profile_form.firstname|addcss:"form-control" }}
+                                </div>
+                                <!-- Form Group (last name)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputLastName">Last name</label>
+                                    {{ profile_form.lastname|addcss:"form-control" }}
+                                </div>
+                            </div>
+                            <!-- Form Row        -->
+                            <div class="form-row">
+                                <!-- Form Group (organization name)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputOrgName">Address</label>
+                                    {{ profile_form.address1|addcss:"form-control" }}
+                                </div>
+                                <!-- Form Group (location)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputLocation">Area</label>
+                                    {{ profile_form.area|addcss:"form-control" }}
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <!-- Form Group (organization name)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputOrgName">City</label>
+                                    {{ profile_form.city|addcss:"form-control" }}
+                                </div>
+                                <!-- Form Group (location)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputLocation">State</label>
+                                   {{ profile_form.state|addcss:"form-control" }}
+                                </div>
+                            </div>
+                            <!-- Form Group (email address)-->
+                            <div class="form-group">
+                                <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                                {{ profile_form.email|addcss:"form-control" }}
+                            </div>
+                            <!-- Form Row-->
+                            <div class="form-row">
+                                <!-- Form Group (phone number)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputPhone">Mobile number</label>
+                                    {% if profile_form.errors|lookup:profile_form.mobile %}
+                                        {{ profile_form.mobile|addcss:"form-control is-invalid" }}
+                                        <small class="form-text text-danger">{{ profile_form.mobile.errors }}</small>
+                                    {% else %}
+                                        {{ profile_form.mobile|addcss:"form-control" }}
+                                    {% endif %}
+                                </div>
+                                <!-- Form Group (birthday)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputBirthday">Birthday (YYYY-MM-DD)</label>
+                                    {% if profile_form.errors|lookup:profile_form.date_of_birth %}
+                                        {{ profile_form.date_of_birth|addcss:"form-control is-invalid" }}
+                                        <small class="form-text text-danger">{{ profile_form.date_of_birth.errors }}</small>
+                                    {% else %}
+                                    {{ profile_form.date_of_birth|addcss:"form-control" }}
+                                     {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Form Row-->
+                            <div class="form-row">
+                                <!-- Form Group (phone number)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputPhone">Gender</label>
+                                    {% if profile_form.errors|lookup:profile_form.gender %}
+                                        {{ profile_form.gender|addcss:"form-control is-invalid" }}
+                                        <small class="form-text text-danger">{{ profile_form.gender.errors }}</small>
+                                    {% else %}
+                                        {{ profile_form.gender|addcss:"form-control" }}
+                                    {% endif %}
+                                </div>
+                                <!-- Form Group (birthday)-->
+                                <div class="form-group col-md-6">
+                                    <label class="small mb-1" for="inputBirthday">Profile Picture</label>
+                                    {% if profile_form.errors|lookup:profile_form.profile_picture %}
+                                        {{ profile_form.profile_picture|addcss:"form-control is-invalid" }}
+                                    <small class="form-text text-danger">{{ profile_form.profile_picture.errors }}</small>
+                                    {% else %}
+                                    {{ profile_form.profile_picture|addcss:"form-control" }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="card mb-4">
+                    <div class="card-header">Bank Details</div>
+                    <div class="card-body">
+                        <form name="profile_form" method="POST">
+                            {% csrf_token %}
+                                <div class="form-row">
+
+                                <div class="form-group col-md-7">
+                                        <label for="id_bank">Bank</label>
+                                        {{ bank_form.bank|addcss:"form-control" }}
+                                      </div>
+
+                                <!-- Form Group (Account number)-->
+                                <div class="form-group col-md-7">
+                                    <label class="small mb-1" for="inputLocation">Account number</label>
+                                     {% if bank_form.errors|lookup:bank_form.account_number %}
+                                        {{ bank_form.account_number|addcss:"form-control is-invalid" }}
+                                        <small class="form-text text-danger">{{ bank_form.account_number.errors }}</small>
+                                    {% else %}
+                                        {{ bank_form.account_number|addcss:"form-control" }}
+                                    {% endif %}
+
+                                </div>
+                                    </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}
