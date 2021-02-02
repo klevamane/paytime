@@ -763,8 +763,8 @@ class ProfileFormMixin:
         return {"bank": bank, "account_number": account_number}
 
     def _set_profile_form(self, user, use_form=False):
-        # returns the intial value/upon load, the value of the user's
-        # profile details
+        # returns the intial value of the user's
+        # profile details on load
         data = {
             "firstname": user.firstname,
             "lastname": user.lastname,
