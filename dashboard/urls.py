@@ -157,7 +157,7 @@ urlpatterns = [
     path(
         "admin/messages",
         views.AdminMessageView.as_view(),
-        name="admin_message_view",
+        name="admin_message_inbox_view",
     ),
     path(
         "admin/messages/<int:pk>",
@@ -168,5 +168,10 @@ urlpatterns = [
         "admin/messages/sent",
         views.AdminMessagesSentView.as_view(),
         name="admin_messages_sent_view",
+    ),
+    path(
+        "admin/messages/sent/<int:pk>",
+        views.AdminMessageSentView.as_view(),
+        name="admin_message_sent_view",
     ),
 ]

@@ -498,7 +498,7 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         if self.request.user.is_admin:
-            return reverse("admin_message_view")
+            return reverse("admin_message_inbox_view")
 
         return reverse("message_inbox_view_url")
 
@@ -833,3 +833,10 @@ class AdminMessagesSentView(MessageInboxList):
 
     def get_queryset(self):
         return MessageCenter.objects.filter(sender__is_admin=True)
+
+
+class AdminMessageSentView(AdminMessageInboxDetail):
+    template_name = "custom_admin/message_sent.html"
+
+    def get_queryset(self):
+        return MessageCenter.objects.filter(to__isnull=False)
