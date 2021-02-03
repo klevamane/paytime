@@ -99,6 +99,8 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">information:</h6>
                     <a class="collapse-item {% if request.path|ends_with:"/invest" %}active{% endif %}"
+                       href="{% url "admin_message_create_view" %}">Create</a>
+                    <a class="collapse-item {% if request.path|ends_with:"/invest" %}active{% endif %}"
                        href="{% url "admin_message_inbox_view" %}">Inbox</a>
                     <a class="collapse-item {% if request.path|ends_with:"/investments" %}active{% endif %}"
                        href="{% url "admin_messages_sent_view" %}">Sent</a>

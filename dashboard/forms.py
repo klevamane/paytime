@@ -65,4 +65,15 @@ class MessageForm(forms.ModelForm):
 
     class Meta:
         model = MessageCenter
-        fields = ["subject", "message"]
+        fields = ["subject", "message", "to"]
+
+
+class AdminMessageCreateForm(forms.ModelForm):
+    message = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = MessageCenter
+        fields = ["subject", "message", "to"]
+        widgets = {
+            "to": forms.widgets.Select(attrs={"required": True}),
+        }

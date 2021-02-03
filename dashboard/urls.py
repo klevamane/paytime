@@ -174,4 +174,9 @@ urlpatterns = [
         views.AdminMessageSentView.as_view(),
         name="admin_message_sent_view",
     ),
+    path(
+        "admin/messages/create",
+        views.AdminMessageCreateView.as_view(),
+        name="admin_message_create_view",
+    ),
 ]

@@ -28,7 +28,7 @@ from django.views.generic import (
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import MultipleObjectMixin
 
-from dashboard.forms import MessageForm, PaymentForm
+from dashboard.forms import AdminMessageCreateForm, MessageForm, PaymentForm
 from dashboard.models import MessageCenter
 from finance.forms import BankForm, PackageForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
@@ -840,3 +840,16 @@ class AdminMessageSentView(AdminMessageInboxDetail):
 
     def get_queryset(self):
         return MessageCenter.objects.filter(to__isnull=False)
+
+
+class AdminMessageCreateView(MessageView, CreateView):
+    template_name = "custom_admin/create_message.html"
+    model = MessageCenter
+    form_class = AdminMessageCreateForm
+
+    def get_success_url(self):
+        messages.success(self.request, SUCCESS_MESSAGES["msg_sent_to_admin"])
+        # we would lazily reverse if done withing the class as
+        # oppsose to this method
+        # see https://stackoverflow.com/questions/48669514/difference-between-reverse-and-reverse-lazy-in-django
+        return reverse("admin_message_create_view")
