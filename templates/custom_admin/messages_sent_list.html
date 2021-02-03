@@ -1,6 +1,18 @@
 {% extends 'partials/base-admin-dashboard.html' %}
 {% load humanize %}
+{% load custom_tags %}
 {% load static %}
+
+{% block username %}{{ request.user.get_full_name }}{% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}{% endif %}{% endblock %}
+
+{% block message_center_msgs_badge %}
+    {% include "partials/navbar_messages_badge.html" %}
+{% endblock %}
+
+{% block message_center_mgs %}
+    {% include "partials/navbar_msgs.html" %}
+{% endblock %}
 
 {% block content %}
 
@@ -36,7 +48,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="widget-26-job-title">
-                                                            <a href="{% url "admin_inbox_detail_view" message.pk %}">{% if not message.read %}<strong>{{ message.subject }}</strong>{% else %}{{ message.subject }}{% endif %}</a>
+                                                            <a href="{% url "message_detail_view_url" message.pk %}">{% if not message.read %}<strong>{{ message.subject }}</strong>{% else %}{{ message.subject }}{% endif %}</a>
                                                             <p class="m-0"><a href="#" class="employer-name">Admin</a> <span class="text-muted time">{{ message.created_at|naturaltime }}</span></p>
                                                         </div>
                                                     </td>
@@ -52,7 +64,7 @@
                                                     <td>
                                                         <div class="widget-26-job-category bg-soft-info">
                                                             <i class="indicator bg-info"></i>
-                                                            <span>response required</span>
+                                                            <span>Sent to admin</span>
                                                         </div>
                                                     </td>
                                                     <td>

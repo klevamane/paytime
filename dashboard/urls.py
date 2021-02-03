@@ -162,6 +162,11 @@ urlpatterns = [
     path(
         "admin/messages/<int:pk>",
         views.AdminMessageInboxDetail.as_view(),
-        name="admin_inbox_detail",
+        name="admin_inbox_detail_view",
+    ),
+    path(
+        "admin/messages/sent",
+        views.AdminMessagesSentView.as_view(),
+        name="admin_messages_sent_view",
     ),
 ]

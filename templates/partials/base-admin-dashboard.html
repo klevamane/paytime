@@ -125,7 +125,7 @@
                     <a class="collapse-item {% if request.path|ends_with:"/invest" %}active{% endif %}"
                        href="{% url "invest_view_url" %}">Inbox</a>
                     <a class="collapse-item {% if request.path|ends_with:"/investments" %}active{% endif %}"
-                       href="{% url "investments_view_url" %}">Sent</a>
+                       href="{% url "message_sent_view_url" %}">Sent</a>
                 </div>
             </div>
         </li>
