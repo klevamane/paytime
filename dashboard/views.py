@@ -808,3 +808,11 @@ class AdminSingleUserProfileView(FormMixin, ProfileFormMixin, DetailView):
             context["user_profile_photo"] = None
 
         return context
+
+
+class AdminMessageView(MessageInboxList):
+    ordering = ["created_at"]
+    template_name = "custom_admin/messages.html"
+
+    def get_queryset(self):
+        return MessageCenter.objects.filter(to=None)

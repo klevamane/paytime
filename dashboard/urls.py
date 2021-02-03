@@ -153,4 +153,10 @@ urlpatterns = [
         views.AdminSingleUserProfileView.as_view(),
         name="admin_single_user_profile",
     ),
+    # ADMIN MESSAGES
+    path(
+        "admin/messages",
+        views.AdminMessageView.as_view(),
+        name="admin_message_view",
+    ),
 ]
