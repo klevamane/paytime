@@ -36,7 +36,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="widget-26-job-title">
-                                                            <a href="{% url "message_detail_view_url" message.pk %}">{% if not message.read %}<strong>{{ message.subject }}</strong>{% else %}{{ message.subject }}{% endif %}</a>
+                                                            <a href="{% url "admin_inbox_detail" message.pk %}">{% if not message.read %}<strong>{{ message.subject }}</strong>{% else %}{{ message.subject }}{% endif %}</a>
                                                             <p class="m-0"><a href="#" class="employer-name">Admin</a> <span class="text-muted time">{{ message.created_at|naturaltime }}</span></p>
                                                         </div>
                                                     </td>
