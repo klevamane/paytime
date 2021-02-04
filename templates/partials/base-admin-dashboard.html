@@ -71,7 +71,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">transaction:</h6>
                     <a class="collapse-item {% if request.path|ends_with:"/transactions/all" %}active{% endif %}"
-                       href="{% url "transactions_all_url" %}">All</a>
+                       href="{% url "admin_all_transactions_view" %}">All</a>
                     <a class="collapse-item {% if request.path|ends_with:"/transactions/deposits" %}active{% endif %}"
                        href="{% url "deposit_view_url" %}">Deposits</a>
                     <a class="collapse-item {% if request.path|ends_with:"/transactions/withrawal" %}active{% endif %}"

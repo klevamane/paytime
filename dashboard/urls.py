@@ -179,4 +179,10 @@ urlpatterns = [
         views.AdminMessageCreateView.as_view(),
         name="admin_message_create_view",
     ),
+    # 🎒🎒🎒🎒🎒🎒🎒🎒🎒🎒🎒 💼 💼 💼 💼 TRANSACTIONS 💼 💼 💼 💼 🎒🎒🎒🎒🎒🎒🎒🎒🎒🎒🎒🎒
+    path(
+        "admin/transactions/all",
+        views.AdminTransactionsAllView.as_view(),
+        name="admin_all_transactions_view",
+    ),
 ]

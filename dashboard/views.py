@@ -853,3 +853,15 @@ class AdminMessageCreateView(MessageView, CreateView):
         # oppsose to this method
         # see https://stackoverflow.com/questions/48669514/difference-between-reverse-and-reverse-lazy-in-django
         return reverse("admin_message_create_view")
+
+
+class AdminTransactionsAllView(TransactionsAllView):
+    qry = {}
+
+    model = Transactions
+    template_name = "custom_admin/all_transactions.html"
+    paginate_by = 10
+    context_object_name = "transactions"
+
+    def get_queryset(self):
+        return Transactions.objects.filter().order_by("-id")
