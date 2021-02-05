@@ -185,4 +185,9 @@ urlpatterns = [
         views.AdminTransactionsAllView.as_view(),
         name="admin_all_transactions_view",
     ),
+    path(
+        "admin/transactions/users/withdrawals",
+        views.AdminUsersWithdrawalView.as_view(),
+        name="admin_users_withdrawals_transactions_view",
+    ),
 ]

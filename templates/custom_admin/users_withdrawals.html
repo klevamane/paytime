@@ -1,0 +1,37 @@
+{% extends 'partials/base-admin-dashboard.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block username %}{{ request.user.get_full_name }} {% endblock %}
+{% block navbar_image %}{% if request.user.profile_picture %}{{ request.user.profile_picture.url }}
+{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row flex-row">
+
+        <a class="btn btn-primary btn-sm mb-4" href="{% url "wallet_url" %}">Make withdrawal</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ transaction.amount|floatformat|intcomma }}</td>
+                <td>{{ transaction.created_at }}</td>
+                <td>{{ transaction.status|capfirst }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        {% include "partials/pagination.html" %}
+    </div>
+{% endblock %}

@@ -865,3 +865,13 @@ class AdminTransactionsAllView(TransactionsAllView):
 
     def get_queryset(self):
         return Transactions.objects.filter().order_by("-id")
+
+
+class AdminUsersWithdrawalView(LoginRequiredMixin, ListView):
+    model = Transactions
+    template_name = "custom_admin/users_withdrawals.html"
+    context_object_name = "transactions"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Transactions.objects.filter(transaction_type="withdrawal").order_by("id")
