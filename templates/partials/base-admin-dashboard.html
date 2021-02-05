@@ -88,7 +88,7 @@
         <!------------------------------------------- MANAGE MESSAGE  ------------------------------------------->
 
          <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item {% if "/investments" in request.path %}active{% endif %}">
+        <li class="nav-item {% if "admin/messages" in request.path %}active{% endif %}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMessages"
                aria-expanded="true" aria-controls="collapseMessages">
                 <i class="fas fa-fw fa-envelope"></i>
@@ -98,11 +98,11 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">information:</h6>
-                    <a class="collapse-item {% if request.path|ends_with:"/invest" %}active{% endif %}"
+                    <a class="collapse-item {% if request.path|ends_with:"/messages/create" %}active{% endif %}"
                        href="{% url "admin_message_create_view" %}">Create</a>
-                    <a class="collapse-item {% if request.path|ends_with:"/invest" %}active{% endif %}"
+                    <a class="collapse-item {% if request.path|ends_with:"/messages" %}active{% endif %}"
                        href="{% url "admin_message_inbox_view" %}">Inbox</a>
-                    <a class="collapse-item {% if request.path|ends_with:"/investments" %}active{% endif %}"
+                    <a class="collapse-item {% if request.path|ends_with:"/messages/sent" %}active{% endif %}"
                        href="{% url "admin_messages_sent_view" %}">Sent</a>
                 </div>
             </div>
@@ -115,7 +115,7 @@
         <div class="sidebar-heading">
             Package
         </div>
-        <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
+        <li class="nav-item {% if "/admin/packages" in request.path %}active{% endif %}">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePackages" aria-expanded="true"
                aria-controls="collapseMessages">
                 <i class="fas fa-fw fa-gift"></i>
