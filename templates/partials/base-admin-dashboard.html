@@ -137,7 +137,7 @@
         <div class="sidebar-heading">
             Payment Request
         </div>
-        <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
+        <li class="nav-item {% if "/payment" in request.path %}active{% endif %}">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePayment" aria-expanded="true"
                aria-controls="collapseMessages">
                 <i class="fas fa-fw fa-money-bill"></i>
@@ -147,7 +147,7 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Payments Screens:</h6>
-                    <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}"
+                    <a class="collapse-item {% if "/payment-requests" in request.path %}active{% endif %}"
                        href="{% url "admin_payment_requests_view" %}">Requests</a>
                     <div class="collapse-divider"></div>
                 </div>
@@ -159,9 +159,9 @@
 
         <!------------------------------------------- MANAGE USERS ------------------------------------------->
         <div class="sidebar-heading">
-            Payment Request
+            Manage Users
         </div>
-        <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
+        <li class="nav-item {% if "/users" in request.path %}active{% endif %}">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true"
                aria-controls="collapseMessages">
                 <i class="fas fa-fw fa-users"></i>
@@ -171,12 +171,10 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">User mgt Screens:</h6>
-                    <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}"
+                    <a class="collapse-item {% if request.path|ends_with:"/users" %}active{% endif %}"
                        href="{% url "admin_all_users_view" %}">All</a>
                     <div class="collapse-divider"></div>
-                    <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}"
-                       href="{% url "admin_payment_requests_view" %}">Payment Requests</a>
-                    <div class="collapse-divider"></div>
+
                 <div class="collapse-divider"></div>
                     <a class="collapse-item {% if "/messages/new" in request.path %}active{% endif %}"
                        href="{% url "admin_documents_all_view" %}">Documents</a>
