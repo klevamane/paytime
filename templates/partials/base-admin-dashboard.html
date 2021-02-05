@@ -73,9 +73,9 @@
                     <a class="collapse-item {% if request.path|ends_with:"/transactions/all" %}active{% endif %}"
                        href="{% url "admin_all_transactions_view" %}">All</a>
                     <a class="collapse-item {% if request.path|ends_with:"/transactions/deposits" %}active{% endif %}"
-                       href="{% url "deposit_view_url" %}">Deposits</a>
+                       href="{% url "admin_users_deposit_transactions_view" %}">Deposits</a>
                     <a class="collapse-item {% if request.path|ends_with:"/transactions/withrawal" %}active{% endif %}"
-                       href="{% url "withdrawal_view_url" %}">Withdrawls</a>
+                       href="{% url "admin_users_withdrawals_transactions_view" %}">Withdrawls</a>
                 </div>
             </div>
         </li>

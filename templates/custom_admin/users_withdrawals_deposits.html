@@ -8,9 +8,8 @@
 
 {% block content %}
     <div class="container">
+    <h3 class="text-center my-3">{% if "/withdrawal" in request.path %}List of users withdrawals {% else %}List of users deposits{% endif %}</h3>
         <div class="row flex-row">
-
-        <a class="btn btn-primary btn-sm mb-4" href="{% url "wallet_url" %}">Make withdrawal</a>
         <table class="table">
             <thead>
             <tr>
