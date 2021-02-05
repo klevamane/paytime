@@ -85,13 +85,13 @@
         <hr class="sidebar-divider">
 
 
-        <!------------------------------------------- PACKAGE  ------------------------------------------->
+        <!------------------------------------------- MANAGE MESSAGE  ------------------------------------------->
 
          <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item {% if "/investments" in request.path %}active{% endif %}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMessages"
                aria-expanded="true" aria-controls="collapseMessages">
-                <i class="fas fa-fw fa-money-bill-wave"></i>
+                <i class="fas fa-fw fa-envelope"></i>
                 <span>Messages</span>
             </a>
             <div id="collapseMessages" class="collapse" aria-labelledby="headingUtilities"
@@ -111,14 +111,14 @@
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        <!------------------------------------------- MESSAGE CENTER ------------------------------------------->
+        <!------------------------------------------- MESSAGE PACKAGE ------------------------------------------->
         <div class="sidebar-heading">
             Package
         </div>
         <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePackages" aria-expanded="true"
                aria-controls="collapseMessages">
-                <i class="fas fa-fw fa-envelope"></i>
+                <i class="fas fa-fw fa-gift"></i>
                 <span>Package</span>
             </a>
             <div id="collapsePackages" class="collapse" aria-labelledby="headingPages"
@@ -127,8 +127,6 @@
                     <h6 class="collapse-header">Manage packages Screens:</h6>
                     <a class="collapse-item {% if "/admin/packages" in request.path %}active{% endif %}"
                        href="{% url "admin_packages_view" %}">All</a>
-                    <a class="collapse-item {% if "messages/inbox" in request.path %}active{% endif %}"
-                       href="{% url "message_inbox_view_url" %}">Inbox</a>
                 </div>
             </div>
         </li>
@@ -142,7 +140,7 @@
         <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePayment" aria-expanded="true"
                aria-controls="collapseMessages">
-                <i class="fas fa-fw fa-envelope"></i>
+                <i class="fas fa-fw fa-money-bill"></i>
                 <span>Payment</span>
             </a>
             <div id="collapsePayment" class="collapse" aria-labelledby="headingPages"
@@ -166,7 +164,7 @@
         <li class="nav-item {% if "/messages" in request.path %}active{% endif %}">
             <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true"
                aria-controls="collapseMessages">
-                <i class="fas fa-fw fa-envelope"></i>
+                <i class="fas fa-fw fa-users"></i>
                 <span>Users</span>
             </a>
             <div id="collapseUsers" class="collapse" aria-labelledby="headingPages"
