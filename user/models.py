@@ -153,5 +153,5 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
 class Document(DirtyFieldsMixin, models.Model):
     type = models.CharField(max_length=30)
     file = models.FileField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
