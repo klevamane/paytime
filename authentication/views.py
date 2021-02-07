@@ -93,7 +93,7 @@ def login(request):
             django_login(request, user)
             return redirect("index")
         return render(request, "authentication/login.html", {"form": form})
-    # chec if a message was passed to the view
+    # check if a message was passed to the view
     message = request.GET.get("message")
     if message:
         messages.info(request, message)

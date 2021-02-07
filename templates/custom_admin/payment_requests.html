@@ -43,7 +43,7 @@
                                                 <td>{{ withdrawal_request.amount|floatformat|intcomma }}</td>
                                                 <td>{{ withdrawal_request.status }}</td>
                                                     <td>{{ withdrawal_request.user.get_full_name|truncatechars:15 }}</td>
-                                                <td><a href="#" class="btn btn-outline-dark">Pay</a></td>
+                                                <td><a href="#" onchange=payUser("{{ withdrawal_request.user.get_full_name }}") class="btn btn-outline-dark">Pay</a></td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -54,4 +54,16 @@
                         </div>
                     </div>
     </div>
+{% endblock %}
+
+{% block extrajs %}
+
+    <script>
+     function payUser(src) {
+         const imagePreview = document.getElementById("imagepreview")
+         imagePreview.src = src
+         $('#imagemodal').modal('show');
+        }
+
+
 {% endblock %}

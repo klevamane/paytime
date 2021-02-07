@@ -792,8 +792,8 @@ class AdminSingleUserProfileView(FormMixin, ProfileFormMixin, DetailView):
     form_class = ProfileForm
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         user = self.object
+        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # set the context for the profile form
         context["profile_form"] = ProfileForm(initial={**self._set_profile_form(user)})

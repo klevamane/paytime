@@ -58,7 +58,7 @@ class Bank(DirtyFieldsMixin, TimeStampMixin):
         validators=[validate_account_number],
         help_text="Enter your 10 digit account number",
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     can_update = models.BooleanField(default=False)
 
     def __str__(self):
@@ -109,7 +109,7 @@ class Wallet(DirtyFieldsMixin, TimeStampMixin):
     book_balance = models.DecimalField(
         null=True, blank=True, decimal_places=2, max_digits=12
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
 
     def __str__(self):
         return "Balance {}".format(self.balance)
