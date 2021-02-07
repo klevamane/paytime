@@ -43,7 +43,7 @@
                                                 <td>{{ withdrawal_request.amount|floatformat|intcomma }}</td>
                                                 <td>{{ withdrawal_request.status }}</td>
                                                     <td>{{ withdrawal_request.user.get_full_name|truncatechars:15 }}</td>
-                                                <td><a href="#" class="btn btn-outline-dark" onclick=payUser("{{ withdrawal_request.user.wallet.id }}")
+                                                <td><a href="#" class="btn btn-outline-dark" onclick=payUser("{{ withdrawal_request.id }}")
                                                        >Pay</a></td>
                                                 </tr>
                                             {% endfor %}
@@ -62,22 +62,19 @@
     <script>
     let csrfToken = "{{ csrf_token }}";
 
-    async function callBackend(id) {
+    async function payUser(id) {
          let form = new FormData()
          //form.append('check', checkedEmails)
          //form.append('uncheck', uncheckedEmails)
 
-         const response = await fetch("documents/update-user-document-status", {
+         const response = await fetch("transactions/process_payment", {
              headers: {'X-CSRFToken': csrfToken},
              body: JSON.stringify({
-                    "confirmedDocuments": checkedEmails,
-                    "unconfirmedDocuments": uncheckedEmails}),
+                    "id": id
+                    }),
              method: "post",
          })
          return await response.json();
      }
-     function payUser(id) {
-        console.log("THE WALLET ID ", id)
-        }
     </script>
 {% endblock %}

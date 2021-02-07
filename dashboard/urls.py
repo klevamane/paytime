@@ -195,4 +195,9 @@ urlpatterns = [
         views.AdminUsersDepositView.as_view(),
         name="admin_users_deposit_transactions_view",
     ),
+    path(
+        "admin/transactions/process_payment",
+        views.process_payment,
+        name="process_payment",
+    ),
 ]

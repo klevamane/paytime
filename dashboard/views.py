@@ -631,10 +631,45 @@ class AdminPaymentRequestsView(ListView):
 def process_payment(request):
     if request.method != "POST":
         return JsonResponse({}, status=200)
+    # get the payment id
+    # get the user id from the payment
+    # get the user's bank account details
+    # pay the users bank account
+    # change payment request to completed
+    # close
+
     data = json.loads(request.body)
-    _id = data.get("id", None)
-    if not _id:
+    payment_id = data.get("id", None)
+
+    if not payment_id:
         return JsonResponse({"success": "failed"})
+
+    import pdb
+
+    pdb.set_trace()
+    # get the payment
+    user = Transactions.objects.get(id=payment_id).user
+    # try:
+    #     bank_name = user.bank.bank
+    # except AttributeError:
+    #     return JsonResponse({"success": "failed"})
+
+    account_number = user.bank.account_number
+
+    bank_code = user.bank.bank_detail.code
+
+    payload = {
+        "type": "nuban",
+        "name": user.get_full_name(),
+        account_number: user.bank.account_number,
+        bank_code: user.bank.bank_detail.code,
+    }
+    response = requests.post("https://api.paystack.co/transferrecipient", {**payload})
+
+    if response.status_code == 200:
+        pass
+
+    # pay via paystack
 
 
 class AdminAllUsersView(ListView):

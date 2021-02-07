@@ -13,11 +13,18 @@ class BankForm(forms.ModelForm):
 
     class Meta:
         model = Bank
-        fields = ["bank", "account_number", "user", "can_update"]
+        fields = ["bank", "bank_detail", "account_number", "user", "can_update"]
         widgets = {
             "bank": forms.widgets.Select(attrs={"cursor": "pointer"}),
             "user": forms.widgets.HiddenInput(),
         }
+
+    def save(self, commit=False):
+        # set the bank details before saving
+        instance = super(BankForm, self).save(commit=commit)
+        bank_name = instance.bank
+        instance.bank_details = Banks.objects.get(name=bank_name)
+        instance.save()
 
 
 class PackageForm(forms.ModelForm):
