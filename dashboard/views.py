@@ -626,6 +626,17 @@ class AdminPaymentRequestsView(ListView):
         ).order_by("id")
 
 
+@login_required
+@user_passes_test(lambda u: u.is_admin)
+def process_payment(request):
+    if request.method != "POST":
+        return JsonResponse({}, status=200)
+    data = json.loads(request.body)
+    _id = data.get("id", None)
+    if not _id:
+        return JsonResponse({"success": "failed"})
+
+
 class AdminAllUsersView(ListView):
     model = User
     template_name = "custom_admin/all_users.html"

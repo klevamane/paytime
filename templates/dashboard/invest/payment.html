@@ -247,7 +247,6 @@
                                 },
                                 {#The callback method is fired when the transaction is successful#}
                                 callback: function (response) {
-                                    console.log("THE RESPONSE", response)
                                     if (response.status === "success") {
                                         // verify the payment
                                         fetch("payment/verification", {

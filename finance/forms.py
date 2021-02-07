@@ -4,11 +4,13 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from finance.models import Bank, Package
+from finance.models import Bank, Banks, Package
 from paytime.utils import FAILURE_MESSAGES
 
 
 class BankForm(forms.ModelForm):
+    bank = forms.ModelChoiceField(queryset=Banks.objects.all())
+
     class Meta:
         model = Bank
         fields = ["bank", "account_number", "user", "can_update"]

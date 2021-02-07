@@ -24,7 +24,10 @@ from user.models import User
 pattern = re.compile(" ")
 
 BANKS = [
-    ("access_bank", "Access Bank"),
+    ("access-bank", "Access Bank"),
+    ("access-bank-diamond", "Access Bank (Diamond)"),
+    ("alat-by-wema", "ALAT by WEMA"),
+    ("asosavings", "ASO Savings and Loans"),
     ("citibank", "Citibank"),
     ("dynamic_standard_bank", "Dynamic Standard Bank"),
     ("ecobank_ngr", "Ecobank Nigeria"),
@@ -49,10 +52,20 @@ BANKS = [
 ]
 
 
+class Banks(DirtyFieldsMixin, TimeStampMixin):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+    code = models.CharField(max_length=50, unique=True)
+    country = models.CharField(max_length=50)
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+
 class Bank(DirtyFieldsMixin, TimeStampMixin):
     # When a user adds a bank account
     # automatically create a wallet for the user
-    bank = models.CharField(max_length=30, choices=BANKS, default="access_bank")
+    bank = models.CharField(max_length=30, default="access-bank")
     account_number = models.CharField(
         max_length=10,
         validators=[validate_account_number],
@@ -60,6 +73,9 @@ class Bank(DirtyFieldsMixin, TimeStampMixin):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     can_update = models.BooleanField(default=False)
+    bank_detail = models.ForeignKey(
+        Banks, on_delete=models.CASCADE, null=True, blank=True
+    )
 
     def __str__(self):
         return "Bank: {}, #: {}".format(self.bank, self.account_number)
