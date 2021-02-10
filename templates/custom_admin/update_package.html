@@ -140,7 +140,7 @@
         const roiError = document.getElementById('roi_error');
 
         let csrfToken = "{{ csrf_token }}";
-        console.log("CROS SITE REF TOKEN ", csrfToken)
+
 
         const createPackageForm = document.getElementById("newPackageForm");
         createPackageForm.addEventListener("submit", createPackage)
@@ -187,7 +187,6 @@
             }).then(res => res.json())
                 .then(res => {
                     if (res.success === false) {
-                        console.log("STILL GETTING here ** *** ** **")
                         console.log(res)
                         // success -> false
                         if (Object.keys(res.errors).length > 0) {

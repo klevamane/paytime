@@ -626,50 +626,56 @@ class AdminPaymentRequestsView(ListView):
         ).order_by("id")
 
 
-@login_required
-@user_passes_test(lambda u: u.is_admin)
+# @login_required
+# @user_passes_test(lambda u: u.is_admin)
 def process_payment(request):
+    # check if user is admin
+
     if request.method != "POST":
-        return JsonResponse({}, status=200)
-    # get the payment id
-    # get the user id from the payment
-    # get the user's bank account details
-    # pay the users bank account
-    # change payment request to completed
-    # close
+        return JsonResponse({}, status=400)
 
     data = json.loads(request.body)
     payment_id = data.get("id", None)
-
     if not payment_id:
-        return JsonResponse({"success": "failed"})
-
-    import pdb
-
-    pdb.set_trace()
+        return JsonResponse({"success": "failed"}, status=400)
     # get the payment
-    user = Transactions.objects.get(id=payment_id).user
-    # try:
-    #     bank_name = user.bank.bank
-    # except AttributeError:
-    #     return JsonResponse({"success": "failed"})
+    txn = Transactions.objects.get(id=payment_id)
+    # we need to first check if the user has a transfer recipient code by paystack
+    # if so we just need to make the transfer
+    # else we need to create a new transfer recipient of this user
+    # and save it in our database
+    # note that the transfer recipient code we save in our db, has to be with the user's
+    # bank account
+    # if the user changes bank account, we need to set that attribute to None
+    user = txn.user
+    if not user.recipient_code:
+        payload = {
+            "type": "nuban",
+            "name": user.get_full_name(),
+            "account_number": user.bank.account_number,
+            "bank_code": user.bank.bank_detail.code,
+        }
+        # TODO we need to first validate the account number
+        # but also we may skip this validation by validating the account number
+        # the user saves
+        headers = {"Authorization": "Bearer {}".format(settings.PAYSTACK_SECRET_KEY)}
+        response = requests.post(
+            "https://api.paystack.co/transferrecipient", {**payload}, headers=headers
+        )
+        json_response = response.json()
+        msg = json_response.get("message")
 
-    account_number = user.bank.account_number
+        if json_response.get("status"):
+            # transfer was successfull
+            # set that transaction id to completed of
+            # withdrawal type
+            txn.status = "completed"
+            txn.save()
+            messages.success(request, msg)
+            return JsonResponse({"success": True, "message": msg})
 
-    bank_code = user.bank.bank_detail.code
-
-    payload = {
-        "type": "nuban",
-        "name": user.get_full_name(),
-        account_number: user.bank.account_number,
-        bank_code: user.bank.bank_detail.code,
-    }
-    response = requests.post("https://api.paystack.co/transferrecipient", {**payload})
-
-    if response.status_code == 200:
-        pass
-
-    # pay via paystack
+        messages.error(request, msg)
+        return JsonResponse({"success": False, "message": msg})
 
 
 class AdminAllUsersView(ListView):

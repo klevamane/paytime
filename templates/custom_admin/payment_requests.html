@@ -43,7 +43,7 @@
                                                 <td>{{ withdrawal_request.amount|floatformat|intcomma }}</td>
                                                 <td>{{ withdrawal_request.status }}</td>
                                                     <td>{{ withdrawal_request.user.get_full_name|truncatechars:15 }}</td>
-                                                <td><a href="#" class="btn btn-outline-dark" onclick=payUser("{{ withdrawal_request.id }}")
+                                                <td><a href="#" class="btn btn-outline-dark" onclick=payUser(this,"{{ withdrawal_request.id }}")
                                                        >Pay</a></td>
                                                 </tr>
                                             {% endfor %}
@@ -58,15 +58,19 @@
 {% endblock %}
 
 {% block extrajs %}
-
     <script>
     let csrfToken = "{{ csrf_token }}";
+    let popUpMessage = document.getElementById("popup-messages-content")
 
-    async function payUser(id) {
-         let form = new FormData()
-         //form.append('check', checkedEmails)
-         //form.append('uncheck', uncheckedEmails)
+    function setMessage(content, error=true) {
+            const kind = error ? "danger" : "success"
+            let messages = $('#popup-messages-content');
+            messages.append("<div class='text-center alert-dismissible alert alert-" + kind + "''>" + content + "<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                "                    <span aria-hidden=\"true\">&times;</span></div>");
+            messages[0].scrollIntoView()
+        }
 
+    async function payUser(e, id) {
          const response = await fetch("transactions/process_payment", {
              headers: {'X-CSRFToken': csrfToken},
              body: JSON.stringify({
@@ -74,7 +78,19 @@
                     }),
              method: "post",
          })
-         return await response.json();
+         const responseData =  await response.json();
+         console.log("THE RESULT ")
+         console.log(responseData)
+        if(responseData.status) {
+            popUpMessage.style.display = '';
+            let td = event.target.parentNode;
+            let tr = td.parentNode;
+            tr.parentNode.removeChild(tr);
+            setMessage(responseData.message, false)
+        }
+        else {
+            setMessage(responseData.message)
+        }
      }
     </script>
 {% endblock %}

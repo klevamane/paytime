@@ -23,7 +23,7 @@ class BankForm(forms.ModelForm):
         # set the bank details before saving
         instance = super(BankForm, self).save(commit=commit)
         bank_name = instance.bank
-        instance.bank_details = Banks.objects.get(name=bank_name)
+        instance.bank_detail = Banks.objects.get(name=bank_name)
         instance.save()
 
 

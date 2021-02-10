@@ -76,6 +76,9 @@ class Bank(DirtyFieldsMixin, TimeStampMixin):
     bank_detail = models.ForeignKey(
         Banks, on_delete=models.CASCADE, null=True, blank=True
     )
+    # this code is used in initiating transfer by paystack
+    # https://paystack.com/docs/transfers/single-transfers
+    recipient_code = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return "Bank: {}, #: {}".format(self.bank, self.account_number)
