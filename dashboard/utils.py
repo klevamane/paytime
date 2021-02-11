@@ -4,6 +4,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse
 
 from paytime import settings
+from user.forms import ProfileForm
 
 
 def set_pagination_data(queryset, request):
@@ -25,6 +26,31 @@ def set_pagination_data(queryset, request):
     return queryset
 
 
+class ProfileFormMixin:
+    def _set_bank_form(self, bank, account_number):
+        return {"bank": bank, "account_number": account_number}
+
+    def _set_profile_form(self, user, use_form=False):
+        # returns the intial value of the user's
+        # profile details on load
+        data = {
+            "firstname": user.firstname,
+            "lastname": user.lastname,
+            "address1": user.address1,
+            "area": user.area,
+            "email": user.email,
+            "city": user.city,
+            "state": user.state,
+            "mobile": user.mobile,
+            "date_of_birth": user.date_of_birth,
+            "gender": user.gender,
+            # "profile_picture": None
+        }
+        if use_form:
+            return ProfileForm(initial={**data})
+        return data
+
+
 class ProcessRequestMixin:
     headers = {"Authorization": "Bearer {}".format(settings.PAYSTACK_SECRET_KEY)}
     base_url = "https://api.paystack.co/"
@@ -37,7 +63,9 @@ class ProcessRequestMixin:
             method: request http method
             resource_url: the resource endpoint
             kwargs: keyword args
-            returns json respnse, status code
+
+        Returns:
+            JSON respnse, status code
         """
 
         qs = kwargs.get("qs")

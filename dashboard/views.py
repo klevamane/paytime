@@ -30,7 +30,7 @@ from django.views.generic.list import MultipleObjectMixin
 
 from dashboard.forms import AdminMessageCreateForm, MessageForm, PaymentForm
 from dashboard.models import MessageCenter
-from dashboard.utils import ProcessRequestMixin, set_pagination_data
+from dashboard.utils import ProcessRequestMixin, ProfileFormMixin, set_pagination_data
 from finance.forms import BankForm, PackageForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
 from paytime import settings
@@ -786,31 +786,6 @@ def update_user_document_status(request):
     return JsonResponse(
         {"resolved_url": reverse("admin_documents_all_view")}, status=200
     )
-
-
-class ProfileFormMixin:
-    def _set_bank_form(self, bank, account_number):
-        return {"bank": bank, "account_number": account_number}
-
-    def _set_profile_form(self, user, use_form=False):
-        # returns the intial value of the user's
-        # profile details on load
-        data = {
-            "firstname": user.firstname,
-            "lastname": user.lastname,
-            "address1": user.address1,
-            "area": user.area,
-            "email": user.email,
-            "city": user.city,
-            "state": user.state,
-            "mobile": user.mobile,
-            "date_of_birth": user.date_of_birth,
-            "gender": user.gender,
-            # "profile_picture": None
-        }
-        if use_form:
-            return ProfileForm(initial={**data})
-        return data
 
 
 class AdminSingleUserProfileView(FormMixin, ProfileFormMixin, DetailView):
