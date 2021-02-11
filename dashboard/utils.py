@@ -69,3 +69,16 @@ class ProcessRequestMixin:
 
     def _json_success_response(self, message):
         return JsonResponse({"success": True, "error": False, "message": message})
+
+    def _get_transfer_recipient(self, method, user):
+        json_response, status_code = self._request(
+            method,
+            "transferrecipient",
+            **self._get_txfr_recipient_payload(
+                user.get_full_name(),
+                user.bank.account_number,
+                user.bank.bank_detail.code,
+            )
+        )
+        recipient_code = json_response.get("data").get("recipient_code")
+        return recipient_code, status_code, json_response.get("message")
