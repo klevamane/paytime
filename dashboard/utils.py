@@ -75,6 +75,7 @@ class ProcessRequestMixin:
         return response.json(), response.status_code
 
     def _initiate_transfer_payload(self, amount, recipient_code):
+        """Set the payload for initiate transfer (paystack)"""
         return {
             "source": "balance",
             "reason": "payment_request",
@@ -110,3 +111,11 @@ class ProcessRequestMixin:
         )
         recipient_code = json_response.get("data").get("recipient_code")
         return recipient_code, status_code, json_response.get("message")
+
+    def _save_user_recipient_code(self, method, user):
+        recipient_code, status_code, msg = self._get_transfer_recipient(method, user)
+
+        if status_code >= 400:
+            return self._json_error_response(msg)
+        user.bank.recipient_code = recipient_code
+        user.bank.save()

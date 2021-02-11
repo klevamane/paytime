@@ -644,16 +644,8 @@ class AdminProcessPayment(ProcessRequestMixin, View):
             # TODO we need to first validate the account number
             # but also we may skip this validation by validating the account number
             # the user saves
-
-            # get transfer recipient
-            recipient_code, status_code, msg = self._get_transfer_recipient(
-                requests.post, user
-            )
-
-            if status_code >= 400:
-                return self._json_error_response(msg)
-            user.bank.recipient_code = recipient_code
-            user.bank.save()
+            # save user recipient code in db
+            self._save_user_recipient_code(requests.post, user)
         # if the user already has a recepient code, then
         # just initiate transfer with the recepient code
         json_response, status_code = self._request(
