@@ -65,7 +65,8 @@ class ProcessRequestMixin:
             kwargs: keyword args
 
         Returns:
-            JSON respnse, status code
+            JSON respnse
+            status code: http status code
         """
 
         qs = kwargs.get("qs")
@@ -100,6 +101,24 @@ class ProcessRequestMixin:
         return JsonResponse({"success": True, "error": False, "message": message})
 
     def _get_transfer_recipient(self, method, user):
+        """Gets the transfer recipient code
+
+        Gets the recipient code to be used in
+        making transfers for a particular user
+        it is advisible to store this code in the
+        db, corresponding to the said user
+
+        Args:
+            self: instance
+            method: http method
+            user: user object
+
+        Returns:
+            recipient_code: The recipient code
+            status_code: http status code
+            json_response: response object
+
+        """
         json_response, status_code = self._request(
             method,
             "transferrecipient",
@@ -113,9 +132,28 @@ class ProcessRequestMixin:
         return recipient_code, status_code, json_response.get("message")
 
     def _save_user_recipient_code(self, method, user):
+        """Save the user's recipient code in the db
+
+        Saves the user's recipient code corresponding to
+        the user's bank details
+
+        Args:
+            self: instance
+            method: http method
+            user: user object
+        """
         recipient_code, status_code, msg = self._get_transfer_recipient(method, user)
 
         if status_code >= 400:
             return self._json_error_response(msg)
         user.bank.recipient_code = recipient_code
         user.bank.save()
+
+    def _initiate_transfer_request(self, method, amount, recipient_code):
+        json_response, status_code = self._request(
+            method,
+            "transfer",
+            # convert from kobo to Naira
+            **self._initiate_transfer_payload(int(amount) * 100, recipient_code)
+        )
+        return json_response, status_code

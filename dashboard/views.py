@@ -648,13 +648,8 @@ class AdminProcessPayment(ProcessRequestMixin, View):
             self._save_user_recipient_code(requests.post, user)
         # if the user already has a recepient code, then
         # just initiate transfer with the recepient code
-        json_response, status_code = self._request(
-            requests.post,
-            "transfer",
-            # convert from kobo to Naira
-            **self._initiate_transfer_payload(
-                int(txn.amount) * 100, user.recipient_code
-            )
+        json_response, status_code = self._initiate_transfer_request(
+            requests.post, txn.amount, user.recipient_code
         )
 
         if status_code >= 400:
