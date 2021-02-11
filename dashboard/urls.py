@@ -197,7 +197,7 @@ urlpatterns = [
     ),
     path(
         "admin/transactions/process_payment",
-        views.process_payment,
+        views.AdminProcessPayment.as_view(),
         name="process_payment",
     ),
 ]

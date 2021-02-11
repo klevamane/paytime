@@ -41,7 +41,9 @@ SUCCESS_MESSAGES = {
     "kindly_verify": "Hi {} kindly use this link to verify your account\n {}",
     "verified": "Your email has been verified, proceed to login",
     "operation_successful": "The {} was successful",
+    "no_otp_transfer": "Transfer is not currently awaiting OTP",
     "upload_successful": "{} uploaded successfully",
+    "blank_successful": "{} successful",
 }
 
 FAILURE_MESSAGES = {
@@ -55,12 +57,13 @@ FAILURE_MESSAGES = {
     "funds_too_low": "Wallet balance is too low",
     "file_size_limit": "The {} size should not be greater than {}",
     "insufficient_funds": "Insufficient Funds",
+    "incomplete_unverifiable_tnx": "Transaction not completed, unable to verify transaction",
+    "min_gt_max": "The maximum amount must be greater than the minimum amount",
     "select_pkg_for_amt": "Select a valid package for this amount",
     "specify_account_digits": "{} digit account number is required",
-    "incomplete_unverifiable_tnx": "Transaction not completed, unable to verify transaction",
+    "something_went_wrong": "Something went wrong",
     "unsupported_file_type": "The file type is not supported, kindly upload a supported file",
     "user_has_active_investment": "You already have an active investment, so you cannot make any other payment",
-    "min_gt_max": "The maximum amount must be greater than the minimum amount",
 }
 
 

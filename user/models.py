@@ -153,10 +153,6 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     def recipient_code(self):
         return self.bank.recipient_code
 
-    @recipient_code.setter
-    def recipient_code(self, code):
-        self.recipient_code = code
-
 
 class Document(DirtyFieldsMixin, models.Model):
     type = models.CharField(max_length=30)
