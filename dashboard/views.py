@@ -30,6 +30,7 @@ from django.views.generic.list import MultipleObjectMixin
 
 from dashboard.forms import AdminMessageCreateForm, MessageForm, PaymentForm
 from dashboard.models import MessageCenter
+from dashboard.utils import ProcessRequestMixin, set_pagination_data
 from finance.forms import BankForm, PackageForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
 from paytime import settings
@@ -626,56 +627,16 @@ class AdminPaymentRequestsView(ListView):
         ).order_by("id")
 
 
-class ProcessRequestMixin:
-    headers = {"Authorization": "Bearer {}".format(settings.PAYSTACK_SECRET_KEY)}
-    base_url = "https://api.paystack.co/"
-
-    def _request(self, method, resource_url, **kwargs):
-        """
-        private method to access urls with payload if available
-
-        Args:
-            method: request http method
-            resource_url: the resource endpoint
-            kwargs: keyword args
-            returns json respnse
-        """
-        data = kwargs.get("data")
-        qs = kwargs.get("qs")
-        response = method(
-            self.base_url + resource_url, json=data, headers=self.headers, params=qs
-        )
-        return response.json(), response.status_code
-
-    def _initiate_transfer_payload(self, amount, recipient_code):
-        return {
-            "source": "balance",
-            "reason": "payment_request",
-            "amount": amount,
-            "recipient": recipient_code,
-        }
-
-    def _get_txfr_recipient_payload(self, fullname, acct_num, bank_code):
-        return {
-            "type": "nuban",
-            "name": fullname,
-            "account_number": acct_num,
-            "bank_code": bank_code,
-        }
-
-    def _message(self, json):
-        return
-
-
 class AdminProcessPayment(ProcessRequestMixin, View):
     def post(self, request):
 
-        if request.method != "POST":
-            return JsonResponse({}, status=400)
-
         payment_id = json.loads(request.body).get("id")
-        if not payment_id:
-            return JsonResponse({"success": "failed"}, status=400)
+        try:
+            int(payment_id)
+        except (ValueError, TypeError):
+            return self._json_error_response(
+                FAILURE_MESSAGES["invalid"].format("Payment Id")
+            )
         # get the payment
         txn = Transactions.objects.get(id=payment_id)
         user = txn.user
@@ -684,6 +645,7 @@ class AdminProcessPayment(ProcessRequestMixin, View):
             # but also we may skip this validation by validating the account number
             # the user saves
 
+            # get transfer recipient
             json_response, status_code = self._request(
                 requests.post,
                 "transferrecipient",
@@ -694,14 +656,8 @@ class AdminProcessPayment(ProcessRequestMixin, View):
                 )
             )
 
-            if status_code != 200:
-                return JsonResponse(
-                    {
-                        "success": False,
-                        "error": True,
-                        "message": json_response.get("message"),
-                    }
-                )
+            if status_code >= 400:
+                return self._json_error_response(json_response.get("message"))
             user.bank.recipient_code = json_response["data"]["recipient_code"]
             user.bank.save()
         # if the user already has a recepient code, then
@@ -709,135 +665,36 @@ class AdminProcessPayment(ProcessRequestMixin, View):
         json_response, status_code = self._request(
             requests.post,
             "transfer",
-            **self._initiate_transfer_payload(txn.amount, user.recipient_code)
-        )
-
-        if status_code != 200:
-            return JsonResponse(
-                {
-                    "success": False,
-                    "error": True,
-                    "message": json_response.get("message"),
-                }
+            # convert from kobo to Naira
+            **self._initiate_transfer_payload(
+                int(txn.amount) * 100, user.recipient_code
             )
-        transfer_code = json_response["data"]["transfer_code"]
-
-        json_response, _ = self._request(
-            requests.post, "transfer", **{"transfer_code": transfer_code}
         )
 
-        # Disable Transfers OTP
-        # and finanlize disabling OTP can be done using
-        # postman
+        if status_code >= 400:
+            return self._json_error_response(json_response.get("message"))
+
+        transfer_code = json_response["data"]["transfer_code"]
+        json_response, _ = self._request(
+            requests.post, "transfer/finalize_transfer", transfer_code=transfer_code
+        )
+
+        # Disable Transfers OTP from here
+        # https://dashboard.paystack.com/#/settings/preferences
+        # uncheck Confirm transfers before sending
+        # or it can also be done via postman
         try:
             if json_response["message"] == SUCCESS_MESSAGES["no_otp_transfer"]:
                 # successful because our payment doesn't need OTP
                 # but it returns a 400 status code
                 txn.status = "completed"
                 txn.save()
-                messages.success(request, json_response.get("message"))
-                return JsonResponse(
-                    {
-                        "success": True,
-                        "error": False,
-                        "message": SUCCESS_MESSAGES["blank_successful"].format(
-                            "Transfer"
-                        ),
-                    }
+                # messages.success(request, json_response.get("message"))
+                return self._json_success_response(
+                    SUCCESS_MESSAGES["blank_successful"].format("Transfer")
                 )
         except AttributeError:
-            return JsonResponse(
-                {
-                    "success": False,
-                    "error": True,
-                    "message": FAILURE_MESSAGES["something_went_wrong"],
-                }
-            )
-
-
-# @login_required
-# @user_passes_test(lambda u: u.is_admin)
-# def process_payment(request):
-#     # check if user is admin
-#     if request.method != "POST":
-#         return JsonResponse({}, status=400)
-#
-#     data = json.loads(request.body)
-#     payment_id = data.get("id", None)
-#     if not payment_id:
-#         return JsonResponse({"success": "failed"}, status=400)
-#     # get the payment
-#     txn = Transactions.objects.get(id=payment_id)
-#     # we need to first check if the user has a transfer recipient code by paystack
-#     # if so we just need to make the transfer
-#     # else we need to create a new transfer recipient of this user
-#     # and save it in our database
-#     # note that the transfer recipient code we save in our db, has to be with the user's
-#     # bank account
-#     # if the user changes bank account, we need to set that attribute to None
-#     user = txn.user
-#     headers = {"Authorization": "Bearer {}".format(settings.PAYSTACK_SECRET_KEY)}
-#     if not user.recipient_code:
-#         payload = {
-#             "type": "nuban",
-#             "name": user.get_full_name(),
-#             "account_number": user.bank.account_number,
-#             "bank_code": user.bank.bank_detail.code,
-#         }
-#         # TODO we need to first validate the account number
-#         # but also we may skip this validation by validating the account number
-#         # the user saves
-#         response = requests.post(
-#             "https://api.paystack.co/transferrecipient", {**payload}, headers=headers
-#         )
-#         json_response = response.json()
-#         msg = json_response.get("message")
-#
-#         if json_response.get("status"):
-#             # transfer recepient was successfully created
-#             # set that transaction id to completed
-#             # of withdrawal type
-#             # messages.error(request, msg)
-#             user.bank.recipient_code = json_response["data"]["recipient_code"]
-#             user.bank.save()
-#         else:
-#             # error
-#             return JsonResponse({"success": False, "error": True, "message": msg})
-#     # if the user already has a recepient code, then
-#     # just initiate transfer with the recepient code
-#     payload = {
-#         "source": "balance",
-#         "reason": "payment_request",
-#         "amount": txn.amount,
-#         "recipient": user.recipient_code
-#     }
-#     response = requests.post(
-#         "https://api.paystack.co/transfer", {**payload}, headers=headers
-#     )
-#     json_response = response.json()
-#     msg = json_response.get("message")
-#     if response.status_code == 200:
-#         transfer_code = json_response["data"]["transfer_code"]
-#     else:
-#         # error
-#         return JsonResponse({"success": False, "error": True, "message": msg})
-#
-#     response = requests.post(
-#         "https://api.paystack.co/transfer/finalize_transfer", {"transfer_code": transfer_code}, headers=headers
-#     )
-#
-#     # Disable Transfers OTP
-#     # and finanlize disabling OTP can be done using
-#     # postman
-#     try:
-#         if response.json()["message"] == SUCCESS_MESSAGES["no_otp_trsf"]:
-#             # successful because our payment doesn't need OTP
-#             txn.status = "completed"
-#             txn.save()
-#             messages.success(request, msg)
-#             return JsonResponse({"success": True, "error": False, "message": SUCCESS_MESSAGES["blank_successful"].format("Transfer")})
-#     except AttributeError:
-#         return JsonResponse({"success": False, "error": True, "message": FAILURE_MESSAGES["something_went_wrong"]})
+            return self._json_error_response(FAILURE_MESSAGES["something_went_wrong"])
 
 
 class AdminAllUsersView(ListView):
@@ -852,25 +709,6 @@ class AdminAllPackagesView(ListView):
     template_name = "custom_admin/packages.html"
     paginate_by = 10
     context_object_name = "packages"
-
-
-def set_pagination_data(queryset, request):
-    """
-    Set the pagination data to be used
-
-    Args:
-        queryset: The queryset to be parginate
-        request: The request object
-    """
-    page = request.GET.get("page", 1)
-    paginator = Paginator(queryset, 7)
-    try:
-        queryset = paginator.page(page)
-    except PageNotAnInteger:
-        queryset = paginator.page(1)
-    except EmptyPage:
-        queryset = paginator.page(paginator.num_pages)
-    return queryset
 
 
 class AdminPackageView(LoginRequiredMixin, View):

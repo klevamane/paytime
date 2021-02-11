@@ -5,64 +5,65 @@
 {% block content %}
 
     <div class="container">
-    <h3 class="py-3">Manage payments</h3>
-                    <div class="row">
+        <h3 class="py-3">Manage payments</h3>
+        <div class="row">
 
-                        <!--PAYMENT REQUESTS-->
-                        <div class="box">
-                            <div id="popup-messages-content">
-                            </div>
-                            <div class="box-header">
-                                <h4 class="box-title">
-                                    Payment requests
-                                </h4>
-                                <br>
-                                <small class="text-muted">List of payments initiated by investors
-                                    </small>
-                                <br>
+            <!--PAYMENT REQUESTS-->
+            <div class="box">
+                <div id="popup-messages-content">
+                </div>
+                <div class="box-header">
+                    <h4 class="box-title">
+                        Payment requests
+                    </h4>
+                    <br>
+                    <small class="text-muted">List of payments initiated by investors
+                    </small>
+                    <br>
 
-                            </div>
-                            <div class="box-body">
-                                <div class="table-responsive" id="table-roi-schedule">
-                                    <table class="table table-borderless mb-0" id="roi-schedule-table">
-                                        <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Date requested</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th>User</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for withdrawal_request in transactions %}
-                                                <tr>
-                                                <td>{{ forloop.counter|add:page_obj.start_index }}</td>
-                                                <td>{{ withdrawal_request.created_at }}</td>
-                                                <td>{{ withdrawal_request.amount|floatformat|intcomma }}</td>
-                                                <td>{{ withdrawal_request.status }}</td>
-                                                    <td>{{ withdrawal_request.user.get_full_name|truncatechars:15 }}</td>
-                                                <td><a href="#" class="btn btn-outline-dark" onclick=payUser(this,"{{ withdrawal_request.id }}")
-                                                       >Pay</a></td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            {% include "partials/pagination.html" %}
-                            </div>
-                        </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive" id="table-roi-schedule">
+                        <table class="table table-borderless mb-0" id="roi-schedule-table">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Date requested</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>User</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for withdrawal_request in transactions %}
+                                <tr>
+                                    <td>{{ forloop.counter|add:page_obj.start_index }}</td>
+                                    <td>{{ withdrawal_request.created_at }}</td>
+                                    <td>{{ withdrawal_request.amount|floatformat|intcomma }}</td>
+                                    <td>{{ withdrawal_request.status }}</td>
+                                    <td>{{ withdrawal_request.user.get_full_name|truncatechars:15 }}</td>
+                                    <td><a href="#" class="btn btn-outline-dark"
+                                           onclick=payUser(this,"{{ withdrawal_request.id }}")
+                                    >Pay</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
+                    {% include "partials/pagination.html" %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
 {% block extrajs %}
     <script>
-    let csrfToken = "{{ csrf_token }}";
-    let popUpMessage = document.getElementById("popup-messages-content")
+        let csrfToken = "{{ csrf_token }}";
+        let popUpMessage = document.getElementById("popup-messages-content")
 
-    function setMessage(content, error=true) {
+        function setMessage(content, error) {
             const kind = error ? "danger" : "success"
             let messages = $('#popup-messages-content');
             messages.append("<div class='text-center alert-dismissible alert alert-" + kind + "''>" + content + "<button' type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
@@ -70,27 +71,27 @@
             messages[0].scrollIntoView()
         }
 
-    async function payUser(e, id) {
-         const response = await fetch("transactions/process_payment", {
-             headers: {'X-CSRFToken': csrfToken},
-             body: JSON.stringify({
+        async function payUser(e, id) {
+            const response = await fetch("transactions/process_payment", {
+                headers: {'X-CSRFToken': csrfToken},
+                body: JSON.stringify({
                     "id": id
-                    }),
-             method: "post",
-         })
-         const responseData =  await response.json();
-         console.log("THE RESULT ")
-         console.log(responseData)
-        if(responseData.status) {
-            popUpMessage.style.display = '';
-            let td = event.target.parentNode;
-            let tr = td.parentNode;
-            tr.parentNode.removeChild(tr);
-            setMessage(responseData.message, false)
+                }),
+                method: "post",
+            })
+            const responseData = await response.json();
+            if (responseData.success === true) {
+                popUpMessage.style.display = '';
+                // remove the row that contains the clicked button
+                let td = e.parentNode;
+                let tr = td.parentNode;
+                tr.parentNode.removeChild(tr);
+                // set success message
+                setMessage(responseData.message, false)
+            } else {
+                // set error message
+                setMessage(responseData.message, true)
+            }
         }
-        else {
-            setMessage(responseData.message)
-        }
-     }
     </script>
 {% endblock %}
