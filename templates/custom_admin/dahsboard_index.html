@@ -1,4 +1,5 @@
 {% extends 'partials/base-admin-dashboard.html' %}
+{% load humanize %}
 
 
 {% block content %}
@@ -118,6 +119,20 @@
                                                 has been successfully placed.
                                             </div>
                                         </div>
+                                        <!-- Timeline Item 7-->
+                                        {% for model_change in model_changes %}
+                                        <div class="timeline-item">
+                                            <div class="timeline-item-marker">
+                                                <div class="timeline-item-marker-text">{{ model_change.created_at|naturaltime }}</div>
+                                                <div class="timeline-item-marker-indicator bg-green"></div>
+                                            </div>
+                                            <div class="timeline-item-content">
+                                                New order placed!
+                                                <a class="font-weight-bold text-dark" href="#!">Order #2910</a>
+                                                has been successfully placed.
+                                            </div>
+                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>

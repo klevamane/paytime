@@ -17,7 +17,7 @@ DELETE = "delete"
 KIND_CHOICES = ((CREATE, "create"), (UPDATE, "update"), (DELETE, "delete"))
 
 
-class ModelChange(TimeStampMixin, models.Model):
+class ModelChange(models.Model):
     # This is used by auditing.middleware.GlobalRequestMiddleware to store
     # the current request object, if any, per thread.
     thread = threading.local()
@@ -25,6 +25,8 @@ class ModelChange(TimeStampMixin, models.Model):
     PRIMARY_MODELS = [Bank, User, Package, Investment, Transactions]
 
     # Create/update/delete
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     kind = models.CharField(max_length=6, choices=KIND_CHOICES)
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     # What fields were changed to what values (if create or update)

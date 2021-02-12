@@ -28,6 +28,7 @@ from django.views.generic import (
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import MultipleObjectMixin
 
+from auditing.models import ModelChange
 from dashboard.forms import AdminMessageCreateForm, MessageForm, PaymentForm
 from dashboard.models import MessageCenter
 from dashboard.utils import ProcessRequestMixin, ProfileFormMixin, set_pagination_data
@@ -595,8 +596,16 @@ class HandleBankSubmit(ProfileView, View):
 
 
 class AdminDashboardIndexView(View):
+    template = "custom_admin/dahsboard_index.html"
+    context = {}
+
     def get(self, request):
-        return render(request, "custom_admin/dahsboard_index.html")
+        model_changes = ModelChange.objects.all()[:7]
+        payment_requests = Transactions.objects.filter(
+            transaction_type="withdrawal", status="pending"
+        )[:7]
+        context = {"model_changes": model_changes, "payment_requests": payment_requests}
+        return render(request, self.template, context=context)
 
 
 class AdminPaymentRequestsView(ListView):
