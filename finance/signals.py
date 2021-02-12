@@ -48,11 +48,12 @@ def create_roi(sender, instance, created, **kwargs):
 
     This function is taking into cognizant that
     the maximum days should be 90 days
-    :param sender:
-    :param instance:
-    :param created:
-    :param kwargs:
-    :return:
+
+    Args:
+        sender: The model triggering the signal
+        instance: Model instance
+        created: True if the instance is a new instance
+        kwargs
     """
 
     # taking the package days or 90 days

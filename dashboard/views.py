@@ -434,7 +434,7 @@ class PackageDetail(LoginRequiredMixin, View):
 class ProfileView(LoginRequiredMixin, ProfileFormMixin, View):
     def get(self, request):
         user = User.objects.get(id=request.user.id)
-        profile_form = self._set_profile_form(user)
+        profile_form = self._set_profile_form(user, use_form=True)
         # disable email field to prevent subsequent edits
         profile_form.fields["email"].disabled = True
         context = self._set_profile_context(profile_form, request, user)
