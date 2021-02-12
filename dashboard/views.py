@@ -144,11 +144,13 @@ class WithdrawalView(TransactionsAllView):
 
 
 class WalletView(LoginRequiredMixin, View):
+    template = "dashboard/wallet/wallet.html"
+
     def get(self, request):
         wallet, _ = Wallet.objects.get_or_create(user=request.user)
         return render(
             request=request,
-            template_name="dashboard/wallet/wallet.html",
+            template_name=self.template,
             context={
                 "wallet": wallet,
                 "roi_gain": wallet.total_withrawals - wallet.total_deposits,
@@ -166,7 +168,7 @@ class WalletView(LoginRequiredMixin, View):
             messages.error(request, e.messages[0])
         return render(
             request=request,
-            template_name="dashboard/wallet/wallet.html",
+            template_name=self.template,
             context={
                 "wallet": wallet,
                 "roi_gain": wallet.total_withrawals - wallet.total_deposits,
@@ -370,7 +372,8 @@ class PaymentVerificationView(View):
 
 class PaymentView(LoginRequiredMixin, View):
     def get(self, request):
-        if request.user.has_active_investment:
+        user = request.user
+        if user.has_active_investment:
             messages.error(request, FAILURE_MESSAGES["user_has_active_investment"])
         try:
             package = Package.objects.get(codename=request.GET.get("codename"))
@@ -386,9 +389,9 @@ class PaymentView(LoginRequiredMixin, View):
             "dashboard/invest/payment.html",
             context={
                 "payment_form": payment_form,
-                "email": request.user.email,
-                "firstname": request.user.firstname,
-                "lastname": request.user.lastname,
+                "email": user.email,
+                "firstname": user.firstname,
+                "lastname": user.lastname,
                 "paystatck_pub_key": settings.PAYSTACK_PUBLIC_KEY,
             },
         )
@@ -405,7 +408,7 @@ def validate_package_amount(request):
 
     data = json.loads(request.body)
     payment_form = PaymentForm(data=data)
-    if payment_form.errors:
+    if not payment_form.is_valid():
         return JsonResponse({**payment_form.errors}, status=400)
     return JsonResponse({}, status=200)
 
@@ -428,7 +431,7 @@ class PackageDetail(LoginRequiredMixin, View):
         return JsonResponse(data=data, status=200, safe=False)
 
 
-class ProfileView(LoginRequiredMixin, View):
+class ProfileView(LoginRequiredMixin, ProfileFormMixin, View):
     def get(self, request):
         user = User.objects.get(id=request.user.id)
         profile_form = self._set_profile_form(user)
@@ -445,7 +448,7 @@ class ProfileView(LoginRequiredMixin, View):
             # set the intial value/upon load, the value of the user's
             # bank details
             bank_form = BankForm(
-                initial={"bank": bank.bank, "account_number": bank.account_number}
+                initial={**self._set_bank_form_data(bank.bank, bank.account_number)}
             )
         except Bank.DoesNotExist:
             bank_form = BankForm()
@@ -456,25 +459,6 @@ class ProfileView(LoginRequiredMixin, View):
             if request.user.profile_picture
             else "",
         }
-
-    def _set_profile_form(self, user):
-        # returns the intial value/upon load, the value of the user's
-        # profile details
-        return ProfileForm(
-            initial={
-                "firstname": user.firstname,
-                "lastname": user.lastname,
-                "address1": user.address1,
-                "area": user.area,
-                "email": user.email,
-                "city": user.city,
-                "state": user.state,
-                "mobile": user.mobile,
-                "date_of_birth": user.date_of_birth,
-                "gender": user.gender,
-                # "profile_picture": None
-            }
-        )
 
 
 class MessageView(LoginRequiredMixin, View):
@@ -790,7 +774,7 @@ class AdminSingleUserProfileView(FormMixin, ProfileFormMixin, DetailView):
         try:
             bank = Bank.objects.get(user=user)
             context["bank_form"] = BankForm(
-                initial={**self._set_bank_form(bank.bank, bank.account_number)}
+                initial={**self._set_bank_form_data(bank.bank, bank.account_number)}
             )
 
             context["user_profile_photo"] = user.profile_picture.url

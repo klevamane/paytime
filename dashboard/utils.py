@@ -27,7 +27,7 @@ def set_pagination_data(queryset, request):
 
 
 class ProfileFormMixin:
-    def _set_bank_form(self, bank, account_number):
+    def _set_bank_form_data(self, bank, account_number):
         return {"bank": bank, "account_number": account_number}
 
     def _set_profile_form(self, user, use_form=False):
