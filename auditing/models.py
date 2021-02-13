@@ -16,6 +16,17 @@ UPDATE = "update"
 DELETE = "delete"
 KIND_CHOICES = ((CREATE, "create"), (UPDATE, "update"), (DELETE, "delete"))
 
+BLUE = "blue"
+GREEN = "green"
+PURPLE = "purple"
+YELLOW = "yellow"
+COLOUR_CHOICES = (
+    (BLUE, "blue"),
+    (GREEN, "green"),
+    (PURPLE, "purple"),
+    (YELLOW, "yellow"),
+)
+
 
 class ModelChange(models.Model):
     # This is used by auditing.middleware.GlobalRequestMiddleware to store
@@ -30,7 +41,8 @@ class ModelChange(models.Model):
     kind = models.CharField(max_length=6, choices=KIND_CHOICES)
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     # What fields were changed to what values (if create or update)
-    changes = models.JSONField(encoder=DjangoJSONEncoder, default=dict)
+    changes = models.CharField(null=True, blank=True, max_length=200)
+    subject = models.CharField(null=True, blank=True, max_length=200)
     # The object whose changes we will want to query later (Building, Location)
     primary = fields.GenericForeignKey("primary_ct", "primary_id")
 
@@ -38,3 +50,4 @@ class ModelChange(models.Model):
         ContentType, related_name="primaries", on_delete=models.CASCADE
     )
     primary_id = models.PositiveIntegerField()
+    colour_code = models.CharField(max_length=12, choices=COLOUR_CHOICES)
