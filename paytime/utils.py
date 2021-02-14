@@ -49,6 +49,7 @@ SUCCESS_MESSAGES = {
 FAILURE_MESSAGES = {
     "account_not_active": "Your account is not active, please contact the adminstrator",
     "alpa_num_only": "Enter only alphanumeric characters",
+    "amount_mis_match": "We experienced an amount mismatch, we have instead updated your wallet",
     "amount_specific_range": "The amount must be in the range of {} to {}",
     "cannot_add_multiple_bank": "You cannot add multiple bank accounts, try updating instead",
     "cannot_update_bank": "You cannot update your bank account. Kindly contact us to proceed",

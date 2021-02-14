@@ -53,6 +53,8 @@ DOCUMENT_FILE_TYPES = ["png", "jpg", "jpeg", "pdf"]
 
 
 class DocumentView(LoginRequiredMixin, View):
+    template_name = "dashboard/profile/documents.html"
+
     def get(self, request):
         try:
             document = Document.objects.get(user=request.user)
@@ -60,7 +62,7 @@ class DocumentView(LoginRequiredMixin, View):
             document = None
         return render(
             request=request,
-            template_name="dashboard/profile/documents.html",
+            template_name=self.template_name,
             context={
                 "document": document,
                 "form": DocumentForm(),
@@ -111,7 +113,7 @@ class DocumentView(LoginRequiredMixin, View):
     def _render_profile_document(self, form, instance, request, user_document):
         return render(
             request=request,
-            template_name="dashboard/profile/documents.html",
+            template_name=self.template_name,
             context={
                 "document": user_document if user_document else instance,
                 "form": form,
@@ -145,13 +147,13 @@ class WithdrawalView(TransactionsAllView):
 
 
 class WalletView(LoginRequiredMixin, View):
-    template = "dashboard/wallet/wallet.html"
+    template_name = "dashboard/wallet/wallet.html"
 
     def get(self, request):
         wallet, _ = Wallet.objects.get_or_create(user=request.user)
         return render(
             request=request,
-            template_name=self.template,
+            template_name=self.template_name,
             context={
                 "wallet": wallet,
                 "roi_gain": wallet.total_withrawals - wallet.total_deposits,
@@ -169,7 +171,7 @@ class WalletView(LoginRequiredMixin, View):
             messages.error(request, e.messages[0])
         return render(
             request=request,
-            template_name=self.template,
+            template_name=self.template_name,
             context={
                 "wallet": wallet,
                 "roi_gain": wallet.total_withrawals - wallet.total_deposits,
@@ -357,7 +359,7 @@ class PaymentVerificationView(View):
                 user_wallet.do_depost(amount, request.user)
                 messages.info(
                     request,
-                    "We experienced an amount mismatch, we have instead updated your wallet",
+                    FAILURE_MESSAGES["amount_mis_match"],
                 )
                 resolved_url = reverse("wallet_url")
             # add to transaction table as deposit
@@ -471,7 +473,6 @@ class MessageView(LoginRequiredMixin, View):
 
 
 class MessageInboxDetail(MessageView, DetailView):
-    template_name = "dashboard/messages/detail.html"
     model = MessageCenter
 
     def get_queryset(self):
@@ -596,16 +597,13 @@ class HandleBankSubmit(ProfileView, View):
 
 
 class AdminDashboardIndexView(View):
-    template = "custom_admin/dahsboard_index.html"
-    context = {}
-
     def get(self, request):
         model_changes = ModelChange.objects.all()[:7]
         payment_requests = Transactions.objects.filter(
             transaction_type="withdrawal", status="pending"
         )[:7]
         context = {"model_changes": model_changes, "payment_requests": payment_requests}
-        return render(request, self.template, context=context)
+        return render(request, "custom_admin/dahsboard_index.html", context=context)
 
 
 class AdminPaymentRequestsView(ListView):
