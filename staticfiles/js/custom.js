@@ -5,7 +5,7 @@ const signupButton = document.getElementById("signupsubmit");
 
 
 emailField.addEventListener("focusout", (e) =>{
-    console.log("You left the email field");
+
     const emailValue = e.target.value;
 
     if (emailValue.length > 0) {
