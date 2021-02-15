@@ -601,8 +601,20 @@ class AdminDashboardIndexView(View):
         model_changes = ModelChange.objects.all()[:7]
         payment_requests = Transactions.objects.filter(
             transaction_type="withdrawal", status="pending"
+        )
+        number_of_payment_requests = payment_requests.count()
+        number_of_users = User.objects.count()
+        number_of_packages = Package.objects.count()
+        limited_payment_requests = payment_requests = Transactions.objects.filter(
+            transaction_type="withdrawal", status="pending"
         )[:7]
-        context = {"model_changes": model_changes, "payment_requests": payment_requests}
+        context = {
+            "model_changes": model_changes,
+            "payment_requests": limited_payment_requests,
+            "number_of_payment_requests": number_of_payment_requests,
+            "number_of_users": number_of_users,
+            "number_of_packages": number_of_packages,
+        }
         return render(request, "custom_admin/dahsboard_index.html", context=context)
 
 
