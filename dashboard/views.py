@@ -447,24 +447,6 @@ class ProfileView(LoginRequiredMixin, ProfileFormMixin, View):
             request, template_name="dashboard/profile/profile.html", context=context
         )
 
-    def _set_profile_context(self, profile_form, request, user):
-        try:
-            bank = Bank.objects.get(user=user)
-            # set the intial value/upon load, the value of the user's
-            # bank details
-            bank_form = BankForm(
-                initial={**self._set_bank_form_data(bank.bank, bank.account_number)}
-            )
-        except Bank.DoesNotExist:
-            bank_form = BankForm()
-        return {
-            "profile_form": profile_form,
-            "bank_form": bank_form,
-            "profile_picture_url": request.user.profile_picture.url
-            if request.user.profile_picture
-            else "",
-        }
-
 
 class MessageView(LoginRequiredMixin, View):
     template_name = "dashboard/messages/detail.html"
@@ -847,7 +829,7 @@ class AdminMessageCreateView(MessageView, OnlyAdminAccessMixin, CreateView):
 
     def get_success_url(self):
         messages.success(self.request, SUCCESS_MESSAGES["msg_sent_to_admin"])
-        # we would lazily reverse if done withing the class as
+        # we would lazily reverse if done within the class as
         # oppsose to this method
         # see https://stackoverflow.com/questions/48669514/difference-between-reverse-and-reverse-lazy-in-django
         return reverse("admin_message_create_view")
@@ -865,21 +847,22 @@ class AdminTransactionsAllView(TransactionsAllView, OnlyAdminAccessMixin):
         return Transactions.objects.filter().order_by("-id")
 
 
-class AdminUsersWithdrawalView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
+class AdminWithdrawlDepositView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
     model = Transactions
     template_name = "custom_admin/users_withdrawals_deposits.html"
     context_object_name = "transactions"
     paginate_by = 10
+    transaction_type = ""
 
     def get_queryset(self):
-        return Transactions.objects.filter(transaction_type="withdrawal").order_by("id")
+        return Transactions.objects.filter(
+            transaction_type=self.transaction_type
+        ).order_by("id")
 
 
-class AdminUsersDepositView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
-    model = Transactions
-    template_name = "custom_admin/users_withdrawals_deposits.html"
-    context_object_name = "transactions"
-    paginate_by = 10
+class AdminUsersWithdrawalView(AdminWithdrawlDepositView):
+    transaction_type = "withdrawal"
 
-    def get_queryset(self):
-        return Transactions.objects.filter(transaction_type="deposit").order_by("id")
+
+class AdminUsersDepositView(AdminWithdrawlDepositView):
+    transaction_type = "deposit"
