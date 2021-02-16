@@ -776,7 +776,9 @@ class AdminSingleUserProfileView(
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # set the context for the profile form
-        context["profile_form"] = ProfileForm(initial={**self._set_profile_form(user)})
+        context["profile_form"] = ProfileForm(
+            initial={**self._set_profile_form(user)}, disable_fields=True
+        )
         # set the context for the bank form
         try:
             bank = Bank.objects.get(user=user)

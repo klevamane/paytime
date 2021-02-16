@@ -28,6 +28,15 @@ class ProfileForm(forms.ModelForm):
             "gender",
         ]
 
+    def __init__(self, *args, **kwargs):
+
+        disable_fields = kwargs.pop("disable_fields", None)
+        super(ProfileForm, self).__init__(*args, **kwargs)
+
+        if disable_fields:
+            for field in self.fields:
+                self[field].field.disabled = True
+
     def clean_profile_picture(self):
         profile_picture = self.cleaned_data.get("profile_picture")
         if profile_picture and (profile_picture.size / 1024) > 201:
