@@ -4,20 +4,14 @@ import datetime
 import re
 
 from dirtyfields import DirtyFieldsMixin
-from django.contrib import messages
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import Q, Sum
 from django.template.defaultfilters import floatformat
-from django.utils.text import slugify
 
 from dashboard.models import TimeStampMixin
-from finance.validators import (
-    validate_account_number,
-    validate_alphanumeric,
-    validate_number,
-)
+from finance.validators import validate_account_number, validate_number
 from paytime.utils import FAILURE_MESSAGES
 from user.models import User
 
