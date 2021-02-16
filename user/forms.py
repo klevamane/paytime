@@ -29,6 +29,8 @@ class ProfileForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
+        # remove this kwarg because the form
+        # doesn't need it
 
         disable_fields = kwargs.pop("disable_fields", None)
         super(ProfileForm, self).__init__(*args, **kwargs)
