@@ -5,10 +5,14 @@ import json
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    UserPassesTestMixin,
+)
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.forms.utils import ErrorList
@@ -31,7 +35,12 @@ from django.views.generic.list import MultipleObjectMixin
 from auditing.models import ModelChange
 from dashboard.forms import AdminMessageCreateForm, MessageForm, PaymentForm
 from dashboard.models import MessageCenter
-from dashboard.utils import ProcessRequestMixin, ProfileFormMixin, set_pagination_data
+from dashboard.utils import (
+    OnlyAdminAccessMixin,
+    ProcessRequestMixin,
+    ProfileFormMixin,
+    set_pagination_data,
+)
 from finance.forms import BankForm, PackageForm
 from finance.models import Bank, Investment, Package, RoiSchedule, Transactions, Wallet
 from paytime import settings
@@ -596,7 +605,7 @@ class HandleBankSubmit(ProfileView, View):
         )
 
 
-class AdminDashboardIndexView(View):
+class AdminDashboardIndexView(LoginRequiredMixin, OnlyAdminAccessMixin, View):
     def get(self, request):
         model_changes = ModelChange.objects.all()[:7]
         payment_requests = Transactions.objects.filter(
@@ -605,9 +614,9 @@ class AdminDashboardIndexView(View):
         number_of_payment_requests = payment_requests.count()
         number_of_users = User.objects.count()
         number_of_packages = Package.objects.count()
-        limited_payment_requests = payment_requests = Transactions.objects.filter(
+        limited_payment_requests = Transactions.objects.filter(
             transaction_type="withdrawal", status="pending"
-        )[:7]
+        )[:4]
         context = {
             "model_changes": model_changes,
             "payment_requests": limited_payment_requests,
@@ -618,7 +627,7 @@ class AdminDashboardIndexView(View):
         return render(request, "custom_admin/dahsboard_index.html", context=context)
 
 
-class AdminPaymentRequestsView(ListView):
+class AdminPaymentRequestsView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
     model = Transactions
     template_name = "custom_admin/payment_requests.html"
     paginate_by = 5
@@ -681,21 +690,21 @@ class AdminProcessPayment(ProcessRequestMixin, View):
             return self._json_error_response(FAILURE_MESSAGES["something_went_wrong"])
 
 
-class AdminAllUsersView(ListView):
+class AdminAllUsersView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
     model = User
     template_name = "custom_admin/all_users.html"
     paginate_by = 10
     context_object_name = "users"
 
 
-class AdminAllPackagesView(ListView):
+class AdminAllPackagesView(ListView, OnlyAdminAccessMixin):
     model = Package
     template_name = "custom_admin/packages.html"
     paginate_by = 10
     context_object_name = "packages"
 
 
-class AdminPackageView(LoginRequiredMixin, View):
+class AdminPackageView(LoginRequiredMixin, OnlyAdminAccessMixin, View):
     template = "custom_admin/packages.html"
     view_name = "admin_packages_view"
     model = Package
@@ -732,7 +741,9 @@ class AdminPackageView(LoginRequiredMixin, View):
         )
 
 
-class AdminPackageUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class AdminPackageUpdateView(
+    LoginRequiredMixin, OnlyAdminAccessMixin, SuccessMessageMixin, UpdateView
+):
     template_name = "custom_admin/update_package.html"
     model = Package
     form_class = PackageForm
@@ -743,7 +754,7 @@ class AdminPackageUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView
         return reverse("admin_packages_view")
 
 
-class AdminDocumentsView(LoginRequiredMixin, FormMixin, ListView):
+class AdminDocumentsView(LoginRequiredMixin, OnlyAdminAccessMixin, FormMixin, ListView):
     qry = {}
 
     model = Document
@@ -778,7 +789,9 @@ def update_user_document_status(request):
     )
 
 
-class AdminSingleUserProfileView(FormMixin, ProfileFormMixin, DetailView):
+class AdminSingleUserProfileView(
+    FormMixin, OnlyAdminAccessMixin, ProfileFormMixin, DetailView
+):
     template_name = "custom_admin/users_profile.html"
     model = User
     form_class = ProfileForm
@@ -805,7 +818,7 @@ class AdminSingleUserProfileView(FormMixin, ProfileFormMixin, DetailView):
         return context
 
 
-class AdminMessageView(MessageInboxList):
+class AdminMessageView(MessageInboxList, OnlyAdminAccessMixin):
     ordering = ["created_at"]
     template_name = "custom_admin/messages.html"
 
@@ -813,28 +826,28 @@ class AdminMessageView(MessageInboxList):
         return MessageCenter.objects.filter(to=None)
 
 
-class AdminMessageInboxDetail(MessageInboxDetail):
+class AdminMessageInboxDetail(MessageInboxDetail, OnlyAdminAccessMixin):
     template_name = "custom_admin/message_inbox_detail.html"
 
     def get_queryset(self):
         return MessageCenter.objects.filter(to=None)
 
 
-class AdminMessagesSentView(MessageInboxList):
+class AdminMessagesSentView(MessageInboxList, OnlyAdminAccessMixin):
     template_name = "custom_admin/messages_sent_list.html"
 
     def get_queryset(self):
         return MessageCenter.objects.filter(sender__is_admin=True)
 
 
-class AdminMessageSentView(AdminMessageInboxDetail):
+class AdminMessageSentView(AdminMessageInboxDetail, OnlyAdminAccessMixin):
     template_name = "custom_admin/message_sent.html"
 
     def get_queryset(self):
         return MessageCenter.objects.filter(to__isnull=False)
 
 
-class AdminMessageCreateView(MessageView, CreateView):
+class AdminMessageCreateView(MessageView, OnlyAdminAccessMixin, CreateView):
     template_name = "custom_admin/create_message.html"
     model = MessageCenter
     form_class = AdminMessageCreateForm
@@ -847,7 +860,7 @@ class AdminMessageCreateView(MessageView, CreateView):
         return reverse("admin_message_create_view")
 
 
-class AdminTransactionsAllView(TransactionsAllView):
+class AdminTransactionsAllView(TransactionsAllView, OnlyAdminAccessMixin):
     qry = {}
 
     model = Transactions
@@ -859,7 +872,7 @@ class AdminTransactionsAllView(TransactionsAllView):
         return Transactions.objects.filter().order_by("-id")
 
 
-class AdminUsersWithdrawalView(LoginRequiredMixin, ListView):
+class AdminUsersWithdrawalView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
     model = Transactions
     template_name = "custom_admin/users_withdrawals_deposits.html"
     context_object_name = "transactions"
@@ -869,7 +882,7 @@ class AdminUsersWithdrawalView(LoginRequiredMixin, ListView):
         return Transactions.objects.filter(transaction_type="withdrawal").order_by("id")
 
 
-class AdminUsersDepositView(LoginRequiredMixin, ListView):
+class AdminUsersDepositView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
     model = Transactions
     template_name = "custom_admin/users_withdrawals_deposits.html"
     context_object_name = "transactions"

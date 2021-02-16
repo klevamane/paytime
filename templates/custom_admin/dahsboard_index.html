@@ -1,6 +1,7 @@
 {% extends 'partials/base-admin-dashboard.html' %}
 {% load humanize %}
 
+{% block total_paymentt_req_notification %}{% if number_of_payment_requests > 5 %}{{ number_of_payment_requests }}+{% else %}{{ number_of_payment_requests }}{% endif %}{% endblock %}
 
 {% block content %}
     <div class="container">

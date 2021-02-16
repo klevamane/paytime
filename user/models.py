@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     AbstractUser,
     BaseUserManager,
+    Permission,
     PermissionsMixin,
 )
 from django.core import signing

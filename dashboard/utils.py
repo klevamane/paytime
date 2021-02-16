@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse
 
@@ -157,3 +159,15 @@ class ProcessRequestMixin:
             **self._initiate_transfer_payload(int(amount) * 100, recipient_code)
         )
         return json_response, status_code
+
+
+class OnlyAdminAccessMixin(UserPassesTestMixin):
+    """Test to determin if the user is an admin
+
+    Inheriting classes should always inherit LoginRequiredMixin
+    before inheriting this class
+    """
+
+    def test_func(self):
+        if not self.request.user.is_admin:
+            raise PermissionDenied
