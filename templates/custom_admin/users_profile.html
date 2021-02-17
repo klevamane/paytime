@@ -6,6 +6,13 @@
 
 {% block content %}
     <div class="container">
+    <div class="row mx-auto my-4 justify-content-between">
+
+        <a class="btn btn-light btn-outline-dark" href="{% url "admin_single_user_profile" pk=user.get_previous_record_id %}">Backward</a>
+        <a class="btn btn-light btn-outline-dark" href="{% url "admin_single_user_profile" pk=user.get_next_record_id %}">Forward</a>
+
+
+    </div>
     <div class="row">
             <div class="col-xl-4">
                 <!-- Profile Picture Card-->

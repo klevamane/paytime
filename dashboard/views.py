@@ -779,6 +779,7 @@ class AdminSingleUserProfileView(
             context["bank_form"] = BankForm(
                 initial={**self._set_bank_form_data(bank.bank, bank.account_number)}
             )
+            context["user"] = user
 
             context["user_profile_photo"] = user.profile_picture.url
         except Bank.DoesNotExist:

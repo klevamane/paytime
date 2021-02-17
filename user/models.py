@@ -154,6 +154,20 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     def recipient_code(self):
         return self.bank.recipient_code
 
+    def get_next_record_id(self):
+        next_record = User.objects.filter(id__gt=self.id).order_by("id").first()
+        if next_record:
+            return next_record.id
+        else:
+            return User.objects.all().last().id
+
+    def get_previous_record_id(self):
+        prev_record = User.objects.filter(id__lt=self.id).order_by("-id").first()
+        if prev_record:
+            return prev_record.id
+        else:
+            return User.objects.all().first().id
+
 
 class Document(DirtyFieldsMixin, models.Model):
     type = models.CharField(max_length=30)
