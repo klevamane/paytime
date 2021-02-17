@@ -200,9 +200,9 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Profile Screens:</h6>
                     <a class="collapse-item {% if request.path|ends_with:"/profile" %}active{% endif %}"
-                       href="{% url "profile_url" %}">Profile</a>
+                       href="{% url "admin_single_user_profile" pk=1 %}">Profile</a>
                     <a class="collapse-item {% if "/profile/document" in request.path %}active{% endif %}"
-                       href="{% url "documents" %}">Documents</a>
+                       href="{% url "admin_documents_all_view" %}">Documents</a>
                     <a class="collapse-item" href="{% url "account_change_password" %}">Change password</a>
                     <div class="collapse-divider"></div>
 

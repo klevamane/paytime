@@ -198,24 +198,15 @@ class InvestmentsView(LoginRequiredMixin, View):
     def get(self, request):
         # get user investments
         context = {}
-
         user_investments_qs = Investment.objects.filter(user=request.user).order_by(
             "-id"
         )
         if user_investments_qs:
             last_investment = user_investments_qs.latest("id")
             context["last_investment"] = last_investment
-        page = request.GET.get("page", 1)
-        paginator = Paginator(user_investments_qs, 5)
-        try:
-            investments = paginator.page(page)
-        except PageNotAnInteger:
-            investments = paginator.page(1)
-        except EmptyPage:
-            investments = paginator.page(paginator.num_pages)
-
-        # this is important that we use update instead of manually assigning key, value
-        # there seem to be an issue an issue we noticed by simply assigning the data
+        investments = set_pagination_data(user_investments_qs, request)
+        # this is important that we use update instead of manually assigning key-value
+        # there seem to be an issue we noticed by simply assigning the data
         # by dict["key"] = value
         context.update({"user_investments": investments})
         return render(request, "dashboard/invest/investments.html", context=context)
@@ -247,16 +238,18 @@ class InvestmentDetailView(LoginRequiredMixin, View):
 
 
 class TransferToWalletView(View):
-    # get roi
-    # check that user owns the investment
-    # check that the status is payable to user
-    # if so deposit to the wallet
-    # update the status of the ROI from transfer to completed
-    # if the ROI is the ROI with the last date (maturity date)?
-    # mark all ROIs in that investment as completed
+    """
+    This method implements the feature to transfer
+    completed investment ROI to the user's wallet
 
-    # Wait! already paid ROIs ought to have been marked completed
-    # anyways still mark
+    Get ROI and check that the user owns the investment
+    check that the status is payable to user
+    if so deposit to the wallet
+    update the status of the ROI from transfer to completed
+    if the ROI is the ROI with the last date (maturity date)?
+    mark all ROIs in that investment as completed
+
+    """
 
     def get(self, request, roi_id):
 
@@ -282,9 +275,10 @@ class TransferToWalletView(View):
                 # before setting the investment and the last (ROI) to completed
                 # because there might be a case where by
                 # first roi is ready to be paid to the wallet
-                # as well as the second one (assume that this is the last)
-                # if we go and just check if the invest this is the last one
-                # and complete the investment, it'll mean that something will be wrong
+                # but the second one might not be
+                # but again the last on might be
+                # if we go ahead and just complete the investment
+                # without checking through? there will be discrepancies
 
                 # one way to make this work is
                 #  we can ensure that the other rois be paid first
@@ -672,7 +666,7 @@ class AdminAllUsersView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):
     context_object_name = "users"
 
 
-class AdminAllPackagesView(ListView, OnlyAdminAccessMixin):
+class AdminAllPackagesView(ListView, LoginRequiredMixin, OnlyAdminAccessMixin):
     model = Package
     template_name = "custom_admin/packages.html"
     paginate_by = 10
@@ -765,7 +759,7 @@ def update_user_document_status(request):
 
 
 class AdminSingleUserProfileView(
-    FormMixin, OnlyAdminAccessMixin, ProfileFormMixin, DetailView
+    FormMixin, LoginRequiredMixin, OnlyAdminAccessMixin, ProfileFormMixin, DetailView
 ):
     template_name = "custom_admin/users_profile.html"
     model = User
@@ -854,6 +848,7 @@ class AdminWithdrawlDepositView(LoginRequiredMixin, OnlyAdminAccessMixin, ListVi
     template_name = "custom_admin/users_withdrawals_deposits.html"
     context_object_name = "transactions"
     paginate_by = 10
+    # inheriting classes must set this property
     transaction_type = ""
 
     def get_queryset(self):
