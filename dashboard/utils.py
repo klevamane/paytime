@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.core.exceptions import PermissionDenied
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse
 
@@ -16,7 +15,7 @@ def set_pagination_data(queryset, request):
     Set the pagination data to be used
 
     Args:
-        queryset: The queryset to be parginate
+        queryset: The queryset to be paginated
         request: The request object
     """
     page = request.GET.get("page", 1)
