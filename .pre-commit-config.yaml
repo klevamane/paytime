@@ -20,17 +20,17 @@ repos:
 #    rev: "0.7"
 #    hooks:
 #    - id: python-modernize
-      language_version: python3.8
-      args: [
-        # NOTE: Dropping this enforce for the non-zero exit codes, because is
-        #  enough for a file to be changed in order to have the hook failing. Otherwise
-        #  we end up with identical files while the hook still fails. (false-positives)
-        #--enforce,
-        # We're already using print as a function.
-        --print-function,
-        # Modify the files so we know what it complained about.
-        --write,
-        # Don't use backups, we have git.
-        --nobackups,
-      ]
+#      language_version: python3.8
+#      args: [
+#        # NOTE: Dropping this enforce for the non-zero exit codes, because is
+#        #  enough for a file to be changed in order to have the hook failing. Otherwise
+#        #  we end up with identical files while the hook still fails. (false-positives)
+#        #--enforce,
+#        # We're already using print as a function.
+#        --print-function,
+#        # Modify the files so we know what it complained about.
+#        --write,
+#        # Don't use backups, we have git.
+#        --nobackups,
+#      ]
 
