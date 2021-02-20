@@ -16,10 +16,10 @@ repos:
     rev: v1.2.3
     hooks:
     - id: flake8
--   repo: https://github.com/python-modernize/python-modernize
-    rev: "0.7"
-    hooks:
-    - id: python-modernize
+#-   repo: https://github.com/python-modernize/python-modernize
+#    rev: "0.7"
+#    hooks:
+#    - id: python-modernize
       language_version: python3.8
       args: [
         # NOTE: Dropping this enforce for the non-zero exit codes, because is
