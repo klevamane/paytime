@@ -613,7 +613,14 @@ class AdminPaymentRequestsView(LoginRequiredMixin, OnlyAdminAccessMixin, ListVie
 class AdminProcessPayment(ProcessRequestMixin, View):
     def post(self, request):
 
-        payment_id = json.loads(request.body).get("id")
+        # this format is useful in the test case
+        # because Django doesn't really deserialize JSON payload
+        # but in the test the value is passed via request.POST
+        payment_id = (
+            json.loads(request.body).get("id")
+            if not len(request.POST)
+            else request.POST.get("id")
+        )
         try:
             int(payment_id)
         except (ValueError, TypeError):

@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+import json
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import (
     check_password,
@@ -10,12 +12,11 @@ from django.test import TestCase
 from django.urls import reverse
 
 from dashboard.models import MessageCenter
+from finance.models import TRANSACTION_TYPE, Transactions
 from paytime import settings
 
 
-class MessageCenterViewTest(TestCase):
-    fixtures = ["users.json", "messages.json"]
-
+class DashboardBaseTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         print(
@@ -31,6 +32,13 @@ class MessageCenterViewTest(TestCase):
         self.user = user
         self.login_user()
 
+    def login_user(self):
+        self.client.login(email=self.user.email, password=self.user_pwd)
+
+
+class MessageCenterViewTest(DashboardBaseTestCase):
+    fixtures = ["users.json", "messages.json"]
+
     def create_user(self, password, email, **kwargs):
         user = get_user_model().objects.create(email=email)
         user.set_password(password)
@@ -39,9 +47,6 @@ class MessageCenterViewTest(TestCase):
 
     def test_user_send_message_pass(self):
         self.assertTrue(1)
-
-    def login_user(self):
-        self.client.login(email=self.user.email, password=self.user_pwd)
 
     def test_user_login(self):
         user = self.create_user(
@@ -72,3 +77,24 @@ class MessageCenterViewTest(TestCase):
         last_msg = MessageCenter.objects.all().order_by("id").last()
         self.assertEqual(last_msg.sender, response.wsgi_request.user)
         self.assertEqual(last_msg.subject, "Subject")
+
+
+class AdminPaymentProcessViewTest(DashboardBaseTestCase):
+    fixtures = ["users.json", "messages.json", "transactions.json"]
+
+    def test_print_txns(self):
+        # transaction type of withdrawal
+        # headerInfo = {"content-type": "application/json"}
+        # kwargs = {"HTTP_X_REQUESTED_WITH": "XMLHttpRequest"}
+        transaction = Transactions.objects.get(transaction_type=TRANSACTION_TYPE[1][0])
+        self.assertEqual(transaction.status, "pending")
+        data = {"id": 1}
+        self.client.post(
+            reverse("process_payment"),
+            data=data,
+            # **kwargs
+        )
+
+        transaction.refresh_from_db()
+        self.assertEqual(transaction.status, "completed")
+        print(Transactions.objects.all())
