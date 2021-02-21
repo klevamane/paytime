@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import os
 
-from .celery import Celery
+from celery import Celery
 
 # This is for celery confifuration in our app
 # but the tasks that celery will run, will come from our

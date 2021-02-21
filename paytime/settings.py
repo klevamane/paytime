@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 import django_heroku
+from celery.schedules import crontab
 from django.contrib import messages
 from dotenv import load_dotenv
 
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     "dashboard",
     "user",
     "finance",
+    "django_celery_beat",
 ]
 
 SITE_ID = 1
@@ -288,7 +290,16 @@ PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 CELERY_BROKER_URL = "redis://:pbc8499a36cba21e10f3e646c5e320c3c0509838cb9cd8cf977b6d3d5863b9be7@ec2-34-203-49-113.compute-1.amazonaws.com:26029"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
-
+CELERY_BEAT_SCHEDULE = {
+    # start the celery beat with
+    # celery -A paytime beat -l INFO
+    # start celery with
+    # celery -A paytime worker -l info p
+    "ordinary-taks": {
+        "task": "dashboard.tasks.sleepy",
+        "schedule": 5.0,
+    },
+}
 # CELERY_TIMEZONE = "UTC"
 # CELERY_TASK_TRACK_STARTED = True
 # CELERY_TASK_TIME_LIMIT = 30 * 60
