@@ -59,7 +59,8 @@ class Banks(DirtyFieldsMixin, TimeStampMixin):
 class Bank(DirtyFieldsMixin, TimeStampMixin):
     # When a user adds a bank account
     # automatically create a wallet for the user
-    bank = models.CharField(max_length=30, default="access-bank")
+    # bank = models.CharField(max_length=30, default="access-bank")
+
     account_number = models.CharField(
         max_length=10,
         validators=[validate_account_number],

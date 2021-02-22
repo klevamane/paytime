@@ -17,6 +17,11 @@ from paytime import settings
 
 
 class DashboardBaseTestCase(TestCase):
+    """
+    Due to the list of Banks being installed as part of the migrations
+    we don't need to have banks fixtures
+    """
+
     @classmethod
     def setUpTestData(cls):
         print(
@@ -80,9 +85,12 @@ class MessageCenterViewTest(DashboardBaseTestCase):
 
 
 class AdminPaymentProcessViewTest(DashboardBaseTestCase):
-    fixtures = ["users.json", "messages.json", "transactions.json"]
+    fixtures = ["users.json", "transactions.json"]
 
     def test_print_txns(self):
+        import pdb
+
+        pdb.set_trace()
         # transaction type of withdrawal
         # headerInfo = {"content-type": "application/json"}
         # kwargs = {"HTTP_X_REQUESTED_WITH": "XMLHttpRequest"}
