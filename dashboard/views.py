@@ -622,50 +622,9 @@ class AdminProcessPayment(ProcessRequestMixin, View):
             else request.POST.get("id")
         )
         try:
-            int(payment_id)
-        except (ValueError, TypeError):
-            return self._json_error_response(
-                FAILURE_MESSAGES["invalid"].format("Payment Id")
-            )
-        # get the payment
-        txn = Transactions.objects.get(id=payment_id)
-        user = txn.user
-        if not user.recipient_code:
-            # TODO we need to first validate the account number
-            # but also we may skip this validation by validating the account number
-            # the user saves
-            # save user recipient code in db
-            self._save_user_recipient_code(requests.post, user)
-        # if the user already has a recepient code, then
-        # just initiate transfer with the recepient code
-        json_response, status_code = self._initiate_transfer_request(
-            requests.post, txn.amount, user.recipient_code
-        )
-
-        if status_code >= 400:
-            return self._json_error_response(json_response.get("message"))
-
-        transfer_code = json_response["data"]["transfer_code"]
-        json_response, _ = self._request(
-            requests.post, "transfer/finalize_transfer", transfer_code=transfer_code
-        )
-
-        # Disable Transfers OTP from here
-        # https://dashboard.paystack.com/#/settings/preferences
-        # uncheck Confirm transfers before sending
-        # or it can also be done via postman
-        try:
-            if json_response["message"] == SUCCESS_MESSAGES["no_otp_transfer"]:
-                # successful because our payment doesn't need OTP
-                # but it returns a 400 status code
-                txn.status = "completed"
-                txn.save()
-                # messages.success(request, json_response.get("message"))
-                return self._json_success_response(
-                    SUCCESS_MESSAGES["blank_successful"].format("Transfer")
-                )
-        except AttributeError:
-            return self._json_error_response(FAILURE_MESSAGES["something_went_wrong"])
+            return self._process_payment(payment_id)
+        except ValidationError as e:
+            return self._json_error_response(e.messages)
 
 
 class AdminAllUsersView(LoginRequiredMixin, OnlyAdminAccessMixin, ListView):

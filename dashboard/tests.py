@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 
 import json
+import unittest
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import (
@@ -14,6 +16,13 @@ from django.urls import reverse
 from dashboard.models import MessageCenter
 from finance.models import TRANSACTION_TYPE, Transactions
 from paytime import settings
+
+# class MockPaystackApi:
+#     """Used to test the code that relies on accessing paystack api
+#
+#     """
+#
+#     def
 
 
 class DashboardBaseTestCase(TestCase):
@@ -39,6 +48,12 @@ class DashboardBaseTestCase(TestCase):
 
     def login_user(self):
         self.client.login(email=self.user.email, password=self.user_pwd)
+
+
+class PaystackPaymentTestCase(DashboardBaseTestCase, TestCase):
+    def setUp(self):
+        super(PaystackPaymentTestCase).setUp()
+        # implement the desired mocking here
 
 
 class MessageCenterViewTest(DashboardBaseTestCase):
@@ -87,6 +102,7 @@ class MessageCenterViewTest(DashboardBaseTestCase):
 class AdminPaymentProcessViewTest(DashboardBaseTestCase):
     fixtures = ["users.json", "bank.json", "transactions.json"]
 
+    # @patch()
     def test_process_payment_by_admin(self):
         # transaction type of withdrawal
         # headerInfo = {"content-type": "application/json"}
@@ -94,8 +110,10 @@ class AdminPaymentProcessViewTest(DashboardBaseTestCase):
         transaction = Transactions.objects.get(transaction_type=TRANSACTION_TYPE[1][0])
         self.assertEqual(transaction.status, "pending")
         data = {"id": 1}
+        self.assertEqual(transaction.user.recipient_code, "")
         self.client.post(reverse("process_payment"), data=data, **kwargs)
 
         transaction.refresh_from_db()
+        self.assertNotEqual(transaction.user.recipient_code, "")
         self.assertEqual(transaction.status, "completed")
         print(Transactions.objects.all())

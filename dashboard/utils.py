@@ -1,12 +1,17 @@
 from __future__ import absolute_import
 
+import json
+
+import requests
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.core.exceptions import ValidationError
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import JsonResponse
 
 from finance.forms import BankForm
-from finance.models import Bank
+from finance.models import Bank, Transactions
 from paytime import settings
+from paytime.utils import FAILURE_MESSAGES, SUCCESS_MESSAGES
 from user.forms import ProfileForm
 
 
@@ -178,6 +183,62 @@ class ProcessRequestMixin:
             **self._initiate_transfer_payload(int(amount) * 100, recipient_code)
         )
         return json_response, status_code
+
+    def _process_payment(self, payment_id):
+        """
+        Process transfer payment to user' account
+
+        Args:
+            payment_id(str): The payment id for implementing transfer
+
+        Returns:
+             Json response
+        """
+
+        try:
+            int(payment_id)
+        except (TypeError, ValueError):
+            raise ValidationError(FAILURE_MESSAGES["invalid"].format("Payment Id"))
+
+        # get the payment
+        txn = Transactions.objects.get(id=payment_id)
+        user = txn.user
+        if not user.recipient_code:
+            # TODO we need to first validate the account number
+            # but also we may skip this validation by validating the account number
+            # the user saves
+            # save user recipient code in db
+            self._save_user_recipient_code(requests.post, user)
+        # if the user already has a recepient code, then
+        # just initiate transfer with the recepient code
+        json_response, status_code = self._initiate_transfer_request(
+            requests.post, txn.amount, user.recipient_code
+        )
+
+        if status_code >= 400:
+            raise ValidationError(json_response.get("message"))
+
+        transfer_code = json_response["data"]["transfer_code"]
+        json_response, _ = self._request(
+            requests.post, "transfer/finalize_transfer", transfer_code=transfer_code
+        )
+
+        # Disable Transfers OTP from here
+        # https://dashboard.paystack.com/#/settings/preferences
+        # uncheck Confirm transfers before sending
+        # or it can also be done via postman
+        try:
+            if json_response["message"] == SUCCESS_MESSAGES["no_otp_transfer"]:
+                # successful because our payment doesn't need OTP
+                # but it returns a 400 status code
+                txn.status = "completed"
+                txn.save()
+                # messages.success(request, json_response.get("message"))
+                return self._json_success_response(
+                    SUCCESS_MESSAGES["blank_successful"].format("Transfer")
+                )
+        except AttributeError:
+            raise ValidationError(FAILURE_MESSAGES["something_went_wrong"])
 
 
 class OnlyAdminAccessMixin(UserPassesTestMixin):
