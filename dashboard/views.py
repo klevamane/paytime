@@ -28,7 +28,6 @@ from django.views.generic.edit import FormMixin
 from auditing.models import ModelChange
 from dashboard.forms import AdminMessageCreateForm, MessageForm, PaymentForm
 from dashboard.models import MessageCenter
-from dashboard.tasks import sleepy
 from dashboard.utils import (
     OnlyAdminAccessMixin,
     ProcessRequestMixin,
@@ -594,7 +593,6 @@ class AdminDashboardIndexView(LoginRequiredMixin, OnlyAdminAccessMixin, View):
             "number_of_users": number_of_users,
             "number_of_packages": number_of_packages,
         }
-        sleepy.delay()
         return render(request, "custom_admin/dahsboard_index.html", context=context)
 
 

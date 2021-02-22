@@ -110,7 +110,7 @@ class ProcessRequestMixin:
             "recipient": recipient_code,
         }
 
-    def _get_txfr_recipient_payload(self, fullname, acct_num, bank_code):
+    def _get_transfer_recipient_payload(self, fullname, acct_num, bank_code):
         return {
             "type": "nuban",
             "name": fullname,
@@ -148,7 +148,7 @@ class ProcessRequestMixin:
         json_response, status_code = self._request(
             method,
             "transferrecipient",
-            **self._get_txfr_recipient_payload(
+            **self._get_transfer_recipient_payload(
                 user.get_full_name(),
                 user.bank.account_number,
                 user.bank.bank_detail.code,
