@@ -85,23 +85,16 @@ class MessageCenterViewTest(DashboardBaseTestCase):
 
 
 class AdminPaymentProcessViewTest(DashboardBaseTestCase):
-    fixtures = ["users.json", "transactions.json"]
+    fixtures = ["users.json", "bank.json", "transactions.json"]
 
-    def test_print_txns(self):
-        import pdb
-
-        pdb.set_trace()
+    def test_process_payment_by_admin(self):
         # transaction type of withdrawal
         # headerInfo = {"content-type": "application/json"}
-        # kwargs = {"HTTP_X_REQUESTED_WITH": "XMLHttpRequest"}
+        kwargs = {"HTTP_X_REQUESTED_WITH": "XMLHttpRequest"}
         transaction = Transactions.objects.get(transaction_type=TRANSACTION_TYPE[1][0])
         self.assertEqual(transaction.status, "pending")
         data = {"id": 1}
-        self.client.post(
-            reverse("process_payment"),
-            data=data,
-            # **kwargs
-        )
+        self.client.post(reverse("process_payment"), data=data, **kwargs)
 
         transaction.refresh_from_db()
         self.assertEqual(transaction.status, "completed")

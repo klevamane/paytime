@@ -76,7 +76,7 @@ class Bank(DirtyFieldsMixin, TimeStampMixin):
     recipient_code = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return "Bank: {}, #: {}".format(self.bank, self.account_number)
+        return "Bank: {}, #: {}".format(self.bank_detail.name, self.account_number)
 
 
 class InvestmentPackage(DirtyFieldsMixin, TimeStampMixin):
