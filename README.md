@@ -17,7 +17,7 @@ Thanks for checking out this application.
 ## Running this application
 1. Clone the repository
 2. Cd into paytime
-3. pip install
+3. pip install -r requirements.txt
 4. update your .env
 5. python manage.py collectstatic
 6. python manage.py runserver
