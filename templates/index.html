@@ -18,7 +18,8 @@
     <link href="{% static "css/admin-2.css" %}" rel="stylesheet">
 </head>
 <body>
-<!-- Image and text -->
+
+<!-- ================================ HEADER SECTION =========================== -->
 <header class="header_area">
             <div class="main-menu">
 
@@ -58,19 +59,41 @@
             </div>
         </header>
 
-<main>
-    <div class="container">
-        <div class="main-background">
-            <div class="d-flex flex-column">
-                <h1>Paytime Anytime</h1>
-                <p>Invest and grow your investment</p>
+<!-- ================================ END HEADER SECTION =========================== -->
 
-                <div class="d-flex flex-row">
-                    <a href="#" class="btn">Invest Now!</a>
+
+    <!-- ================================ START MAIN AREA  =========================== -->
+<main class="site-main">
+
+    <!-- =============== BANNER AREA  ============= -->
+
+    <section class="site-banner">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 site-title">
+                    <h1 class="title-text">Paytime</h1>
+                    <h4>your one stop shop to financial freedom</h4>
+
+
+                    <div class="site-buttons">
+                        <!-- use flex wrap to move the content to the next line -->
+                        <!-- in smaller devices -->
+                        <div class="flex-row d-flex flex-wrap">
+                            <a class="btn button primary-button mr-4 text-uppercase">Join Us</a>
+
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="col-lg-6 col-md-12 banner-img my-5">
+                    <img src="/img/custom3/slider-thumb2.png" class="floating-main-img" alt="banner-image">
+                </div>
         </div>
-    </div>
+        </div>
+    </section>
+
+    <!-- =============== END BANNER AREA ============= -->
+
 </main>
 
 <!-- Bootstrap core JavaScript-->
