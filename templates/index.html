@@ -9,7 +9,7 @@
     <title>Paytime</title>
     <!-- Custom fonts for this template-->
     <link href="{% static "css/fontawesome/all.min.css" %}" rel="stylesheet" type="text/css">
-    <link href="{% static "css/index.css" %}" rel="stylesheet" type="text/css">
+
 
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -17,6 +17,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static "css/admin-2.css" %}" rel="stylesheet">
+    <link href="{% static "css/index_css.css" %}" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -87,7 +88,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 banner-img my-5">
-                    <img src="/img/custom3/slider-thumb2.png" class="floating-main-img" alt="banner-image">
+                    <img src="{% static "img/index_photos/slider-thumb2.png" %}" class="floating-main-img" alt="banner-image">
                 </div>
         </div>
         </div>
@@ -103,7 +104,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="about-image">
-                        <img src="img/custom3/about-us.png" alt="about-image" class="img-fluid">
+                        <img src="{% static "img/index_photos/about-us.png" %}" alt="about-image" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 about-title">
@@ -130,10 +131,10 @@
             <div class="col-xl-6 col-lg-6 col-md-12">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-brand"><img src="img/custom3/brands/logo2.png" alt="brand-1" srcset=""></div>
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo2.png" %}" alt="brand-1" srcset=""></div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="single-brand"><img src="img/custom3/brands/logo3.png" alt="brand-2" srcset=""></div>
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo3.png" %}" alt="brand-2" srcset=""></div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6">
                         <div class="single-brand"><img src="img/custom3/brands/logo4.png" alt="brand-3" srcset=""></div>
