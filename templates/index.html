@@ -571,6 +571,69 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{% static "js/sb-admin-2.min.js" %}"></script>
+
+<script>
+        $(document).ready(function() {
+            //  remove active class from the button that is active
+        //  but we are just removing from all
+            let $btns = $(".project-area .button-group button").removeClass("active");
+            //  Add active class to the clicked button
+            $btns.click(function(e) {
+                e.target.classList.add("active");
+
+                // Get the value of the data-filter attr on the element (button)
+                let selector = $(e.target).attr("data-filter");
+                // Finally use isotope to filter
+                $(".project-area .grid").isotope({
+                filter:selector
+            })
+            })
+
+            return false;
+        } )
+
+        // unload we want the layout and images to look as though
+        // the All button was clicked
+        $(".project-area .button-group #btn1").trigger("click");
+        // document.getElementById("btn1").onlc
+
+
+        // USING OWL CAROUSEL
+        // Check owl carousel docs for more info
+        $(".site-main .about-area .owl-carousel").owlCarousel({
+            loop:true,
+            margin:10,
+            nav:true,
+            autoplay:true,
+            responsive:{
+                // when the viewport is between 0-544px
+                // we want only 1 item in the carousel
+                // else 2
+                0:{items: 1},
+                544: {items: 2}
+            }
+        })
+
+
+        /* Sticky Navbar */
+        let navBarOffset = $(".header_area").height() + 50;
+
+        function navBarFixed() {
+            if($(".header_area").length) {
+                $(window).scroll(function() {
+                    let scroll = $(window).scrollTop();
+                    if(scroll > navBarOffset) {
+                        $(".header_area .main-menu").addClass("navbar-fixed")
+                    } else {
+                        $(".header_area .main-menu").removeClass("navbar-fixed")
+                    }
+                })
+            }
+        }
+
+        navBarFixed()
+
+     </script>
 </body>
 </html>
 
