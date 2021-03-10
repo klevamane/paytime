@@ -233,7 +233,7 @@ p.para {
 }
 
 .site-main .brand-area .experience-area .years-area {
-    background: url("../img/index_photos/client-info-bg.png") no-repeat 45px 20px;
+    background: url("/img/custom3/client-info-bg.png") no-repeat 45px 20px;
     width: 40rem;
     padding: 2rem 0;
     height: 18rem;
@@ -389,7 +389,7 @@ button:hover
 
 /* SUBSCRIBE AREA */
 .site-main .subscribe-us-area .subscribe {
-    background: url("../img/index_photos/subscribe-bg.png");
+    background: url("/img/custom3/subscribe-bg.png");
     padding: 10rem 0;
     margin: 3rem auto;
 }
@@ -439,7 +439,7 @@ button:hover
 
 footer.footer-area {
     padding: 5rem 0;
-    background: url("../img/index_photos/footer-bg.png") no-repeat ;
+    background: url("/static/img/index_photos/footer-bg.833230f39352.png") no-repeat ;
 }
 
 footer.footer-area .social h5 {
