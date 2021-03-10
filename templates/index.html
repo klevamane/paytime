@@ -1,2 +1,87 @@
-{% extends 'base-dashboard.html' %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Paytime</title>
+    <!-- Custom fonts for this template-->
+    <link href="{% static "css/fontawesome/all.min.css" %}" rel="stylesheet" type="text/css">
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static "css/admin-2.css" %}" rel="stylesheet">
+</head>
+<body>
+<!-- Image and text -->
+<header class="header_area">
+            <div class="main-menu">
+
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#"><h3>Paytime</h3></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+
+                        <!-- move nav items right -->
+                        <div class="mr-auto"></div>
+                      <ul class="navbar-nav">
+                        <li class="nav-item active">
+                          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#services">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Packages</a>
+                          </li>
+                          <li class="my-auto">
+                            <a class="btn button primary-button small-btn " href="#">Join Us</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                          </li>
+
+                      </ul>
+                    </div>
+                  </nav>
+
+            </div>
+        </header>
+
+<main>
+    <div class="container">
+        <div class="main-background">
+            <div class="d-flex flex-column">
+                <h1>Paytime Anytime</h1>
+                <p>Invest and grow your investment</p>
+
+                <div class="d-flex flex-row">
+                    <a href="#" class="btn">Invest Now!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static "js/jquery.easing.min.js" %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static "js/sb-admin-2.min.js" %}"></script>
+</body>
+</html>
 

@@ -12035,7 +12035,14 @@ body{
 /*}*/
 
 
-
+.main-background {
+  /*background-image: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");*/
+  /*background-attachment: fixed;*/
+  /*background-size: cover;*/
+  background-color: #0aca91 !important;
+  height: 500px;
+  width: 300px;
+}
 
 
 
