@@ -21,8 +21,10 @@ Thanks for checking out this application.
 4. update your .env
 5. python manage.py collectstatic
 6. python manage.py runserver
-7. open another terminal
+7. open two terminals and run 8, 9
 8. celery -A paytime worker -l debug (to run Celery)
+9. celery -A paytime beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
 
 
 ## Giving feedback
