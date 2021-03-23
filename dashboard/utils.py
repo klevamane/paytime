@@ -64,7 +64,7 @@ class ProfileFormMixin:
             # set the intial value/upon load, the value of the user's
             # bank details
             bank_form = BankForm(
-                initial={**self._set_bank_form_data(bank.bank, bank.account_number)}
+                initial={**self._set_bank_form_data(bank, bank.account_number)}
             )
         except Bank.DoesNotExist:
             bank_form = BankForm()

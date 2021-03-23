@@ -88,7 +88,7 @@ class User(DirtyFieldsMixin, AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
 
     def __str__(self):
-        return "Id:{} {} - {}".format(self.pk, self.lastname, self.email)
+        return "{}".format(self.email)
 
     def save(self, *args, **kwargs):
         self.firstname = self.firstname.title().strip()
