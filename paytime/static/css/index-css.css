@@ -1,0 +1,519 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,300&display=swap');
+
+
+:root {
+    --primary-color: #047aed;
+    --secondary-color: #1c3fa8;
+    --dark-color: #002240;
+    --light-color: #f4f4f4;
+}
+/* some general styles */
+* {
+    /* Allows to add border and padding etc */
+    /* without adding to the width of the element */
+    box-sizing: border-box;
+
+    padding: 0;
+    margin: 0;
+
+}
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    color: #333;
+    line-height: 1.6;
+
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none !important;
+    color: #333;
+}
+
+h1, h2 {
+    font-weight: 300;
+    margin: 10px 0;
+    line-height: 1.2;
+}
+
+p {
+    margin: 10px 0;
+}
+
+img {
+    /* if it's a large image, it's not going to exceed it's container */
+    /* instead it'll take 100% of the container */
+    width: 100%;
+}
+
+
+
+/* NAVBAR STYLE */
+.navbar {
+    background-color: var(--primary-color);
+    color: #fff;
+    height: 70px;
+}
+
+.navbar .flex {
+    justify-content: space-between;
+}
+
+.navbar ul {
+    display: flex;
+}
+
+.navbar ul a {
+    color: #fff;
+    padding: 10px;
+    margin: 0 5px;
+    transition: width .2s ease-in;
+}
+
+.navbar ul a:hover {
+    border-bottom: 2px #fff solid;
+    /* width: 100%; */
+}
+
+
+/* SHOWCASE */
+.showcase {
+    height: 400px;
+    background-color: var(--primary-color);
+    color: #fff;
+    /* Add position relative here, so that if we need to position */
+    /* anything absolute within it, we can */
+    position: relative;
+}
+
+.showcase h1 {
+    font-size: 40px;
+}
+
+.showcase p {
+    margin: 20px 0;
+}
+
+.showcase .grid {
+    /* Add overflow here in order to remove the scroll */
+    /* bar from the form */
+    /* then set overflow to visibile to implement the z-index is effect */
+    overflow: visible;
+    grid-template-columns: 55% 45%;
+    gap: 30px;
+}
+
+.showcase-form {
+    /* here we are making the position to be relative */
+    /* because we want to add a top property */
+    /* if we want to use top, bottom, right or left, */
+    /* we need to position it abs or rel */
+    /* we are making use of the rel here */
+    position: relative;
+    top: 60px;
+    height: 350px;
+    width: 400px;
+    padding: 40px;
+    z-index: 100;
+    justify-self: flex-end;
+}
+
+.showcase-form .form-control {
+    margin: 30px 0;
+    border: 0;
+}
+
+
+.showcase-form input[type="text"],
+.showcase-form input[type="email"] {
+    border: 0;
+    border-bottom: 1px solid #b4becb;
+    width: 100%;
+    padding: 3px;
+    font-size: 16px;
+}
+
+.showcase-form input:focus {
+    outline: none;
+}
+
+/*Add a skew after and before
+the showcase slant to make the page section
+look slanty*/
+.showcase::before,
+.showcase::after {
+    content: "";
+    position: absolute;
+    background:#fff;
+    height: 100px;
+    bottom: -70px;
+    right: 0;
+    left: 0;
+    transform: skewY(2deg);
+    -webkit-transform: skewY(2deg);
+    -moz-transform: skewY(2deg);
+    -ms-transform: skewY(2deg);
+}
+
+/* STATS */
+.stats {
+    padding-top: 100px;
+    background-color: #fff;
+}
+.stats-heading {
+    /* max-width: 500px; */
+    margin: auto;
+
+
+}
+
+.stats .grid h3 {
+    font-size: 35px;
+}
+
+.stats .grid p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* CLI */
+.cli .grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr );
+}
+
+.cli .grid  > *:first-child {
+    /* it should take up column 1 and 2, and row 1 and 2 */
+    /* therefore the remaining column and row will be used by the rest elements */
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
+}
+
+/* CLOUD */
+
+.cloud .grid {
+    grid-template-columns: 4fr 3fr;
+}
+
+/* LANGUAGES */
+
+.languages .card {
+    text-align: center;
+    margin: 18px 10px 40px;
+
+    transition: transform 0.2s ease-in;
+}
+
+/* This ensures that the card goes to the  */
+/* next line, when the browser is resized */
+.languages .flex {
+    flex-wrap:wrap;
+}
+
+.languages .card h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.languages .card:hover {
+    /* in order for this to work, you would have to  */
+    /* add a transition: transform effect on the languages card */
+    /* transition: transform 0.2s ease-in; */
+    transform: translateY(-15px);
+
+    cursor: pointer;
+}
+
+
+/* SERVICES AREA */
+
+.services-areas {
+    padding: 3rem 2rem;
+}
+
+.services-areas .services-title{
+    padding: 0 14rem;
+}
+
+
+.services-areas .services-title h1{
+    font-size: 35px;
+}
+
+.services-areas .services {
+    /*background: rgba(248, 252, 253, 0.973);*/
+    padding: 2rem 0;
+    width: 16rem;
+    margin: 0 .5rem;
+    transition: box-shadow .7s ease;
+}
+
+.services-areas .services:hover {
+    cursor: pointer;
+
+}
+
+.services-areas .card {
+    transition: transform 0.2s ease-in;
+    /*margin-right: 15px;*/
+}
+.services-areas .card:hover {
+     /* in order for this to work, you would have to  */
+    /* add a transition: transform effect on the .services-areas .card */
+    /* transition: transform 0.2s ease-in; */
+    transform: translateY(-15px);
+    box-shadow: 20px 20px 20px rgba(17, 33, 39, 0.4);
+}
+
+/*BUSINESS_SOLUTION*/
+
+.business-solution {
+    padding: 10rem 5rem 4rem 10rem;
+    background-color: red;
+    color: #fff;
+}
+/*.services2{*/
+/*    background-color: #fff !important;*/
+/*    color: blue;*/
+/*}*/
+/*.card {*/
+/*    margin: 0 !important;*/
+/*}*/
+
+.box-service {
+    position: relative;
+    padding-right: 43px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+
+.about-area {
+    background-color: #fff;
+    padding: 4rem 0;
+}
+
+/*OWL CAROUSEL*/
+
+/*.about-area .owl-carousel .owl-item {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    padding: 0 1.5rem;*/
+/*}*/
+
+/*.about-area .owl-carousel .owl-dots .owl-dot.active span {*/
+/*    background-color: red;*/
+/*    width: 10px;*/
+/*}*/
+.carousel-team .owl-stage-outer {
+    padding-top: 15px;
+}
+
+.owl-carousel .owl-stage-outer {
+    position: relative;
+    overflow: hidden;
+    -webkit-transform: translate3d(0px, 0px, 0px);
+}
+
+
+.owl-carousel {
+    display: none;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.heading-5 {
+        font-size: 26px;
+        line-height: 1.2;
+        font-weight: 500;
+    }
+
+@media (min-width: 1200px) {
+    .heading-5 {
+        font-size: 26px;
+        line-height: 1.2;
+        font-weight: 500;
+    }
+}
+
+.owl-carousel .owl-stage {
+    position: relative;
+    -ms-touch-action: pan-Y;
+}
+
+.owl-carousel.owl-loaded {
+    display: block;
+}
+
+.box-team-name {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: .33s ease;
+}
+
+.box-team-header .icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    font-size: 30px;
+    background-color: #4d6de6;
+    color: #ffffff;
+}
+
+.box-team-body {
+    text-align: center;
+    padding: 7px;
+}
+
+.box-team-name > * {
+    color: #ffffff;
+}
+
+.heading-5 {
+        font-size: 26px;
+        line-height: 1.2;
+        font-weight: 500;
+    }
+
+.icon {
+    display: inline-block;
+    /* font-size: 16px; */
+    line-height: 1;
+}
+
+.icon::before {
+    position: relative;
+    display: inline-block;
+    font-weight: 400;
+    font-style: normal;
+    speak: none;
+    text-transform: none;
+}
+
+.mdi-call-received:before {
+    content: "\f1f0";
+}
+
+.mdi {
+    display: inline-block;
+    font: normal normal normal 24px/1 "Material Design Icons";
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+
+
+.project-area {
+    padding: 4rem 0;
+}
+
+@media (min-width: 1200px) {
+    h5, .heading-5 {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+}
+
+/* FOOTER */
+
+footer .social a {
+    margin: 0 10px;
+    padding: 10px 0;
+}
+
+
+
+
+/* MEDIA QUERIES */
+
+/* Tablets and under */
+@media(max-width: 768px) {
+    .grid,
+    .showcase .grid,
+    .cli .grid,
+    .cloud .grid,
+    .stats .grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+    }
+
+    .showcase {
+        /* set the height to auto so that it takes
+        the height of the container */
+        height: auto;
+    }
+
+    .showcase-text {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .showcase-form {
+        justify-self: center;
+        margin: auto;
+    }
+
+    .cli .grid  > *:first-child {
+        /* it should take up column 1 and 2, and row 1 and 2 */
+        /* therefore the remaining column and row will be used by the rest elements */
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+
+
+    .stats .container > *:first-child {
+        margin: 3rem 0;
+    }
+
+    .stats .container i {
+        margin-top: 2rem;
+    }
+
+    .stats .grid .grid-3 {
+        color: red;
+    }
+
+}
+
+/* Mobile */
+@media(max-width: 500px) {
+    .navbar{
+        height: 100px;
+    }
+
+    .navbar .flex {
+        flex-direction: column;
+    }
+
+    .navbar ul {
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.1);
+
+    }
+}
+
+.logo:hover {
+    transform: scale(0.9);
+}

@@ -1,0 +1,647 @@
+{% load static %}
+{% load socialaccount %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Paytime</title>
+    <!-- Custom fonts for this template-->
+    <link href="{% static "css/fontawesome/all.min.css" %}" rel="stylesheet" type="text/css">
+
+
+
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static "css/admin-2.css" %}" rel="stylesheet">
+    <link href="{% static "css/indexcss.css" %}" rel="stylesheet">
+
+
+    <link href="{% static "css/owl.carousel.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/owl.theme.default.min.css" %}" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- ================================ HEADER SECTION =========================== -->
+<header class="header_area">
+            <div class="main-menu">
+
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#"><h3>Paytime</h3></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+
+                        <!-- move nav items right -->
+                        <div class="mr-auto"></div>
+                      <ul class="navbar-nav">
+                        <li class="nav-item active">
+                          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#services">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Packages</a>
+                          </li>
+                          <li class="my-auto">
+                            <a class="btn button primary-button small-btn " href="{% url "account_signup" %}">Join Us</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                          </li>
+
+                      </ul>
+                    </div>
+                  </nav>
+
+            </div>
+        </header>
+
+<!-- ================================ END HEADER SECTION =========================== -->
+
+
+    <!-- ================================ START MAIN AREA  =========================== -->
+<main class="site-main">
+
+    <!-- =============== BANNER AREA  ============= -->
+
+    <section class="site-banner my-5">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 site-title">
+                    <h1 class="title-text">Paytime</h1>
+                    <h4>your one stop shop to financial freedom</h4>
+
+
+                    <div class="site-buttons">
+                        <!-- use flex wrap to move the content to the next line -->
+                        <!-- in smaller devices -->
+                        <div class="flex-row d-flex flex-wrap">
+                            <a class="btn button primary-button mr-4 text-uppercase" href="{% url "account_signup" %}">Join Us</a>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 banner-img my-5">
+                    <img src="{% static "img/index_photos/slider-thumb2.png" %}" class="floating-main-img" alt="banner-image">
+                </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- =============== END BANNER AREA ============= -->
+
+
+     <!-- =============================== ABOUT =========================== -->
+
+    <section class="about-area my-5">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="about-image">
+                        <img src="{% static "img/index_photos/about-us.png" %}" alt="about-image" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 about-title">
+                    <h2 class="text-uppercase pt-5">
+                    <span>Relax and Watch</span>
+                    <span>Us</span>
+                    <span>Make you Money</span>
+                </h2>
+                <div class="paragraph py-3 w-75">
+                    <p class="para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus magni dolor aliquam consequuntur consectetur iste exercitationem eveniet reiciendis ratione at!</p>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- =============================== END ABOUT =========================== -->
+
+
+        <!-- =============================== BRAND AREA =========================== -->
+<section class="brand-area">
+    <div class="container">
+        <div class="row first-row">
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo1.png" %}" alt="brand-1" srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo2.png" %}" alt="brand-2" srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo3.png" %}" alt="brand-3" srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo4.png" %}" alt="brand-4" srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo5.png" %}" alt="brand-5" srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo6.png" %}" alt="brand-6" srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo7.png" %}" alt="brand-7 " srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo8.png" %}" alt="brand-8 " srcset=""></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-brand"><img src="{% static "img/index_photos/brands/logo9.png" %}" alt="brand-9 " srcset=""></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-xl-6 col-lg-6 col-md-12">
+                <div class="experience-area">
+                    <div class="d-flex flex-row years-area">
+                        <h2 class="p-3 years">10</h2>
+                        <h2>
+                            <span>Years</span>
+                            <span>Experience</span>
+                            <span>Working</span>
+                        </h2>
+                    </div>
+                    <div class="d-flex flex-row flex-wrap call-area">
+                        <span><i class="fa fa-3x pr-2 py3 fa-phone-alt px-3"></i></span>
+                        <div class="call-now">
+                            <a href="#" class="text-uppercase h4">Call Now</a>
+                            <span class="font-roboto py-2">+234-813-108-3364</span>
+                        </div>
+                    </div>
+                    <div class="xbg-panel"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- =============================== END BRAND AREA =========================== -->
+
+
+    <!-- ******************************** START SERVICES AREA******************************** -->
+
+<section class="services-area" id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center services-title">
+                <h2 class="text-uppercase">Service Offers</h2>
+                <p>There are many variations of packages available to choose from</p>
+            </div>
+        </div>
+        <div class="container services-list">
+            <div class="row">
+                <!-- CARD 1 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="services">
+                        <div class="services-img text-center py-4">
+                            <img src="{% static "img/index_photos/services/s1.png" %}" alt="" srcset="">
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-uppercase">Fresher</h5>
+                            <ul class="price-list" style="list-style: none;">
+                                <li class="mb-3"><strong>Investment duration:</strong> 25 working days</li>
+                                <li class="mb-3"><strong>Deposit amount:</strong> min.N100,000 – max.N500,000</li>
+                                <li class="mb-3"> ROI 15%</li>
+                                <li class="mb-3">Both the Capital and the ROI would be paid after 25 working days</li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="services">
+                        <div class="services-img text-center py-4">
+                            <img src="{% static "img/index_photos/services/s2.png" %}" alt="" srcset="">
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-uppercase">Bronze</h5>
+                            <ul class="price-list">
+                                <li class="mb-3"><strong>Investment duration:</strong> 75 working days</li>
+                                <li class="mb-3"><strong>Deposit amount:</strong> min.N100,000 – max.N50,000,000</li>
+                                <li class="mb-3">ROI 15%</li>
+                                <li class="mb-3">ROI would be paid after every 25 working days and on the final month both ROI and Capital would be paid</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="services">
+                        <div class="services-img text-center py-4">
+                            <img src="{% static "img/index_photos/services/s3.png" %}" alt="" srcset="">
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-uppercase">Silver</h5>
+                            <ul class="price-list">
+                                <li class="mb-3"><strong>Investment duration:</strong> 150 working days</li>
+                                <li class="mb-3"><strong>Deposit amount:</strong> min.N4,999,999+ max.N9,999,998</li>
+                                <li class="mb-3">ROI 17%</li>
+                                <li class="mb-3">ROI would be paid after every 25 working days and on the final month both ROI and Capital would be paid</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 4 -->
+
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="services">
+                        <div class="services-img text-center py-4">
+                            <img src="{% static "img/index_photos/services/s4.png" %}" alt="" srcset="">
+                        </div>
+                        <div class="text-center">
+                            <h5 class="card-title text-center text-uppercase">Gold</h5>
+                            <ul class="price-list">
+                                <li class="mb-3"><strong>Investment duration:</strong> 150 working days</li>
+                                <li class="mb-3"><strong>Deposit amount:</strong> min.N9,999,999+</li>
+                                <li class="mb-3">ROI 20%</li>
+                                <li>ROI would be paid after every 25 working days and on the final month both ROI and Capital would be paid</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =============================== END START SERVICES AREA =========================== -->
+
+
+    <!-- ******************************** PROJECT AREA******************************** -->
+<section class="project-area">
+    <div class="container">
+        <div class="project-title pb-5">
+            <h1 class="text-uppercase title-h1">Recently Done Projects</h1>
+            <h1 class="text-uppercase title-h1">Quality work</h1>
+        </div>
+
+        <div class="button-group">
+            <button type="button" id="btn1" class="active">All</button>
+            <button type="button" data-filter=".popular">Popular</button>
+            <button type="button" data-filter=".latest">Latest</button>
+            <button type="button" data-filter=".following">Following</button>
+            <button type="button" data-filter=".upcoming">Upcoming</button>
+        </div>
+
+        <div class="row grid">
+            <!-- first image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item latest">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p1.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Minimal Designing</h4>
+                        <span class="text-secondary">Latest Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2nd image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item popular">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p2.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Paint Wall</h4>
+                        <span class="text-secondary">Popular Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3rd image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item popular">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p3.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Female light</h4>
+                        <span class="text-secondary">Popular, Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4th image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item upcoming">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p4.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Train</h4>
+                        <span class="text-secondary">upcoming, Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 5th image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item latest">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p5.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Summer Book</h4>
+                        <span class="text-secondary">Latest, Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 6th image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item following">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p6.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Element Vase</h4>
+                        <span class="text-secondary">following, Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 7th image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item following">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p7.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Tea cup</h4>
+                        <span class="text-secondary">following, Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8th image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item latest">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p8.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Pencils</h4>
+                        <span class="text-secondary">latest, Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9th image -->
+            <div class="col-lg-4 col-md-6 col-sm-12 element-item upcoming">
+                <div class="our-project">
+                    <div class="img">
+                        <img src="{% static "img/index_photos/portfolio/p9.jpg" %}" alt="">
+                    </div>
+                    <div class="title py-4">
+                        <h4 class="text-uppercase">Lens</h4>
+                        <span class="text-secondary">upcoming, Portfolio</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+<!-- =============================== END PROJECT AREA =========================== -->
+
+
+    <!-- ******************************** ABOUT ME AREA******************************** -->
+<section class="about-area">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12">
+                <div class="about-title">
+                    <h1 class="text-uppercase h1">What Clients say about me</h1>
+                    <p class="para">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi cupiditate, vel earum quaerat ullam aperiam illum. Incidunt beatae quia illum.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container carousel py-lg-5">
+        <div class="owl-carousel owl-theme">
+
+            <!-- Row 1 -->
+
+            <div class="client row">
+                <div class="col-lg-4 col-md-12 client-img">
+                    <img src="{% static "img/index_photos/testimonials/t1.jpg" %}" alt="testimonial" class="img-fluid " srcset="">
+                </div>
+                <div class="col-lg-8 col-md-12 about-client">
+                    <h4 class="text-uppercase">Bitlebron</h4>
+                    <p class="para">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique excepturi labore, repellendus veritatis corrupti in?</p>
+                </div>
+
+            </div>
+
+            <!-- Row 2 -->
+            <div class="client row">
+                <div class="col-lg-4 col-md-12 client-img">
+                    <img src="{% static "img/index_photos/testimonials/t2.jpg" %}" alt="testimonial" class="img-fluid " srcset="">
+                </div>
+                <div class="col-lg-8 col-md-12 bold about-client">
+                    <h4 class="text-uppercase bolder">Mark</h4>
+                    <p class="para">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique excepturi labore, repellendus veritatis corrupti in?</p>
+                </div>
+
+            </div>
+
+             <!-- Row 3 -->
+             <div class="client row">
+                <div class="col-lg-4 col-md-12 client-img">
+                    <img src="{% static "img/index_photos/testimonials/t2.jpg" %}" alt="testimonial" class="img-fluid " srcset="">
+                </div>
+                <div class="col-lg-8 col-md-12 bold about-client">
+                    <h4 class="text-uppercase bolder">Spencer</h4>
+                    <p class="para">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique excepturi labore, repellendus veritatis corrupti in?</p>
+                </div>
+
+            </div>
+
+
+             <!-- Row 4 -->
+             <div class="client row">
+                <div class="col-lg-4 col-md-12 client-img">
+                    <img src="{% static "img/index_photos/testimonials/t1.jpg" %}" alt="testimonial" class="img-fluid " srcset="">
+                </div>
+                <div class="col-lg-8 col-md-12 bold about-client">
+                    <h4 class="text-uppercase bolder">Tari</h4>
+                    <p class="para">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique excepturi labore, repellendus veritatis corrupti in?</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ================================ END ABOUT ME  =========================== -->
+
+
+    <!-- ******************************** SUBSCRIBE  AREA******************************** -->
+
+<section class="subscribe-us-area">
+    <div class="container subscribe">
+        <div class="row">
+            <div class="col-lg-12 text-center subscribe-title">
+                <h4 class="text-uppercase">Get update from anywhere</h4>
+                <p class="para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, error!</p>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <form class="w-50">
+                <div class="row d-flex flex-row flex-wrap">
+                    <div class="col input-textbox">
+                        <input type="text" class="form-control" id="txtemail" placeholder="email">
+                    </div>
+
+                    <div class="col">
+                        <div class="btn-submit">
+                        <button type="submit" class="btn btn-success float-right">Subscribe</button>
+                    </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+<!-- ================================ END SUBSCRIBE  =========================== -->
+
+
+    <!-- ================================ FOOTER  =========================== -->
+    <footer class="footer-area">
+    <div class="container">
+        <div class="">
+            <div class="site-logo text-center py-4">
+                <a href="#">Paytime</a>
+            </div>
+        </div>
+        <div class="social text-center">
+            <h5 class="text-uppercase">Follow me</h5>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="copyright text-center">
+            <p class="para">
+                Copyright &copy; All rights reserved.
+                <a href="" class=""><span style="color: var(--primary-color);">Paytime</span></a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+    <!-- ================================ END FOOTER  =========================== -->
+
+</main>
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static "js/jquery.easing.min.js" %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static "js/sb-admin-2.min.js" %}"></script>
+<script src="{% static "js/isotope.js" %}"></script>
+<script src="{% static "js/owlcarousel.js" %}"></script>
+
+<script>
+        $(document).ready(function() {
+            //  remove active class from the button that is active
+        //  but we are just removing from all
+            let $btns = $(".project-area .button-group button").removeClass("active");
+            //  Add active class to the clicked button
+            $btns.click(function(e) {
+                e.target.classList.add("active");
+
+                // Get the value of the data-filter attr on the element (button)
+                let selector = $(e.target).attr("data-filter");
+                // Finally use isotope to filter
+                $(".project-area .grid").isotope({
+                filter:selector
+            })
+            })
+
+            return false;
+        } )
+
+        // unload we want the layout and images to look as though
+        // the All button was clicked
+        $(".project-area .button-group #btn1").trigger("click");
+        // document.getElementById("btn1").onlc
+
+
+        // USING OWL CAROUSEL
+        // Check owl carousel docs for more info
+        $(".site-main .about-area .owl-carousel").owlCarousel({
+            loop:true,
+            margin:10,
+            nav:true,
+            autoplay:true,
+            responsive:{
+                // when the viewport is between 0-544px
+                // we want only 1 item in the carousel
+                // else 2
+                0:{items: 1},
+                544: {items: 2}
+            }
+        })
+
+
+        /* Sticky Navbar */
+        let navBarOffset = $(".header_area").height() + 50;
+
+        function navBarFixed() {
+            if($(".header_area").length) {
+                $(window).scroll(function() {
+                    let scroll = $(window).scrollTop();
+                    if(scroll > navBarOffset) {
+                        $(".header_area .main-menu").addClass("navbar-fixed")
+                    } else {
+                        $(".header_area .main-menu").removeClass("navbar-fixed")
+                    }
+                })
+            }
+        }
+
+        navBarFixed()
+
+     </script>
+</body>
+</html>
+
