@@ -303,16 +303,6 @@ look slanty*/
 
 /*OWL CAROUSEL*/
 
-/*.about-area .owl-carousel .owl-item {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    padding: 0 1.5rem;*/
-/*}*/
-
-/*.about-area .owl-carousel .owl-dots .owl-dot.active span {*/
-/*    background-color: red;*/
-/*    width: 10px;*/
-/*}*/
 .carousel-team .owl-stage-outer {
     padding-top: 15px;
 }
@@ -423,10 +413,6 @@ look slanty*/
     transform: translate(0, 0);
 }
 
-
-.project-area {
-    padding: 4rem 0;
-}
 
 @media (min-width: 1200px) {
     h5, .heading-5 {
