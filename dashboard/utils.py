@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 
-import json
-
 import requests
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import ValidationError
