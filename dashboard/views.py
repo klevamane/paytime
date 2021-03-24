@@ -9,7 +9,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ValidationError
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import transaction
 from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect, render
@@ -84,8 +83,7 @@ class DocumentView(LoginRequiredMixin, View):
             instance.user = request.user
             # use get to avoid MultiValueDictKeyError
             file = request.FILES.get("file")
-            error = None
-            file_type = None
+            error = file_type = None
             try:
                 file_type = file.name.split(".")[-1].lower()
             except (IndexError, AttributeError):
