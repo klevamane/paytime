@@ -43,7 +43,6 @@ class ModelChange(models.Model):
     # What fields were changed to what values (if create or update)
     changes = models.CharField(null=True, blank=True, max_length=200)
     subject = models.CharField(null=True, blank=True, max_length=200)
-    # The object whose changes we will want to query later (Building, Location)
     primary = fields.GenericForeignKey("primary_ct", "primary_id")
 
     primary_ct = models.ForeignKey(
