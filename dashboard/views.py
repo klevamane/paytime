@@ -203,7 +203,7 @@ class InvestmentsView(LoginRequiredMixin, View):
             last_investment = user_investments_qs.latest("id")
             context["last_investment"] = last_investment
         investments = set_pagination_data(user_investments_qs, request)
-        # this is important that we use update instead of manually assigning key-value
+        # this is important that we update method instead of manually assigning key-value
         # there seem to be an issue we noticed by simply assigning the data
         # by dict["key"] = value
         context.update({"user_investments": investments})

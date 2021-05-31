@@ -1,0 +1,337 @@
+{% load static %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{% static "css/fontawesome/all.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/admin-2.css" %}" rel="stylesheet">
+
+    <link href="{% static "css/index-css.css" %}" rel="stylesheet">
+    <link href="{% static "css/index-util-css.css" %}" rel="stylesheet">
+    <link href="{% static "css/owl.carousel.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/owl.theme.default.min.css" %}" rel="stylesheet">
+
+    <title>Paytime | Financial service for everyone</title>
+</head>
+
+<body>
+    <!---NAVBAR-->
+
+    <div class="navbar" id="home">
+        <div class="container flex">
+            <h1 class="logo">Pay<span class="text-danger text-bold">time</span></h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services2">Packages</a></li>
+                    <li><a href="{% url "account_signup" %}">Join Us</a></li>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <section class="showcase">
+        <div class="container grid">
+            <div class="show-case-text py-5">
+                <h3>Easy Money</h3>
+                <p>Our investment advisors has reviewed various clients' goals, investment experience and risk tolerance, and has determine various  financial investment plan best suited for each and every client.
+                </p>
+                <a href="{% url "account_signup" %}" class="btn btn-outline">Invest Now</a>
+            </div>
+
+            <div class="showcase-form card">
+                <h2>Contact us</h2>
+                <form action="">
+                    <div class="form-control">
+                        <input type="text" name="name" id="" placeholder="Name" required>
+                    </div>
+                    <div class="form-control">
+                        <input type="text" name="company" id="" placeholder="Company Name" required>
+                    </div>
+                    <div class="form-control">
+                        <input type="text" name="email" id="" placeholder="email" required>
+                    </div>
+                    <input type="button" value="Submit" type="submit" class="btn btn outline">
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <!-- BUSINESS SOLUTION -->
+    <section class="business-solution text-center" id="business-solution">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="box-service">
+                        <i class="fa fa-coins fa-2x"></i>
+                        <h2>Personal Investment</h2>
+                        <p>We offer many sets of solutions that would help you build
+                            a second-to-none brand of portfolio</p>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="box-service">
+                        <i class="fa fa-users fa-2x"></i>
+                        <h2>Financial Consulting</h2>
+                        <p>Our team provides consultation services
+                            channeled on the most mission critical issues
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box-service">
+                        <i class="fa fa-dice fa-2x"></i>
+                        <h2>Online Tracking</h2>
+                        <p>We are ready to provide quality online
+                            management solutions, keeping your
+                            every move at your finger tips
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- PACKAGES -->
+    <section class="services-areas" id="services2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center services-title">
+                    <h2 class="text-uppercase">Packages</h2>
+                    <p>There are many variations of packages available to choose from</p>
+
+                </div>
+            </div>
+            <div class="container services-list">
+                <div class="row">
+                    <!-- CARD 1 -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="services">
+
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-uppercase text-bold">Fresher</h5>
+                                    <ul class="price-list" style="list-style: none;">
+                                        <li class="mb-3"><strong>Investment duration:</strong> 25 working days</li>
+                                        <li class="mb-3"><strong>Deposit amount:</strong> min.N100,000 – max.N500,000
+                                        </li>
+                                        <li class="mb-3 text-bold"> ROI 15%</li>
+                                        <li class="mb-3">Both the Capital and the ROI would be paid after 25 working
+                                            days
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                <a href="{% url "account_signup" %}" class="btn btn-primary">Select</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="services">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-uppercase text-bold">Bronze</h5>
+                                    <ul class="price-list">
+                                        <li class="mb-3"><strong>Investment duration:</strong> 75 working days</li>
+                                        <li class="mb-3"><strong>Deposit amount:</strong> min.N100,000 – max.N50,000,000
+                                        </li>
+                                        <li class="mb-3 text-bold">ROI 15%</li>
+                                        <li class="mb-3">ROI would be paid after every 25 working days and on the final
+                                            month both ROI and Capital would be paid
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="{% url "account_signup" %}" class="btn btn-primary">Select</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3 -->
+
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="services">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-uppercase text-bold">Silver</h5>
+                                    <ul class="price-list">
+                                        <li class="mb-3"><strong>Investment duration:</strong> 150 working days</li>
+                                        <li class="mb-3"><strong>Deposit amount:</strong> min.N4,999,999+ max.N9,999,998
+                                        </li>
+                                        <li class="mb-3 text-bold">ROI 17%</li>
+                                        <li class="mb-3">ROI would be paid after every 25 working days and on the final
+                                            month both ROI and Capital would be paid
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="{% url "account_signup" %}" class="btn btn-primary">Select</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 4 -->
+
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="services">
+                            <div class="card">
+                                <div class="text-center">
+                                    <h5 class="card-title text-center text-uppercase text-bold">Gold</h5>
+                                    <ul class="price-list">
+                                        <li class="mb-3"><strong>Investment duration:</strong> 150 working days</li>
+                                        <li class="mb-3"><strong>Deposit amount:</strong> min.N9,999,999+</li>
+                                        <li class="mb-3 text-bold">ROI 20%</li>
+                                        <li>ROI would be paid after every 25 working days</li>
+                                        <li>and on the final month </li>
+                                        <li>both
+                                            ROI
+                                            and Capital would be paid
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="{% url "account_signup" %}" class="btn btn-primary">Select</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEET THE TEAM -->
+
+    <section class="about-area" id="team">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-12">
+                    <div class="about-title">
+                        <h1 class="text-uppercase h1">Meet Some of the team</h1>
+                        <p class="para">Each and every project we work on includes hours of marketing research
+analysis and creative thinking. Learn more about our working process below.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="owl-carousel carousel-team owl-loaded owl-drag" data-owl="{&quot;dots&quot;:true}"
+                data-items="1" data-md-items="2" data-xl-items="3" data-stage-padding="0" data-loop="true"
+                data-margin="30" data-autoplay="true" style="">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                        style="transform: translate3d(-3600px, 0px, 0px); transition: all 0.55s ease 0s; width: 7600px;">
+
+
+                        <div class="owl-item active" style="width: 370px; margin-right: 30px;"><a class="box-team"
+                                href="#">
+                                <div class="box-team-header"><img src="{% static "img/team/us1.jpg" %}" alt=""
+                                        width="370" height="372"><span class="icon mdi mdi-call-received"></span>
+                                    <div class="box-team-name">
+                                        <p class="heading-5">Tari </p>
+                                    </div>
+                                </div>
+
+                            </a></div>
+                        <div class="owl-item" style="width: 370px; margin-right: 30px;"><a class="box-team" href="#">
+                                <div class="box-team-header"><img src="{% static "img/team/us8.jpg" %}" alt=""
+                                        width="370" height="372"><span class="icon mdi mdi-call-received"></span>
+                                    <div class="box-team-name">
+                                        <p class="heading-5">Feb</p>
+                                    </div>
+                                </div>
+
+                            </a></div>
+                        <div class="owl-item" style="width: 370px; margin-right: 30px;"><a class="box-team" href="#">
+                                <div class="box-team-header"><img src="{% static "img/carousel/alic.jpg" %}" alt=""
+                                        width="370" height="372"><span class="icon mdi mdi-call-received"></span>
+                                    <div class="box-team-name">
+                                        <p class="heading-5">Kimi</p>
+                                    </div>
+                                </div>
+
+                            </a></div>
+
+
+
+                    </div>
+                </div>
+                <div class="owl-nav disabled"><button type="button" role="presentation"
+                        class="owl-prev"></button><button type="button" role="presentation" class="owl-next"></button>
+                </div>
+                <div class="owl-dots"><button role="button" class="owl-dot"><span></span></button><button role="button"
+                        class="owl-dot active"><span></span></button><button role="button"
+                        class="owl-dot"><span></span></button></div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer bg-dark py-5">
+        <div class="container grid grid-3">
+            <div>
+                <h1 class="logo ">Pay<span class="text-danger text-bold">time</span></h1>
+                <p>We are an award-winning creative agency, dedicated to the best result in web design, promotion, business consulting, and marketing.
+
+</p>
+                <p>Copyright &copy; 2021</p>
+            </div>
+
+            <nav class="footer-links align-self-center">
+                <ul class="">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#services2">Packages</a></li>
+                    <li><a href="#team">Team</a></li>
+                </ul>
+
+            </nav>
+            <div class="social py-2 align-self-center">
+                <a href=""><i class="fab fa-twitter fa-2x"></i></a>
+                <a href=""><i class="fab fa-github fa-2x"></i></a>
+                <a href=""><i class="fab fa-facebook fa-2x"></i></a>
+                <a href=""><i class="fab fa-instagram fa-2x"></i></a>
+                <a href=""><i class="fab fa-snapchat fa-2x"></i></a>
+            </div>
+        </div>
+    </footer>
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static "js/jquery.easing.min.js" %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static "js/sb-admin-2.min.js" %}"></script>
+    <script src="{% static "js/owlcarousel.js" %}"></script>
+    <script>
+        // USING OWL CAROUSEL
+        // Check owl carousel docs for more info
+        $(".owl-carousel").owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            autoplay: true,
+            responsive: {
+                // when the viewport is between 0-544px
+                // we want only 1 item in the carousel
+                // else 2
+                0: { items: 1 },
+                544: { items: 3 }
+            }
+        })
+    </script>
+</body>
+
+</html>

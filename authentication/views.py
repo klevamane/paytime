@@ -4,11 +4,9 @@ import json
 import logging
 
 from allauth.account.adapter import get_adapter
-from allauth.account.views import LogoutFunctionalityMixin
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
-from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
