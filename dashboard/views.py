@@ -42,6 +42,8 @@ from user.models import Document, User
 
 
 def users_list(request):
+    if request.user.is_staff:
+        return redirect("profile_url")
     return render(request, "dashboard/users-list.html")
 
 

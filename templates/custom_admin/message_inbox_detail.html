@@ -30,16 +30,16 @@
             </div>
             <div class="message-body">
                 <div class="sender-details"><img class=" d-none rounded-circle mr-3"
-                                                 src="{% static "img/logo/ovviy_thumbnail.png" %}"
+                                                 src="{% static "img/logo/paytime_logo.png" %}"
                                                  alt="">
                     <div class="details"><p class="msg-subject"> {{ messagecenter.subject }}
                         ({{ messagecenter.created_at|naturaltime }})</p>
-                        <p class="sender-email"> Admin <a href="#">ovviytrade@admin.com</a> &nbsp<i
+                        <p class="sender-email"> Admin <a href="#">paytime@admin.com</a> &nbsp<i
                                 class="mdi mdi-account-multiple-plus"></i></p></div>
                 </div>
                 <div class="message-content py-5"><p>Hi {{ request.user.firstname }},</p>
                     <p>{{ messagecenter.message }}</p>
-                    <p><br><br>Regards,<br>Ovviytrade</p></div>
+                    <p><br><br>Regards,<br>Paytime</p></div>
             </div>
         </div>
     </div>

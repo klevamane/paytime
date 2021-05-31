@@ -117,7 +117,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
-LOGIN_REDIRECT_URL = "/dashboard"
+LOGIN_REDIRECT_URL = "/dashboard/profile"
 LOGIN_URL = "/accounts/login/"
 ACCOUNT_FORMS = {"signup": "authentication.forms.SignupForm"}
 if not DEBUG:
